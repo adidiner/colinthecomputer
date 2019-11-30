@@ -1,9 +1,9 @@
 import socket, time, struct, threading, pathlib
-from cli import CommandLineInterface
+#from cli import CommandLineInterface
 from .utils import Connection, Listener
 from . import Thought
 
-cli = CommandLineInterface()
+#cli = CommandLineInterface()
 HEADER_SIZE = 20
 
 
@@ -27,7 +27,7 @@ class Handler(threading.Thread):
 		# Save message
 		timestamp = time.strftime('%Y-%m-%d_%H-%M-%S', time.localtime(timestamp))
 		dir_path = f'{self.data_dir}/{user_id}'
-		with lock:
+		with Handler.lock:
 			self.save_file(dir_path, timestamp, thought)
 
 
@@ -36,7 +36,7 @@ class Handler(threading.Thread):
 		dir_path = pathlib.Path(dir_path)
 		if not dir_path.exists():
 			dir_path.mkdir()
-		file_path = dir_path / filename
+		file_path = dir_path / f'{filename}.txt'
 
 		# Write file
 		if not file_path.exists():
@@ -48,7 +48,8 @@ class Handler(threading.Thread):
 				file.write('\n' + data)
 		
 
-def run_server(host, port, data_dir):
+def run_server(address, data_dir):
+	host, port = address
 	# Setup server
 	with Listener(host=host, port=port) as server:
 		while True:

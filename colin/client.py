@@ -1,7 +1,7 @@
 import struct
 import socket
 import datetime as dt
-from cli import CommandLineInterface
+#from cli import CommandLineInterface
 from .utils import Connection
 from . import Thought
 

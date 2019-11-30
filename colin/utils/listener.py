@@ -1,4 +1,4 @@
-from connection import Connection
+from .connection import Connection
 import socket
 
 class Listener:
