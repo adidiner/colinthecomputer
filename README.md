@@ -59,7 +59,7 @@ The package also provides the following functions:
 
     ```pycon
     >>> from colin import run_server
-    >>> run_server('127.0.0.1:5000', 'data/')
+    >>> run_server(('127.0.0.1, 5000'), 'data/')
     ```
 
 - `upload_thought`
@@ -68,7 +68,7 @@ The package also provides the following functions:
 
     ```pycon
     >>> from colin import upload_thought
-    >>> upload_thought('127.0.0.1:5000' 1 "I'm hunger")
+    >>> upload_thought(('127.0.0.1', 5000), 1, "I'm hungery")
     ```
     If the upload time is for example [2000-01-01 12:00:00], the server from the previous example would write "I'm hungry" to /data/1/2000-01-01_12-00-00.txt
 
@@ -78,7 +78,7 @@ The package also provides the following functions:
 
     ```pycon
     >>> from colin import run_webserver
-    >>> run_webserver('127.0.0.1:8000', 'data/')
+    >>> run_webserver(('127.0.0.1', 8000), 'data/')
     ```
 
 THERE IS A CLI AS WELL HJDSIOD
