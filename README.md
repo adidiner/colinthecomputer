@@ -7,7 +7,7 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
 1. Clone the repository and enter it:
 
     ```sh
-    $ git clone git@github.com:Adidi1511/colin-the-computer.git
+    $ git clone git@github.com:adidiner/colin-the-computer.git
     ...
     $ cd colin-the-computer/
     ```
