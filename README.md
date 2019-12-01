@@ -59,7 +59,7 @@ The package also provides the following functions:
 
     ```pycon
     >>> from colin import run_server
-    >>> run_server(('127.0.0.1, 5000'), 'data/')
+    >>> run_server(('127.0.0.1', 5000), 'data/')
     ```
 
 - `upload_thought`
