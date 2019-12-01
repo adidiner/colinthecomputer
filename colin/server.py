@@ -20,9 +20,8 @@ class Handler(threading.Thread):
 			header = self.client.receive(HEADER_SIZE)
 			user_id, timestamp, thought_size =  struct.unpack('QQI', header)
 			thought = self.client.receive(thought_size).decode('utf-8')
-		'''except Exception as error:
-			print(f'ERROR: {error}')	
-			return'''
+			
+		#TODO: figure out exception handling
 
 		# Save message
 		timestamp = time.strftime('%Y-%m-%d_%H-%M-%S', time.localtime(timestamp))
@@ -57,19 +56,3 @@ def run_server(address, data_dir):
 			client = server.accept()
 			handler = Handler(client, data_dir)
 			handler.start()
-
-
-"""@cli.command
-def run(address, data):
-	try:
-		address = address.split(':')
-		address = (address[0], int(address[1]))
-		run_server(*address, data)
-	except KeyboardInterrupt:
-		return 0
-	except Exception as error:
-		print(f'ERROR: {error}')
-		return 1
-
-if __name__ == '__main__':
-	cli.main()"""

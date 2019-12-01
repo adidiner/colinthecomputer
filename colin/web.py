@@ -68,23 +68,3 @@ def run_webserver(address, data_dir):
 	global DATA_DIR
 	DATA_DIR = data_dir
 	website.run(address)
-
-
-"""def main(argv):
-	if len(argv) != 3:
-		print(f'USAGE: {argv[0]} <address> <data_dir>')
-		return 1
-	try:
-		address = argv[1].split(':')
-		address = (address[0], int(address[1]))
-		run_webserver(address, argv[2])
-	except KeyboardInterrupt:
-		return 0
-	except Exception as error:
-		print(f'ERROR: {error}')
-		return 1
-
-
-if __name__ == '__main__':
-	import sys
-	sys.exit(main(sys.argv))"""
