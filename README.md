@@ -30,7 +30,7 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
     ```
 ## Usage
 
-The `colin` packages provides the following class:
+The `colin` package provides the following class:
 
 - `Thought`
 
@@ -81,4 +81,36 @@ The package also provides the following functions:
     >>> run_webserver(('127.0.0.1', 8000), 'data/')
     ```
 
-THERE IS A CLI AS WELL HJDSIOD
+The `colin` package also provides a command-line interface:
+
+```sh
+$ python -m colin
+Usage: colin [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  serve
+  upload
+  webserve
+```
+
+The CLI provides the `serve`, `upload` and `webserve` command, corresponding to the `run_server`, `upload_thought` and `run_webserver` methods.
+
+# Usage examples:
+```sh
+$ python -m colin serve '127.0.0.1:5000' '/data'
+# serving at host 127.0.0.1, port 5000
+```
+
+```sh
+$ python -m colin upload '127.0.0.1:5000' 1 "I'm hungry"
+# upload "I'm hungry" from user 1
+```
+
+```sh
+$ python -m colin webserve '127.0.0.1:8000' '/data'
+# serving the data directory in a webserver, at host 127.0.0.1 and port 8000
+```
+
