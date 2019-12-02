@@ -4,6 +4,7 @@ import sys
 from . import upload_thought, run_server, run_webserver
 
 
+@click.group()
 def main():
     pass
 
