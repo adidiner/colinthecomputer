@@ -1,6 +1,6 @@
 # Colin The Computer
 
-A project for Advanced System Design course, simulating a Brain Computer Interface
+A project for Advanced System Design course, simulating a Brain Computer Interface. See [full documentation](https://colin-the-computer.readthedocs.io/en/latest).
 
 ## Installation
 
