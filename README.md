@@ -98,7 +98,7 @@ Commands:
 
 The CLI provides the `serve`, `upload` and `webserve` command, corresponding to the `run_server`, `upload_thought` and `run_webserver` methods.
 
-### Usage examples:
+#### Usage examples:
 ```sh
 $ python -m colin serve '127.0.0.1:5000' '/data'
 # serving at host 127.0.0.1, port 5000
