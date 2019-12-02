@@ -4,7 +4,6 @@ import sys
 from . import upload_thought, run_server, run_webserver
 
 
-@click.group()
 def main():
     pass
 
@@ -38,7 +37,7 @@ def webserve(address, data):
 
 if __name__ == '__main__':
     try:
-        main()
+        main(prog_name='colin')
     except Exception as error:
         print(f'ERROR: {error}')
         sys.exit(1)
