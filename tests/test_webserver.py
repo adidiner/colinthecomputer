@@ -1,4 +1,4 @@
-import datetime as dt
+'''import datetime as dt
 import multiprocessing
 import pathlib
 import shutil
@@ -68,4 +68,4 @@ def test_dynamic(webserver):
 
 def _run_webserver(pipe):
     pipe.send('ready')
-    run_webserver(_WEBSERVER_ADDRESS, _DATA_DIR)
+    run_webserver(_WEBSERVER_ADDRESS, _DATA_DIR)'''
