@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/adidiner/colin-the-computer.svg?branch=master)](https://travis-ci.org/adidiner/colin-the-computer)
+[![codecov](https://codecov.io/gh/adidiner/colin-the-computer/branch/master/graph/badge.svg)](https://codecov.io/gh/adidiner/colin-the-computer)
 
 # Colin The Computer
 
