@@ -4,7 +4,6 @@ import datetime as dt
 
 class Thought:
     header_size = 20
-    timezone = dt.timezone(dt.timedelta(hours=2))
 
     def __init__(self, user_id, timestamp, thought):
         self.user_id = user_id
@@ -34,6 +33,6 @@ class Thought:
     def deserialize(data):
         user_id, time, thought_size = \
          struct.unpack('QQI', data[:Thought.header_size])
-        timestamp = dt.datetime.fromtimestamp(time, tz=Thought.timezone)
+        timestamp = dt.datetime.fromtimestamp(time)
         thought = data[Thought.header_size:].decode('utf-8')
         return Thought(user_id, timestamp, thought)
