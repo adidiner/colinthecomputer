@@ -2,8 +2,8 @@ import datetime as dt
 import struct
 from PIL import Image as PImage
 
-from snapshot import Snapshot
-from snapshot import Image
+from .snapshot import Snapshot
+from .snapshot import Image
 
 
 UINT64 = 8
