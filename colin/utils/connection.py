@@ -1,4 +1,5 @@
 import socket
+import struct
 
 
 class Connection:
@@ -22,8 +23,8 @@ class Connection:
     def __exit__(self, exception, error, traceback):
         self.close()
 
-    def send(self, data):
-        self.socket.sendall(data)
+   '''def send(self, data):
+        self.socket.sendall(data)'''
 
     def receive(self, size):
         data = b''
@@ -33,6 +34,17 @@ class Connection:
                 raise Exception('Incomplete data')
             data += received
         return data
+
+    def send_message(self, message):
+        data = b''
+        bmessage = bytes(message, 'utf-8')
+        data += struct.pack('I', len(bmessage))
+        data += bmessage
+        self.socket.sendall(data)
+
+    def receive_message(self):
+        size = struct.unpack('I', self.socket.recv(8))
+        return self.receive(size)
 
     def close(self):
         self.socket.close()
