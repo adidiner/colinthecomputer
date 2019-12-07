@@ -29,7 +29,7 @@ class Reader:
             # Unpack gender
             gender = struct.unpack('c', f.read(CHAR))
             self.gender = gender.decode('utf-8')
-            # Read offset bytes from file
+            # Reader read offset bytes from file
             self.offset += UINT64 + UINT32 + username_len + UINT32 + CHAR
 
     def __iter__(self):
