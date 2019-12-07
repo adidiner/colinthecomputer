@@ -19,14 +19,18 @@ class Reader:
         self.path = path
         self.offset = 0
         with open(path, 'rb') as f:
-            self.user_id, username_len = \
-                struct.unpack('QI', f.read(UINT64+UINT32))
+            # Unpack user_id and username
+            self.user_id = struct.unpack('Q', f.read(UINT64))
+            username_len = struct.unpack('I', f.read(UINT32))
             self.username = f.read(username_len).decode('utf-8')
-            self.offset += UINT64 + UINT32 + username_len
-            birth_timestamp, gender = struct.unpack('Ic', f.read(UINT32+CHAR))
+            # Unpack birthdate
+            birth_timestamp = struct.unpack('I', f.read(UINT32))
             self.birth_date = dt.datetime.fromtimestamp(birth_timestamp)
+            # Unpack gender
+            gender = struct.unpack('c', f.read(CHAR))
             self.gender = gender.decode('utf-8')
-            self.offset += UINT32 + CHAR
+            # Read offset bytes from file
+            self.offset += UINT64 + UINT32 + username_len + UINT32 + CHAR
 
     def __iter__(self):
         with open(self.path, 'rb') as f:
