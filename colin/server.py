@@ -1,12 +1,19 @@
 import pathlib
 import threading
-import time
-import struct
 
 from .utils import Listener
+from .utils import parsers
+from .protocol import Hello
+from .protocol import Config
+from .protocol import Snapshot
 
 
 HEADER_SIZE = 20
+
+
+class Context:
+    def __init__(self, directory):
+        self.directory = directory
 
 
 class Handler(threading.Thread):
@@ -19,35 +26,33 @@ class Handler(threading.Thread):
 
     def run(self):
         with self.client:
-            # Receive message
-            header = self.client.receive(HEADER_SIZE)
-            user_id, timestamp, thought_size = struct.unpack('QQI', header)
-            thought = self.client.receive(thought_size).decode('utf-8')
+            # Receive hello
+            data = self.client.receive_message()
+            hello = Hello.deserialize(data)
+            # Send config
+            config = Config([field for field in parsers])
+            data = config.serialize()
+            self.client.send_message(data)
+            # Receive snapshot
+            data = self.client.receive_message()
+            snapshot = Snapshot.deserialize(data)
 
         # TODO: figure out exception handling
 
-        # Save message
-        timestamp = time.strftime('%Y-%m-%d_%H-%M-%S',
-                                  time.localtime(timestamp))
-        dir_path = f'{self.data_dir}/{user_id}'
         with Handler.lock:
-            self.save_file(dir_path, timestamp, thought)
+            self.save_snapshot(hello, snapshot)
 
-    def save_file(self, dir_path, filename, data):
-        # Make directory
-        dir_path = pathlib.Path(dir_path)
-        if not dir_path.exists():
-            dir_path.mkdir()
-        file_path = dir_path / f'{filename}.txt'
-
-        # Write file
-        if not file_path.exists():
-            file_path.touch()
-            with file_path.open('w') as file:
-                file.write(data)
-        else:
-            with file_path.open('a') as file:
-                file.write('\n' + data)
+    def save_snapshot(self, hello, snapshot):
+        datetime = snapshot.datetime.strftime('%Y-%m-%d_%H-%M-%S-%f')
+        path = pathlib.Path(self.data_dir) / f'{hello.user_id}'
+        if not path.exists():
+            path.mkdir()
+        path /= datetime
+        if not path.exists():
+            path.mkdir()
+        context = Context(path)
+        for parser in parsers.items():
+            parser(context, snapshot)
 
 
 def run_server(address, data_dir):
