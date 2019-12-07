@@ -34,21 +34,20 @@ class Reader:
     def __iter__(self):
         with open(self.path, 'rb') as f:
             f.seek(self.offset)
-            while f.read(1) != '':
-                f.seek(-1, 1)
+            while len(f.read(4)) == 4:
+                f.seek(-4, 1)
                 yield read_snapshot(f)
 
 
 def read_snapshot(stream):
     timestamp, = struct.unpack('Q', stream.read(UINT64))
-    timestamp *= 10**(-3)
-    snapshot = Snapshot(dt.datetime.fromtimestamp(timestamp))
-    snapshot.translation = struct.unpack('ddd', stream.read(DOUBLE*3))
-    snapshot.rotation = struct.unpack('dddd', stream.read(DOUBLE*4))
-    snapshot.color_image = read_color_image(stream)
-    snapshot.depth_image = read_depth_image(stream)
-    snapshot.feelings = struct.unpack('ffff', stream.read(FLOAT*4))
-    return snapshot
+    translation = struct.unpack('ddd', stream.read(DOUBLE*3))
+    rotation = struct.unpack('dddd', stream.read(DOUBLE*4))
+    color_image = read_color_image(stream)
+    depth_image = read_depth_image(stream)
+    feelings = struct.unpack('ffff', stream.read(FLOAT*4))
+    return Snapshot(timestamp, translation, rotation,
+                    color_image, depth_image, feelings)
 
 
 def read_color_image(stream):
@@ -57,13 +56,13 @@ def read_color_image(stream):
     # Save as RGB
     data = PImage.frombytes(
         'RGB', (width, height), data, "raw", 'BGR').tobytes()
-    return Image('color', width=width, height=height, data=data)
+    return Image(im_type='color', width=width, height=height, data=data)
 
 
 def read_depth_image(stream):
     height, width = struct.unpack('II', stream.read(UINT32*2))
     data = iterated_read(stream, height*width*FLOAT)
-    return Image('depth', width=width, height=height, data=data)
+    return Image(im_type='depth', width=width, height=height, data=data)
 
 
 def iterated_read(stream, size):
