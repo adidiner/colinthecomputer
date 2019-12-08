@@ -25,7 +25,8 @@ class Image:
         data = b''
         data += struct.pack('I', self.width)
         data += struct.pack('I', self.height)
-        data += self.data
+        if self.data:
+            data += self.data
         return data
 
     @classmethod

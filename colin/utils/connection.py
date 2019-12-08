@@ -1,6 +1,7 @@
 import socket
 import struct
 
+CHUNK = 1000000
 
 class Connection:
     def __init__(self, socket):
@@ -26,21 +27,21 @@ class Connection:
     def receive(self, size):
         data = b''
         while len(data) < size:
-            received = self.socket.recv(1)
+            received = self.socket.recv(CHUNK)
             if not received:
-                raise Exception('Incomplete data')
+                print('oof') #TODO
+                continue
             data += received
         return data
 
     def send_message(self, message):
         data = b''
-        bmessage = bytes(message, 'utf-8')
-        data += struct.pack('I', len(bmessage))
-        data += bmessage
+        data += struct.pack('I', len(message))
+        data += message
         self.socket.sendall(data)
 
     def receive_message(self):
-        size = struct.unpack('I', self.socket.recv(8))
+        size, = struct.unpack('I', self.socket.recv(4))
         return self.receive(size)
 
     def close(self):

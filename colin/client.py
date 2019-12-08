@@ -5,7 +5,7 @@ from .utils import Reader
 from .protocol import Hello, Config, Snapshot
 
 
-def upload_thought(address, sample):
+def upload_sample(address, sample):
     reader = Reader(sample)
     hello = Hello(reader.user_id, reader.username,
                   reader.birth_date, reader.gender)

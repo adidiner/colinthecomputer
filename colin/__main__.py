@@ -1,7 +1,7 @@
 import click
 import sys
 
-from . import upload_thought, run_server, run_webserver
+from . import upload_sample, run_server, run_webserver
 
 
 @click.group()
@@ -16,10 +16,9 @@ def _parse_address(address):
 
 @main.command('upload')
 @click.argument('address', type=str)
-@click.argument('user', type=int)
-@click.argument('thought', type=str)
-def upload(address, user, thought):
-    upload_thought(_parse_address(address), user, thought)
+@click.argument('sample', type=str)
+def upload(address, sample):
+    upload_sample(_parse_address(address), sample)
 
 
 @main.command('serve')
@@ -37,8 +36,8 @@ def webserve(address, data):
 
 
 if __name__ == '__main__':
-    try:
-        main(prog_name='colin')
-    except Exception as error:
+    #try:
+    main(prog_name='colin')
+    '''except Exception as error:
         print(f'ERROR: {error}')
-        sys.exit(1)
+        sys.exit(1)'''

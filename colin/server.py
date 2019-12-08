@@ -30,7 +30,7 @@ class Handler(threading.Thread):
             data = self.client.receive_message()
             hello = Hello.deserialize(data)
             # Send config
-            config = Config([field for field in parsers])
+            config = Config(*[field for field in parsers])
             data = config.serialize()
             self.client.send_message(data)
             # Receive snapshot
