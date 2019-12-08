@@ -72,6 +72,13 @@ class Snapshot:
                f'with a {self.color_image} and a {self.depth_image}, ' \
                f'feelings are {self.feelings}.'
 
+    def __getitem__(self, key):
+        return self.__dict__[key]
+
+    def __iter__(self):
+        for key in self.__dict__:
+            yield key
+
     def serialize(self):
         data = b''
         data += struct.pack('Q', self.timestamp)

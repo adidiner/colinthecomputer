@@ -66,7 +66,7 @@ class Hello:
 
 
 class Config:
-    def __init__(self, fields):
+    def __init__(self, *fields):
         self.fields = fields
 
     def __repr__(self):
@@ -80,6 +80,13 @@ class Config:
         if not isinstance(other, Config):
             return False
         return self.fields == other.fields
+
+    def __iter__(self):
+        for field in self.fields:
+            yield field
+
+    def __contains__(self, field):
+        return field in self.fields
 
     def serialize(self):
         data = b''
@@ -102,4 +109,4 @@ class Config:
             part, data = data[:field_len], data[field_len:]
             fields.append(part.decode('utf-8'))
         # Create config instance
-        return cls(fields)
+        return cls(*fields)
