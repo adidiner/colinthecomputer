@@ -51,7 +51,7 @@ class Handler(threading.Thread):
         if not path.exists():
             path.mkdir()
         context = Context(path)
-        for parser in parsers.items():
+        for parser in parsers.values():
             parser(context, snapshot)
 
 

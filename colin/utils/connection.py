@@ -23,9 +23,6 @@ class Connection:
     def __exit__(self, exception, error, traceback):
         self.close()
 
-   '''def send(self, data):
-        self.socket.sendall(data)'''
-
     def receive(self, size):
         data = b''
         while len(data) < size:
