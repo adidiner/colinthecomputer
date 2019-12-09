@@ -2,6 +2,7 @@ import struct
 import datetime as dt
 
 from .utils import Snapshot
+from .utils import to_stream
 
 UINT64 = 8
 UINT32 = 4
@@ -51,14 +52,10 @@ class Hello:
 
     @classmethod
     def deserialize(cls, data):
-        # Get user_id, username
-        part, data = data[:UINT64+UINT32], data[UINT64+UINT32:]
-        user_id, username_len = struct.unpack('QI', part)
-        part, data = data[:username_len], data[username_len:]
-        username = part.decode('utf-8')
-        # Get birthdate, gender
-        part, data = data[:UINT32+CHAR], data[UINT32+CHAR:]
-        birth_timestamp, gender = struct.unpack('Ic', part)
+        stream = to_stream(data)
+        user_id, username_len = struct.unpack('QI', stream.read(UINT64+UINT32))
+        username = stream.read(username_len).decode('utf-8')
+        birth_timestamp, gender = struct.unpack('Ic', stream.read(UINT32+CHAR))
         birth_date = dt.datetime.fromtimestamp(birth_timestamp)
         gender = gender.decode('utf-8')
         # Create hello instance
@@ -98,15 +95,12 @@ class Config:
 
     @classmethod
     def deserialize(cls, data):
-        # Unpack number of fields
-        part, data = data[:UINT32], data[UINT32:]
-        fields_num, = struct.unpack('I', part)
+        stream = to_stream(data)
+        fields_num, = struct.unpack('I', stream.read(UINT32))
         # Unpack fields
         fields = []
         for _ in range(fields_num):
-            part, data = data[:UINT32], data[UINT32:]
-            field_len, = struct.unpack('I', part)
-            part, data = data[:field_len], data[field_len:]
-            fields.append(part.decode('utf-8'))
+            field_len, = struct.unpack('I', stream.read(UINT32))
+            fields.append(stream.read(field_len).decode('utf-8'))
         # Create config instance
         return cls(*fields)

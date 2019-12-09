@@ -1,6 +1,8 @@
 import datetime as dt
 import struct
 
+from .util_methods import to_stream
+
 UINT64 = 8
 UINT32 = 4
 CHAR = 1
@@ -31,12 +33,12 @@ class Image:
 
     @classmethod
     def deserialize(cls, data, im_type):
-        part, data = data[:UINT32*2], data[UINT32*2:]
-        width, height = struct.unpack('II', part)
+        stream = to_stream(data)
+        width, height = struct.unpack('II', stream.read(UINT32*2))
         if im_type == 'color':
-            data = data[:width*height*3]
+            data = stream.read(width*height*3)
         if im_type == 'depth':
-            data = data[:width*height*FLOAT]
+            data = stream.read(width*height*FLOAT)
         return cls(im_type, width, height, data)
 
 
@@ -92,23 +94,13 @@ class Snapshot:
 
     @classmethod
     def deserialize(cls, data):
-        # Unpack timestamp
-        part, data = data[:UINT64], data[UINT64:]
-        timestamp, = struct.unpack('Q', part)
-        # Unpack translation
-        part, data = data[:DOUBLE*3], data[DOUBLE*3:]
-        translation = struct.unpack('ddd', part)
-        # Unpack rotation
-        part, data = data[:DOUBLE*4], data[DOUBLE*4:]
-        rotation = struct.unpack('dddd', part)
-        # Unpack images
-        color_image = Image.deserialize(data, 'color')
-        data = data[UINT32*2+len(color_image.data):]
-        depth_image = Image.deserialize(data, 'depth')
-        data = data[UINT32*2+len(depth_image.data):]
-        # Unnpack feelings
-        part = data[:FLOAT*4]
-        feelings = struct.unpack('ffff', part)
+        stream = to_stream(data)
+        timestamp, = struct.unpack('Q', stream.read(UINT64))
+        translation = struct.unpack('ddd', stream.read(DOUBLE*3))
+        rotation = struct.unpack('dddd', stream.read(DOUBLE*4))
+        color_image = Image.deserialize(stream, 'color')
+        depth_image = Image.deserialize(stream, 'depth')
+        feelings = struct.unpack('ffff', stream.read(FLOAT*4))
         # Create snapshot instance
         return Snapshot(timestamp, translation, rotation,
                         color_image, depth_image, feelings)
