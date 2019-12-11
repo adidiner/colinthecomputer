@@ -31,6 +31,20 @@ class Reader:
             # Reader read offset bytes from file
             self.offset += UINT64 + UINT32 + username_len + UINT32 + CHAR
 
+    def __repr__(self):
+        return f'Reader(path={self.path})'
+
+    def __str__(self):
+        fbirth_date = self.birth_date.strftime('%B %d, %Y')
+        if self.gender == 'f':
+            fgender = 'female'
+        elif self.gender == 'm':
+            fgender = 'male'
+        else:
+            fgender = 'other'
+        return f'user {self.user_id}: {self.username}, ' \
+               f'born {fbirth_date} ({fgender})'
+
     def __iter__(self):
         with open(self.path, 'rb') as f:
             f.seek(self.offset)
@@ -72,3 +86,10 @@ def iterated_read(stream, size):
         read += CHUNK
     data += stream.read(size-read)
     return data
+
+
+def read(path):
+    reader = Reader(path)
+    print(reader)
+    for snapshot in reader:
+        print(snapshot)

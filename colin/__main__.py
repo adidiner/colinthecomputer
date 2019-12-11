@@ -1,11 +1,23 @@
 import click
 import sys
 
-from . import upload_sample, run_server, run_webserver
+from . import upload_sample
+from . import run_server as _run_server
+from .utils import read as _read
 
 
 @click.group()
 def main():
+    pass
+
+
+@main.group()
+def server():
+    pass
+
+
+@main.group()
+def client():
     pass
 
 
@@ -14,25 +26,31 @@ def _parse_address(address):
     return (address[0], int(address[1]))
 
 
-@main.command('upload')
+@client.command('run')
 @click.argument('address', type=str)
 @click.argument('sample', type=str)
-def upload(address, sample):
+def run_client(address, sample):
     upload_sample(_parse_address(address), sample)
 
 
-@main.command('serve')
+@server.command('run')
 @click.argument('address', type=str)
 @click.argument('data', type=str)
-def serve(address, data):
-    run_server(_parse_address(address), data)
+def run_server(address, data):
+    _run_server(_parse_address(address), data)
 
 
-@main.command('webserve')
+'''@main.command('webserve')
 @click.argument('address', type=str)
 @click.argument('data', type=str)
 def webserve(address, data):
-    run_webserver(_parse_address(address), data)
+    run_webserver(_parse_address(address), data)'''
+
+
+@main.command('read')
+@click.argument('path', type=str)
+def read(path):
+    _read(path)
 
 
 if __name__ == '__main__':
