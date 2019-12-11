@@ -24,7 +24,7 @@ class Connection:
     def __exit__(self, exception, error, traceback):
         self.close()
 
-    def receive(self, size):
+    def _receive(self, size):
         data = b''
         while len(data) < size:
             received = self.socket.recv(CHUNK)
@@ -42,7 +42,7 @@ class Connection:
 
     def receive_message(self):
         size, = struct.unpack('I', self.socket.recv(4))
-        return self.receive(size)
+        return self._receive(size)
 
     def close(self):
         self.socket.close()
