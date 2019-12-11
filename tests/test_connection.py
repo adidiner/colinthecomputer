@@ -7,6 +7,8 @@ from colin.utils import Connection
 
 
 _PORT = 1234
+_MESSAGE = b'\x05\x00\x00\x00hello'
+_MESSAGE_LEN = 9
 
 
 @pytest.fixture
@@ -32,5 +34,19 @@ def test_context_manager(server):
 
 
 def test_connect(server):
-    with  Connection.connect('127.0.0.1', _PORT) as connection:
+    with Connection.connect('127.0.0.1', _PORT) as connection:
         server.accept()
+
+
+def test_send(server):
+    with Connection.connect('127.0.0.1', _PORT) as connection:
+        sock, _ = server.accept()
+        connection.send_message(b'hello')
+        assert sock.recv(_MESSAGE_LEN) == _MESSAGE
+
+
+def test_receive(server):
+     with Connection.connect('127.0.0.1', _PORT) as connection:
+        sock, _ = server.accept()
+        sock.sendall(_MESSAGE)
+        assert connection.receive_message() == b'hello'
