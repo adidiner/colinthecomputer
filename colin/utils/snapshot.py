@@ -23,6 +23,14 @@ class Image:
     def __str__(self):
         return f'{self.width}x{self.height} {self.type} image'
 
+    def __eq__(self, other):
+        if not isinstance(other, Image):
+            return False
+        return self.type == other.type and \
+            self.width == other.width and \
+            self.height == other.height and \
+            self.data == other.data
+
     def serialize(self):
         data = b''
         data += struct.pack('I', self.width)
@@ -74,6 +82,16 @@ class Snapshot:
                f'{self.translation} / {self.rotation} ' \
                f'with a {self.color_image} and a {self.depth_image}, ' \
                f'feelings are {self.feelings}.'
+
+    def __eq__(self, other):
+        if not isinstance(other, Snapshot):
+            return False
+        return self.datetime == other.datetime and \
+            self.translation == other.translation and \
+            self.rotation == other.rotation and \
+            self.color_image == other.color_image and \
+            self.depth_image == other.depth_image and \
+            self.feelings == other.feelings
 
     def __getitem__(self, key):
         return self.__dict__[key]

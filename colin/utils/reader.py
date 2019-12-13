@@ -17,7 +17,7 @@ CHUNK = 1000000
 class Reader:
     def __init__(self, path):
         self.path = path
-        self.offset = 0
+        self._offset = 0
         with open(path, 'rb') as f:
             # Unpack user_id, username
             self.user_id, username_len = struct.unpack('QI',
@@ -29,7 +29,7 @@ class Reader:
             self.birth_date = dt.datetime.fromtimestamp(birth_timestamp)
             self.gender = gender.decode('utf-8')
             # Reader read offset bytes from file
-            self.offset += UINT64 + UINT32 + username_len + UINT32 + CHAR
+            self._offset += UINT64 + UINT32 + username_len + UINT32 + CHAR
 
     def __repr__(self):
         return f'Reader(path={self.path})'
@@ -47,7 +47,7 @@ class Reader:
 
     def __iter__(self):
         with open(self.path, 'rb') as f:
-            f.seek(self.offset)
+            f.seek(self._offset)
             while len(f.read(4)) == 4:
                 f.seek(-4, 1)
                 yield read_snapshot(f)
