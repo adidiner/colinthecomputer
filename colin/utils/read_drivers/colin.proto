@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+message User {
+    enum Gender {
+        MALE = 0;
+        FEMALE = 1;
+        OTHER = 2;
+    }
+    uint64 user_id = 1;
+    string username = 2;
+    uint32 birthday = 3;
+    Gender gender = 4;
+}
+
+message Snapshot {
+    uint64 datetime = 1;
+    Pose pose = 2;
+    ColorImage color_image = 3;
+    DepthImage depth_image = 4;
+    Feelings feelings = 5;
+}
+
+message Pose {
+    message Translation {
+        double x = 1;
+        double y = 2;
+        double z = 3;
+    }
+    message Rotation {
+        double x = 1;
+        double y = 2;
+        double z = 3;
+        double w = 4;
+    }
+    Translation translation = 1;
+    Rotation rotation = 2;
+}
+
+message ColorImage {
+    uint32 width = 1;
+    uint32 height = 2;
+    bytes data = 3;
+}
+
+message DepthImage {
+    uint32 width = 1;
+    uint32 height = 2;
+    repeated float data = 3;
+}
+
+message Feelings {
+    float hunger = 1;
+    float thirst = 2;
+    float exhaustion = 3;
+    float happiness = 4;
+}

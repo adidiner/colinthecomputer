@@ -31,6 +31,9 @@ class Image:
             self.height == other.height and \
             self.data == other.data
 
+    def __len__(self):
+        return UINT32*2 + len(self.data)
+
     def serialize(self):
         data = b''
         data += struct.pack('I', self.width)
@@ -92,6 +95,11 @@ class Snapshot:
             self.color_image == other.color_image and \
             self.depth_image == other.depth_image and \
             self.feelings == other.feelings
+
+    def __len__(self):
+        return UINT64 + DOUBLE*3 + DOUBLE*4 + \
+               len(self.color_image) + len(self.depth_image) + \
+               FLOAT*4
 
     def __getitem__(self, key):
         return self.__dict__[key]

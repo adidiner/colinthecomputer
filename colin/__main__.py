@@ -49,13 +49,14 @@ def webserve(address, data):
 
 @main.command('read')
 @click.argument('path', type=str)
-def read(path):
-    _read(path)
+@click.argument('file_format', type=str)
+def read(path, file_format):
+    _read(path, file_format)
 
 
 if __name__ == '__main__':
-    try:
-        main(prog_name='colin')
-    except Exception as error:
+    #try:
+    main(prog_name='colin')
+    '''except Exception as error:
         print(f'ERROR: {error}')
-        sys.exit(1)
+        sys.exit(1)'''
