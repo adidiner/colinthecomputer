@@ -8,7 +8,7 @@ from colin.utils.snapshot import Snapshot, Image
 _SAMPLE = 'test_sample.mind'
 _USER_ID = 49
 _USERNAME = 'Adi Dinerstein'
-_BIRTH_DATE = dt.datetime(2000, 11, 15)
+_BIRTH_DATE = dt.fromtimestamp(974239200)
 _GENDER = 'f'
 _COLOR_IMAGE = Image('color', 10, 20, b'0'*20*10*3)
 _DEPTH_IMAGE = Image('depth', 5, 7, b'0'*7*5*4)
