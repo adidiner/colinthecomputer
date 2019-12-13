@@ -1,4 +1,3 @@
-import datetime as dt
 import time
 
 from .utils import Connection
@@ -15,7 +14,7 @@ def upload_sample(address, sample):
             send_hello(connection, hello)
             config = receive_config(connection)
             send_snapshot(connection, config, snapshot)
-        time.sleep(0.2) #TODO: figure out threading problem
+        time.sleep(0.2)  # TODO: figure out threading problem
 
 
 def send_hello(connection, hello):

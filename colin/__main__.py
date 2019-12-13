@@ -54,8 +54,8 @@ def read(path):
 
 
 if __name__ == '__main__':
-    #try:
-    main(prog_name='colin')
-    '''except Exception as error:
+    try:
+        main(prog_name='colin')
+    except Exception as error:
         print(f'ERROR: {error}')
-        sys.exit(1)'''
+        sys.exit(1)

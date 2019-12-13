@@ -3,6 +3,7 @@ import struct
 
 CHUNK = 1000000
 
+
 class Connection:
     def __init__(self, socket):
         self.socket = socket
@@ -29,7 +30,7 @@ class Connection:
         while len(data) < size:
             received = self.socket.recv(CHUNK)
             if not received:
-                print('oof') #TODO
+                print('oof')  # TODO
                 continue
             data += received
         return data
