@@ -3,9 +3,7 @@ import threading
 
 from .utils import Listener
 from .utils import parsers
-from .protocol import Hello
-from .protocol import Config
-from .protocol import Snapshot
+from .utils.messages import User, Config, Snapshot
 
 
 HEADER_SIZE = 20
@@ -28,19 +26,22 @@ class Handler(threading.Thread):
         with self.client:
             # Receive hello
             data = self.client.receive_message()
-            hello = Hello.deserialize(data)
+            hello = User()
+            hello.ParseFromString(data)
             # Send config
-            config = Config(*[field for field in parsers])
-            data = config.serialize()
+            config = Config(fields=['pose', 'color_image']) ##
+            data = config.SerializeToString()
             self.client.send_message(data)
             # Receive snapshot
             data = self.client.receive_message()
-            snapshot = Snapshot.deserialize(data)
+            snapshot = Snapshot()
+            snapshot.ParseFromString(data)
+            print(snapshot)
 
         # TODO: figure out exception handling
 
-        with Handler.lock:
-            self.save_snapshot(hello, snapshot)
+        #with Handler.lock:
+            #self.save_snapshot(hello, snapshot)
 
     def save_snapshot(self, hello, snapshot):
         datetime = snapshot.datetime.strftime('%Y-%m-%d_%H-%M-%S-%f')

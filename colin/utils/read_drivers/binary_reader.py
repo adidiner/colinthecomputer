@@ -2,9 +2,12 @@ import datetime as dt
 import struct
 from PIL import Image as PImage
 
-from ..snapshot import Snapshot
-from ..snapshot import Image
-from ..user import User
+from ..messages import Snapshot
+from ..messages import ColorImage
+from ..messages import DepthImage
+from ..messages import Pose
+from ..messages import Feelings
+from ..messages import User
 from ..util_methods import iterated_read
 
 
@@ -21,21 +24,34 @@ def read_user(stream):
     username = stream.read(username_len).decode('utf-8')
     birth_timestamp, gender = struct.unpack('Ic',
                                             stream.read(UINT32+CHAR))
-    gender = gender.decode('utf-8')
-    user = User(user_id, username, birth_timestamp, gender)
-    return user, len(user)
+    gender = User.gender_char_to_enum(gender.decode('utf-8'))
+    user = User(user_id=user_id,
+                username=username,
+                birthday=birth_timestamp,
+                gender=gender)
+    offset = UINT64 + UINT32*2 + CHAR + username_len
+    return user, offset
 
 
 def read_snapshot(stream):
     timestamp, = struct.unpack('Q', stream.read(UINT64))
-    translation = struct.unpack('ddd', stream.read(DOUBLE*3))
-    rotation = struct.unpack('dddd', stream.read(DOUBLE*4))
-    color_image = _read_color_image(stream)
-    depth_image = _read_depth_image(stream)
-    feelings = struct.unpack('ffff', stream.read(FLOAT*4))
-    snapshot = Snapshot(timestamp, translation, rotation,
-                    color_image, depth_image, feelings)
-    return snapshot, len(snapshot)
+    translation = Pose.Translation.from_tuple(
+        struct.unpack('ddd', stream.read(DOUBLE*3)))
+    rotation = Pose.Rotation.from_tuple(
+        struct.unpack('dddd', stream.read(DOUBLE*4)))
+    pose = Pose(translation=translation, rotation=rotation)
+    color_image, ci_offset = _read_color_image(stream)
+    depth_image, di_offset = _read_depth_image(stream)
+    feelings = Feelings.from_tuple(
+        struct.unpack('ffff', stream.read(FLOAT*4)))
+    snapshot = Snapshot(datetime=timestamp,
+                        pose=pose,
+                        color_image=color_image,
+                        depth_image=depth_image,
+                        feelings=feelings)
+    offset = UINT64 + DOUBLE*3 + DOUBLE*4 + \
+     FLOAT*4 + ci_offset + di_offset
+    return snapshot, offset
 
 
 def _read_color_image(stream):
@@ -44,10 +60,12 @@ def _read_color_image(stream):
     # Save as RGB
     data = PImage.frombytes(
         'RGB', (width, height), data, "raw", 'BGR').tobytes()
-    return Image(im_type='color', width=width, height=height, data=data)
+    offset = UINT32*2 + len(data)
+    return ColorImage(width=width, height=height, data=data), offset
 
 
 def _read_depth_image(stream):
     height, width = struct.unpack('II', stream.read(UINT32*2))
     data = iterated_read(stream, height*width*FLOAT)
-    return Image(im_type='depth', width=width, height=height, data=data)
+    offset = UINT32*2 + len(data)
+    return DepthImage(width=width, height=height, data=data), offset

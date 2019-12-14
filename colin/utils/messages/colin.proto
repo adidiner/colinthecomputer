@@ -54,3 +54,7 @@ message Feelings {
     float exhaustion = 3;
     float happiness = 4;
 }
+
+message Config {
+    repeated string fields = 1;
+}
