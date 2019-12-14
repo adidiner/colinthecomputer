@@ -37,9 +37,8 @@ User.gender_char_to_enum = gender_char_to_enum
 
 
 ### Patch Snapshot ###
-
 def snapshot_str(self):
-    datetime = dt.datetime.fromtimestamp(self.datetime*(10**(-3)))
+    datetime = self.datetime_object()
     fdate = datetime.strftime('%B %d, %Y')
     ftime = datetime.strftime('%X.%f')
     return f'Snapshot from {fdate} at {ftime} on ' \
@@ -50,8 +49,12 @@ def snapshot_str(self):
 def snapshot_getitem(self, key):
     return self.__getattribute__(key)
 
+def snapshot_datetime(self):
+    return dt.datetime.fromtimestamp(self.datetime*(10**(-3)))
+
 Snapshot.__str__ = snapshot_str
 Snapshot.__getitem__ = snapshot_getitem
+Snapshot.datetime_object = snapshot_datetime
 
 ### Patch Pose ###
 

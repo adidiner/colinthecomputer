@@ -2,7 +2,7 @@ import pathlib
 import threading
 
 from .utils import Listener
-from .utils import parsers
+from .parsers import parsers
 from .utils.messages import User, Config, Snapshot
 
 
@@ -29,22 +29,22 @@ class Handler(threading.Thread):
             hello = User()
             hello.ParseFromString(data)
             # Send config
-            config = Config(fields=['pose', 'color_image']) ##
+            config = Config(fields=parsers.keys())
             data = config.SerializeToString()
             self.client.send_message(data)
             # Receive snapshot
             data = self.client.receive_message()
             snapshot = Snapshot()
             snapshot.ParseFromString(data)
-            print(snapshot)
+            #print(snapshot)
 
         # TODO: figure out exception handling
 
-        #with Handler.lock:
-            #self.save_snapshot(hello, snapshot)
+        with Handler.lock:
+            self.save_snapshot(hello, snapshot)
 
     def save_snapshot(self, hello, snapshot):
-        datetime = snapshot.datetime.strftime('%Y-%m-%d_%H-%M-%S-%f')
+        datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
         path = pathlib.Path(self.data_dir) / f'{hello.user_id}'
         if not path.exists():
             path.mkdir()

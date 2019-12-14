@@ -6,13 +6,13 @@ from .utils.messages import User, Config, Snapshot
 
 
 def upload_sample(address, sample):
-    reader = Reader(sample, 'binary')
+    reader = Reader(sample, 'protobuf')
     for snapshot in reader:
         with Connection.connect(*address) as connection:
             send_hello(connection, reader.user)
             config = receive_config(connection)
             send_snapshot(connection, config, snapshot)
-        time.sleep(0.2)  # TODO: figure out threading problem
+        #time.sleep(0.2)  # TODO: figure out threading problem
 
 
 def send_hello(connection, hello):

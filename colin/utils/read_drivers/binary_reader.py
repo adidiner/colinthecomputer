@@ -66,6 +66,6 @@ def _read_color_image(stream):
 
 def _read_depth_image(stream):
     height, width = struct.unpack('II', stream.read(UINT32*2))
-    data = iterated_read(stream, height*width*FLOAT)
+    data = iterated_read(stream, height*width*FLOAT) # TODO: this doesnt work
     offset = UINT32*2 + len(data)
     return DepthImage(width=width, height=height, data=data), offset
