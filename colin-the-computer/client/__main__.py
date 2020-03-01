@@ -1,4 +1,5 @@
 import click
+import click
 import sys
 
 from . import upload_sample
@@ -7,6 +8,7 @@ from . import upload_sample
 def main():
     pass
 
+
 @main.command('upload-sample')
 @click.option('-h', '--host', default='127.0.0.1', type=str)
 @click.option('-p', '--port', default=8000, type=int)
@@ -14,5 +16,6 @@ def main():
 def cli_upload_sample(host, port, path):
     upload_sample(host=host, port=port, path=path)
 
+
 if __name__ == '__main__':
-    main(prog_name='colin-the-compuer')
+    main(prog_name='colin-the-computer')

@@ -26,13 +26,15 @@ class Connection:
         self.close()
 
     def _receive(self, size):
-        data = b''
-        while len(data) < size:
-            received = self.socket.recv(CHUNK)
-            if not received:
-                print('oof')  # TODO
-                continue
-            data += received
+        received = 0
+        chunks = []
+        while received < size:
+            chunk = self.socket.recv(CHUNK)
+            received += len(chunk)
+            if not chunk:
+                raise RuntimeError('incomplete data')
+            chunks.append(chunk)
+        data = b''.join(chunks)
         return data
 
     def send_message(self, message):

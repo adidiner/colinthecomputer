@@ -43,8 +43,8 @@ def snapshot_str(self):
     ftime = datetime.strftime('%X.%f')
     return f'Snapshot from {fdate} at {ftime} on ' \
            f'{self.pose} ' \
-           f'with a {self.color_image} and a {self.depth_image}, ' \
-           f'feelings are {self.feelings}.' 
+           f'{self.color_image} and {self.depth_image}, ' \
+           f'feelings: {self.feelings}' 
 
 def snapshot_getitem(self, key):
     return self.__getattribute__(key)

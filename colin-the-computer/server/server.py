@@ -1,9 +1,9 @@
 import pathlib
 import threading
 
-from .protocol import Listener
-from .parsers import parsers
-from .protocol import User, Config, Snapshot
+from ..protocol import Listener
+from ..parsers import parsers
+from ..protocol import User, Config, Snapshot
 
 
 HEADER_SIZE = 20
@@ -17,10 +17,10 @@ class Context:
 class Handler(threading.Thread):
     lock = threading.Lock()
 
-    def __init__(self, client, data_dir):
+    def __init__(self, client, publish):
         super().__init__()
         self.client = client
-        self.data_dir = data_dir
+        self.publish = publish
 
     def run(self):
         with self.client:
@@ -36,32 +36,18 @@ class Handler(threading.Thread):
             data = self.client.receive_message()
             snapshot = Snapshot()
             snapshot.ParseFromString(data)
-            #print(snapshot)
 
         # TODO: figure out exception handling
-
         with Handler.lock:
-            self.save_snapshot(hello, snapshot)
-
-    def save_snapshot(self, hello, snapshot):
-        datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
-        path = pathlib.Path(self.data_dir) / f'{hello.user_id}'
-        if not path.exists():
-            path.mkdir()
-        path /= datetime
-        if not path.exists():
-            path.mkdir()
-        context = Context(path)
-        for parser in parsers.values():
-            parser(context, snapshot)
+            self.publish(snapshot)
+        
 
 
-def run_server(address, data_dir):
-    host, port = address
+def run_server(host, port, publish):
     # Setup server
     with Listener(host=host, port=port) as server:
         while True:
             # Recieve message
             client = server.accept()
-            handler = Handler(client, data_dir)
+            handler = Handler(client, publish)
             handler.start()

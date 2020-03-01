@@ -1,7 +1,6 @@
 import gzip
 import os
 
-
 from . import read_drivers
 
 
