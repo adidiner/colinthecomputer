@@ -1,14 +1,14 @@
 import time
 
-from .utils import Connection
-from .utils import Reader
-from .utils.messages import User, Config, Snapshot
+from ..protocol import Connection
+from .reader import Reader
+from ..protocol import User, Config, Snapshot
 
 
-def upload_sample(address, sample):
-    reader = Reader(sample, 'protobuf')
+def upload_sample(path, host='127.0.0.1', port=8000):
+    reader = Reader(path, 'protobuf') # TODO: make this configurable
     for snapshot in reader:
-        with Connection.connect(*address) as connection:
+        with Connection.connect(host, port) as connection:
             send_hello(connection, reader.user)
             config = receive_config(connection)
             send_snapshot(connection, config, snapshot)

@@ -5,7 +5,7 @@ import inspect
 
 modules = []
 parsers = {} # TODO: parsers support multiple feilds
-root = pathlib.Path.cwd() / 'colin/parsers/'
+root = pathlib.Path.cwd() / 'colin-the-computer/parsers/'
 
 def load_modules(root):
     sys.path.insert(0, str(root.parent))

@@ -2,13 +2,13 @@ import datetime as dt
 import struct
 from PIL import Image as PImage
 
-from ..messages import Snapshot
-from ..messages import ColorImage
-from ..messages import DepthImage
-from ..messages import Pose
-from ..messages import Feelings
-from ..messages import User
-from ..util_methods import iterated_read
+from ...protocol import Snapshot
+from ...protocol import ColorImage
+from ...protocol import DepthImage
+from ...protocol import Pose
+from ...protocol import Feelings
+from ...protocol import User
+from ...utils import iterated_read
 
 
 UINT64 = 8

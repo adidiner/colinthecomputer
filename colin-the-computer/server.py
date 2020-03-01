@@ -1,9 +1,9 @@
 import pathlib
 import threading
 
-from .utils import Listener
+from .protocol import Listener
 from .parsers import parsers
-from .utils.messages import User, Config, Snapshot
+from .protocol import User, Config, Snapshot
 
 
 HEADER_SIZE = 20

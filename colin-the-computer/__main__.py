@@ -3,7 +3,7 @@ import sys
 
 from . import upload_sample
 from . import run_server as _run_server
-from .utils import read as _read
+#from .utils import read as _read
 
 
 @click.group()
@@ -40,23 +40,16 @@ def run_server(address, data):
     _run_server(_parse_address(address), data)
 
 
-'''@main.command('webserve')
-@click.argument('address', type=str)
-@click.argument('data', type=str)
-def webserve(address, data):
-    run_webserver(_parse_address(address), data)'''
-
-
-@main.command('read')
+"""@main.command('read')
 @click.argument('path', type=str)
 @click.argument('file_format', type=str)
 def read(path, file_format):
-    _read(path, file_format)
+    _read(path, file_format)"""
 
 
 if __name__ == '__main__':
     #try:
-    main(prog_name='colin')
+    main(prog_name='colin-the-compuer')
     '''except Exception as error:
         print(f'ERROR: {error}')
         sys.exit(1)'''

@@ -1,9 +1,9 @@
 import struct
 
 
-from ..messages import Snapshot
-from ..messages import User
-from ..util_methods import iterated_read
+from ...protocol import Snapshot
+from ...protocol import User
+from ...utils import iterated_read
 
 
 UINT32 = 4

@@ -5,3 +5,5 @@ from .messages import ColorImage
 from .messages import DepthImage
 from .messages import Feelings
 from .messages import Config
+from .connection import Connection
+from .listener import Listener
