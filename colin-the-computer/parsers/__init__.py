@@ -4,7 +4,7 @@ import importlib
 import inspect
 
 modules = []
-parsers = {} # TODO: parsers support multiple feilds
+parsers = {} # TODO: parsers support multiple fields? do I even need this?
 root = pathlib.Path.cwd() / 'colin-the-computer/parsers/'
 
 def load_modules(root):
