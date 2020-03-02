@@ -1,4 +1,4 @@
-from ..m import mq_drivers
+from ..mq_drivers import rabbitmq_driver
 from ..protocol import ColorImage, DepthImage, Snapshot
 
 from google.protobuf.json_format import MessageToJson
@@ -7,7 +7,7 @@ import pathlib
 from furl import furl
 
 
-drivers = {'rabbitmq': mq_drivers.rabbitmq_driver}
+drivers = {'rabbitmq':rabbitmq_driver}
 directory = pathlib.Path('/home/user/test/raw_data/') # TODO
 
 
@@ -25,8 +25,7 @@ def produce_publisher(mq_url):
         # TODO: encode path
         json_snapshot = MessageToJson(snapshot_metadata)
         message = bytes(json.dumps(json_snapshot), 'utf-8')
-        driver.broadcast_publish(message, 'raw_data' ,host, port)
-        print(json_snapshot, message)
+        driver.broadcast_publish(message, host, port, segment='raw_data')
 
         # TODO: figure out to where the publisher publishes
         # Save BLOBs to filesystem

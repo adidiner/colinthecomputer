@@ -27,7 +27,7 @@ def consume(on_message, host, port, segment='', topic=''):
     channel = connection.channel()
 
     # Wait in queue based on topic
-    channel.queue.declare(queue=topic)
+    channel.queue_declare(queue=topic)
     channel.queue_bind(exchange=segment,
                        queue=topic)
 
@@ -35,8 +35,9 @@ def consume(on_message, host, port, segment='', topic=''):
     def callback(ch, method, properties, body):
         on_message(body)
         ch.basic_ack(delivery_tag = method.delivery_tag) # TODO: huh?
-    channel.basic_consume(queue=topic, on_message_callback=callback)
 
+    channel.basic_consume(queue=topic, on_message_callback=callback)
+    channel.start_consuming()
     connection.close()
 
 

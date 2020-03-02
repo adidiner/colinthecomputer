@@ -2,6 +2,7 @@ import pathlib
 import threading
 
 from ..protocol import Listener
+from ..parsers import run_parser
 from ..parsers import parsers
 from ..protocol import User, Config, Snapshot
 
@@ -39,6 +40,7 @@ class Handler(threading.Thread):
 
         # TODO: figure out exception handling
         with Handler.lock:
+            run_parser('pose', snapshot)
             self.publish(snapshot)
         
 

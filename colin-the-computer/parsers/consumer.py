@@ -1,8 +1,8 @@
-from ..m import mq_drivers
 
-
-drivers = {'rabbitmq': mq_drivers.rabbitmq_driver}
-directory = pathlib.Path('/home/user/test/raw_data/') # TODO
+#from .. import mq_drivers FUCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+from furl import furl
+from .mq_drivers import rabbitmq_driver
+drivers = {'rabbitmq':rabbitmq_driver}
 
 
 def produce_consumer(mq_url):
@@ -10,9 +10,9 @@ def produce_consumer(mq_url):
     mq, host, port = mq_url.scheme, mq_url.host, mq_url.port
     driver = drivers[mq]
 
-    def consumer(parser, field):
-    	driver.consume(parser, host, port, segemnt='raw_data', topic=field)
-    	
+    def consume(parser, field):
+    	def on_message(message):
+    		driver.topic_publish(parser(message), host, port, segment='results', topic=field)	
+    	driver.consume(on_message, host, port, segment='raw_data', topic=field)
 
-def parse_to_mq(parser):
-	pass
+    return consume

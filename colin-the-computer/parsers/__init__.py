@@ -24,3 +24,6 @@ def load_parsers(module):
 load_modules(root)
 for module in modules:
     load_parsers(module)
+
+def run_parser(field, data):
+    parsers[field](data)

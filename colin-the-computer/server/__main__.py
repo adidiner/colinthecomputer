@@ -2,7 +2,7 @@ import click
 import sys
 
 from . import run_server
-from ..mq.publisher import produce_publisher
+from .publisher import produce_publisher
 
 @click.group()
 def main():
