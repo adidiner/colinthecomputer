@@ -49,7 +49,7 @@ def read(path, file_format):
 
 if __name__ == '__main__':
     #try:
-    main(prog_name='colin-the-compuer')
+    main(prog_name='colin-the-computer')
     '''except Exception as error:
         print(f'ERROR: {error}')
         sys.exit(1)'''

@@ -1,10 +1,10 @@
 import pathlib
 import threading
 
-from ..protocol import Listener
-from ..parsers import run_parser
-from ..parsers import parsers
-from ..protocol import User, Config, Snapshot
+from colinthecomputer.protocol import Listener
+from colinthecomputer.parsers import run_parser
+from colinthecomputer.parsers import parsers
+from colinthecomputer.protocol import User, Config, Snapshot
 
 
 HEADER_SIZE = 20
@@ -27,8 +27,8 @@ class Handler(threading.Thread):
         with self.client:
             # Receive hello
             data = self.client.receive_message()
-            hello = User()
-            hello.ParseFromString(data)
+            user = User()
+            user.ParseFromString(data)
             # Send config
             config = Config(fields=parsers.keys())
             data = config.SerializeToString()
@@ -40,8 +40,7 @@ class Handler(threading.Thread):
 
         # TODO: figure out exception handling
         with Handler.lock:
-            run_parser('pose', snapshot)
-            self.publish(snapshot)
+            self.publish((user.user_id,snapshot))
         
 
 

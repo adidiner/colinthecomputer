@@ -1,8 +1,8 @@
 import time
 
-from ..protocol import Connection
+from colinthecomputer.protocol import Connection
 from .reader import Reader
-from ..protocol import User, Config, Snapshot
+from colinthecomputer.protocol import User, Config, Snapshot
 
 
 def upload_sample(path, host='127.0.0.1', port=8000):

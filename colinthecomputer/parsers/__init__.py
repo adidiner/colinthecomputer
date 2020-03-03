@@ -5,7 +5,7 @@ import inspect
 
 modules = []
 parsers = {} # TODO: parsers support multiple fields? do I even need this?
-root = pathlib.Path.cwd() / 'colin-the-computer/parsers/'
+root = pathlib.Path.cwd() / 'colinthecomputer/parsers/'
 
 def load_modules(root):
     sys.path.insert(0, str(root.parent))

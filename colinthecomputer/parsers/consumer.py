@@ -1,7 +1,6 @@
 
-#from .. import mq_drivers FUCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
 from furl import furl
-from .mq_drivers import rabbitmq_driver
+from colinthecomputer.mq_drivers import rabbitmq_driver
 drivers = {'rabbitmq':rabbitmq_driver}
 
 
@@ -12,7 +11,7 @@ def produce_consumer(mq_url):
 
     def consume(parser, field):
     	def on_message(message):
-    		driver.topic_publish(parser(message), host, port, segment='results', topic=field)	
+    		driver.publish(parser(message), host, port, segment='results', topic=field)	
     	driver.consume(on_message, host, port, segment='raw_data', topic=field)
 
     return consume
