@@ -11,7 +11,7 @@ def produce_consumer(mq_url):
 
     def consume(parser, field):
     	def on_message(message):
-    		driver.publish(parser(message), host, port, segment='results', topic=field)	
+    		driver.publish(parser(message.decode('utf-8')), host, port, segment='results', topic=field)	
     	driver.consume(on_message, host, port, segment='raw_data', topic=field)
 
     return consume

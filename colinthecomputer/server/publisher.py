@@ -45,6 +45,7 @@ def produce_publisher(mq_url):
         snapshot_dict['depthImage']['path'] = str(path / 'depth_image')
         message = bytes(json.dumps(snapshot_dict), 'utf-8')
         driver.publish(message, host, port, segment='raw_data')
+        print(snapshot_dict)
         print('published :)')
    
     return publish
