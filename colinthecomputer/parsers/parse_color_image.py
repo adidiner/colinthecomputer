@@ -1,16 +1,28 @@
+from colinthecomputer.utils import make_path
+
 from PIL import Image
 from pathlib import Path
 import json
 
+directory = Path('/home/user/colinfs/results') # TODO
 
 def parse_color_image(data):
     data = json.loads(data)
-    image = data['colorImage']
-    #image = PImage.frombytes('RGB', (image['width'], image['height'], image.data)
-    with open(image['path'], 'rb') as file:
-        bytestring = file.read()
-        result = Image.frombuffer('RGB', (image['width'], image['height']), bytestring)
-    result.save(Path('/home/user/test/color_image.jpg'))
-    print('s')
+    # Create parsed metadata json
+    metadata = {}
+    color_image = data['colorImage']
+    metadata['userID'], metadata['datetime'] = data['userID'], data['datetime']
+    path = Path(color_image['path'].replace('raw_data', 'results')).parent # TODO: temp sol
+    if not path.exists():
+         path.mkdir(parents=True)
+    path /= 'color_image.jpg'
+    metadata['path'] = str(path)
+
+    # Save parsed image to filesystem
+    with open(color_image['path'], 'rb') as file:
+        result = Image.frombytes('RGB', (color_image['width'], color_image['height']), file.read()) 
+    result.save(path)
+    print(metadata)
+    return json.dumps(metadata)
 
 parse_color_image.field = 'color_image'

@@ -1,5 +1,6 @@
 from colinthecomputer.mq_drivers import rabbitmq_driver
 from colinthecomputer.protocol import ColorImage, DepthImage, Snapshot
+from colinthecomputer.utils import make_path
 
 from google.protobuf.json_format import MessageToDict
 import json
@@ -22,13 +23,9 @@ def produce_publisher(mq_url):
         # TODO: figure out to where the publisher publishes
         # Save BLOBs to filesystem
         datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
-        path = directory / str(user_id)
+        path = directory / str(user_id) / datetime
         if not path.exists():
             path.mkdir()
-        path /= datetime
-        if not path.exists():
-            path.mkdir()
-
         (path / 'color_image').write_bytes(snapshot.color_image.data)
         # TODO: how do i save the depth image?
         depth_image_data = np.array(snapshot.depth_image.data)
@@ -42,7 +39,7 @@ def produce_publisher(mq_url):
         snapshot_dict = MessageToDict(snapshot_metadata)
         snapshot_dict['userID'] = user_id
         snapshot_dict['colorImage']['path'] = str(path / 'color_image')
-        snapshot_dict['depthImage']['path'] = str(path / 'depth_image')
+        snapshot_dict['depthImage']['path'] = str(path / 'depth_image.npy')
         message = bytes(json.dumps(snapshot_dict), 'utf-8')
         driver.publish(message, host, port, segment='raw_data')
         print(snapshot_dict)

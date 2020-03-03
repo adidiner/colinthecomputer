@@ -24,3 +24,13 @@ def iterated_read(stream, size):
 def parse_address(address):
     address = address.split(':')
     return (address[0], int(address[1]))
+
+
+# TODO: might be a patlib built in
+def make_path(root, *dirs):
+    path = root
+    for directory in dirs:
+        path /= directory
+        if not path.exists():
+            path.mkdir()
+    return path
