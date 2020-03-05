@@ -7,6 +7,7 @@ drivers = {'postgresql': postgresql_driver}
 
 class Saver:
     def __init__(self, db_url):
+        # TODO: db url changes
         db_url = furl(db_url)
         db, host, port = db_url.scheme, db_url.host, db_url.port
         self.driver = drivers[db]

@@ -1,10 +1,16 @@
 from peewee import *
 import sqlite3
+import psycopg2
 
-db = SqliteDatabase('colin.db')
+'''TODO: run in script: 
+docker run --name db -d -e POSTGRES_PASSWORD=password -p port:5432 postgres
+docker exec -ti db psql -h localhost -U postgres
+CREATE DATABASE databasename;
+'''
 
-def init_db(host, port):
-    db.init('colin')
+def init_db(name, host, port, username, password):
+    db = PostgresqlDatabase(name, host=host, port=port,
+                            user=username, password=password)
 
 class BaseModel(Model):
     class Meta:
@@ -78,9 +84,9 @@ def save_pose(user_id, datetime, translation, rotation):
     pose.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
     snapshot.pose = pose
-    print("saved")
+    #print("saved")
     snapshot.save()
-    for snapshot in Snapshot.select():
+    '''for snapshot in Snapshot.select():
         try:
             print(snapshot.pose.translation.x)
         except:
@@ -88,7 +94,7 @@ def save_pose(user_id, datetime, translation, rotation):
         try:
             print(snapshot.color_image.path)
         except:
-            print("no color image")
+            print("no color image")'''
 
 def save_color_image(user_id, datetime, path):
     color_image = ColorImage(path=path)
