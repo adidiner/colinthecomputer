@@ -11,12 +11,13 @@ def parse_color_image(data):
     # Create parsed metadata json
     metadata = {}
     color_image = data['colorImage']
-    metadata['userID'], metadata['datetime'] = data['userID'], data['datetime']
+    metadata['user_id'], metadata['datetime'] = data['userId'], data['datetime']
     path = Path(color_image['path'].replace('raw_data', 'results')).parent # TODO: temp sol
     if not path.exists():
          path.mkdir(parents=True)
     path /= 'color_image.jpg'
-    metadata['path'] = str(path)
+    metadata['data'] = {}
+    metadata['data']['path'] = str(path)
 
     # Save parsed image to filesystem
     with open(color_image['path'], 'rb') as file:

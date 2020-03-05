@@ -78,7 +78,17 @@ def save_pose(user_id, datetime, translation, rotation):
     pose.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
     snapshot.pose = pose
+    print("saved")
     snapshot.save()
+    for snapshot in Snapshot.select():
+        try:
+            print(snapshot.pose.translation.x)
+        except:
+            print("no translation")
+        try:
+            print(snapshot.color_image.path)
+        except:
+            print("no color image")
 
 def save_color_image(user_id, datetime, path):
     color_image = ColorImage(path=path)
@@ -100,3 +110,6 @@ def save_feelings(user_id, datetime, feelings):
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
     snapshot.feelings = feelings
     snapshot.save()
+
+savers = {'pose': save_pose, 'color_image': save_color_image, 'depth_image': save_depth_image,
+          'feelings': save_feelings, 'user': save_user} # TODO: automatic collection

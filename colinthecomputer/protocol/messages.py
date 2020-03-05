@@ -32,8 +32,17 @@ def gender_char_to_enum(cls, gender):
         return cls.Gender.FEMALE
     return cls.Gender.OTHER
 
+def gender_char(self):
+    if self.gender == self.Gender.FEMALE:
+        return 'f'
+    elif self.gender == self.Gender.MALE:
+        return 'm'
+    else:
+        return 'o'
+
 User.__str__ = user_str
 User.gender_char_to_enum = gender_char_to_enum
+User.get_gender_char = gender_char
 
 
 ### Patch Snapshot ###

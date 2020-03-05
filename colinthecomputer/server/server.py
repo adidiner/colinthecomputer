@@ -40,7 +40,7 @@ class Handler(threading.Thread):
 
         # TODO: figure out exception handling
         with Handler.lock:
-            self.publish((user.user_id,snapshot))
+            self.publish((user,snapshot))
         
 
 

@@ -19,7 +19,11 @@ def produce_publisher(mq_url):
     driver = drivers[mq]
     
     def publish(message):
-        user_id, snapshot = message
+        user, snapshot = message
+        user_id = user.user_id
+        message = user_message(user)
+        driver.publish(message, host, port, segment='results', topic='user')
+
         # TODO: figure out to where the publisher publishes
         # Save BLOBs to filesystem
         datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
@@ -32,17 +36,29 @@ def produce_publisher(mq_url):
         np.save(str(path / 'depth_image'), depth_image_data)
 
         # Create JSON representation of snapshot without BLOBs
-        snapshot_metadata = Snapshot()
-        snapshot_metadata.CopyFrom(snapshot)
-        snapshot_metadata.color_image.ClearField('data')
-        snapshot_metadata.depth_image.ClearField('data')
-        snapshot_dict = MessageToDict(snapshot_metadata)
-        snapshot_dict['userID'] = user_id
-        snapshot_dict['colorImage']['path'] = str(path / 'color_image')
-        snapshot_dict['depthImage']['path'] = str(path / 'depth_image.npy')
-        message = bytes(json.dumps(snapshot_dict), 'utf-8')
+        message = snapshot_message(snapshot, user_id, path)
         driver.publish(message, host, port, segment='raw_data')
-        print(snapshot_dict)
         print('published :)')
    
     return publish
+
+
+def user_message(user):
+    user_id = user.user_id
+    # TODO: does this make sense?
+    user_dict = MessageToDict(user)
+    user_dict['user_id'] = user_dict.pop('userId')
+    user_dict['gender'] = user.get_gender_char()
+    print(user_dict)
+    return json.dumps(user_dict)
+
+def snapshot_message(snapshot, user_id, image_path):
+    snapshot_metadata = Snapshot()
+    snapshot_metadata.CopyFrom(snapshot)
+    snapshot_metadata.color_image.ClearField('data')
+    snapshot_metadata.depth_image.ClearField('data')
+    snapshot_dict = MessageToDict(snapshot_metadata)
+    snapshot_dict['userId'] = user_id
+    snapshot_dict['colorImage']['path'] = str(image_path / 'color_image')
+    snapshot_dict['depthImage']['path'] = str(image_path / 'depth_image.npy')
+    return json.dumps(snapshot_dict)

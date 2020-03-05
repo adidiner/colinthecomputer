@@ -2,8 +2,9 @@ import json
 
 def parse_pose(data):
     data = json.loads(data) # TODO: wtf
+    pose = {}
     pose['data'] = data['pose']
-    pose['userID'], pose['datetime'] = data['userID'], data['datetime']
+    pose['user_id'], pose['datetime'] = data['userId'], data['datetime']
     return json.dumps(pose)
 
 parse_pose.field = 'pose'
