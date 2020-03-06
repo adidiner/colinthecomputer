@@ -22,6 +22,7 @@ def publish(message, host, port, *, segment='', topic=None):
     channel.exchange_declare(exchange=segment, 
                              exchange_type=exchange_type)
 
+    print(f"PUBLISHING TO {segment}")
     channel.basic_publish(exchange=segment,
                           routing_key=routing_key,
                           body=message)
@@ -29,7 +30,7 @@ def publish(message, host, port, *, segment='', topic=None):
     connection.close()
 
 
-def consume(on_message, host, port, segment='', topics=None):
+def consume(on_message, host, port, segment='', queue='', topics=None):
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host=host,
                                   port=port))
@@ -39,18 +40,21 @@ def consume(on_message, host, port, segment='', topics=None):
 
     for topic in topics:
         # Wait in queue based on topic
-        channel.queue_declare(queue=topic)
+        result = channel.queue_declare(queue=queue, exclusive=True)
+        queue_name = result.method.queue
         channel.queue_bind(exchange=segment,
-                           queue=topic)
-        print(f"queue binded, exchange={segment}, queue={topic}")
+                           queue=queue_name,
+                           routing_key=topic)
+        print(f"queue binded, exchange={segment}, queue={queue}, topic={topic}")
 
         # Perform on_message when message received, ack the handeling
         def callback(ch, method, properties, body):
+            print(method.exchange, segment)
             topic = method.routing_key
             on_message(topic, body)
             ch.basic_ack(delivery_tag = method.delivery_tag) # TODO: huh?
 
-        channel.basic_consume(queue=topic, on_message_callback=callback)
+        channel.basic_consume(queue=queue_name, on_message_callback=callback)
 
     channel.start_consuming()
     connection.close()

@@ -3,23 +3,20 @@ import sqlite3
 import psycopg2
 
 '''TODO: run in script: 
-docker run --name db -d -e POSTGRES_PASSWORD=password -p port:5432 postgres
-docker exec -ti db psql -h localhost -U postgres
-CREATE DATABASE databasename;
+docker run --name postgres -d -e POSTGRES_PASSWORD=password -e
+ POSTGRES_USER=colin(<-also db) -p  5432:5432 postgres
 '''
-
-def init_db(name, host, port, username, password):
-    db = PostgresqlDatabase(name, host=host, port=port,
-                            user=username, password=password)
+db = PostgresqlDatabase(None)
 
 class BaseModel(Model):
     class Meta:
         database = db
 
+
 class User(BaseModel):
     user_id = IntegerField()
     username = CharField()
-    birthday = DateTimeField()
+    birthday = BigIntegerField() #todo DateTimeField()
     gender = FixedCharField() # TODO: Enum?
 
 
@@ -58,16 +55,19 @@ class Feelings(BaseModel):
 
 class Snapshot(BaseModel):
     user_id = IntegerField()
-    datetime = DateTimeField()
+    datetime = BigIntegerField() # TODO DateTimeField()
     pose = ForeignKeyField(Pose, null=True, backref='snapshot')
     color_image = ForeignKeyField(ColorImage, null=True, backref='snapshot')
     depth_image = ForeignKeyField(DepthImage, null=True, backref='snapshot')
     feelings = ForeignKeyField(Feelings, null=True, backref='snapshot')
 
 
-init_db('127.0.0.1', 5432)
-db.connect()
-db.create_tables([User, Snapshot, Translation, Rotation,
+def init_db(name, host, port, username, password):
+    print(locals())
+    db.init(name, host=host, port=port,
+            user=username, password=password)
+    db.connect()
+    db.create_tables([User, Snapshot, Translation, Rotation,
                   Pose, ColorImage, DepthImage, Feelings])
 
 def save_user(user_id, username, birthday, gender):
@@ -84,9 +84,9 @@ def save_pose(user_id, datetime, translation, rotation):
     pose.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
     snapshot.pose = pose
-    #print("saved")
+    print("saved")
     snapshot.save()
-    '''for snapshot in Snapshot.select():
+    for snapshot in Snapshot.select():
         try:
             print(snapshot.pose.translation.x)
         except:
@@ -94,7 +94,7 @@ def save_pose(user_id, datetime, translation, rotation):
         try:
             print(snapshot.color_image.path)
         except:
-            print("no color image")'''
+            print("no color image")
 
 def save_color_image(user_id, datetime, path):
     color_image = ColorImage(path=path)

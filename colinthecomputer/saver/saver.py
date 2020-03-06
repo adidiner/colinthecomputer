@@ -9,9 +9,11 @@ class Saver:
     def __init__(self, db_url):
         # TODO: db url changes
         db_url = furl(db_url)
-        db, host, port = db_url.scheme, db_url.host, db_url.port
-        self.driver = drivers[db]
-        self.savers = self.driver.savers
+        db_name, *_ = db_url.path.segments
+        driver = drivers[db_url.scheme]
+        driver.init_db(name=db_name, host=db_url.host, port=db_url.port,
+                       username=db_url.username, password=db_url.password)
+        self.savers = driver.savers
 
     def __repr__(self):
         return f'Saver(db_url={self.db_url})'
