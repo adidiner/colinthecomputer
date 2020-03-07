@@ -1,4 +1,5 @@
 from peewee import *
+from playhouse import model_to_dict
 import sqlite3
 import psycopg2
 
@@ -14,7 +15,7 @@ class BaseModel(Model):
 
 
 class User(BaseModel):
-    user_id = IntegerField()
+    user_id = IntegerField(primary_key=True)
     username = CharField()
     birthday = BigIntegerField() #todo DateTimeField()
     gender = FixedCharField() # TODO: Enum?
@@ -54,6 +55,7 @@ class Feelings(BaseModel):
 
 
 class Snapshot(BaseModel):
+    snapshot_id = AutoField()
     user_id = IntegerField()
     datetime = BigIntegerField() # TODO DateTimeField()
     pose = ForeignKeyField(Pose, null=True, backref='snapshot')
@@ -84,7 +86,7 @@ def save_pose(user_id, datetime, translation, rotation):
     pose.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
     snapshot.pose = pose
-    print("saved")
+    # print("saved")
     snapshot.save()
     for snapshot in Snapshot.select():
         try:
@@ -119,3 +121,42 @@ def save_feelings(user_id, datetime, feelings):
 
 savers = {'pose': save_pose, 'color_image': save_color_image, 'depth_image': save_depth_image,
           'feelings': save_feelings, 'user': save_user} # TODO: automatic collection
+
+
+def get_users():
+    users = []
+    for user in User.select():
+        users.append(model_to_dict(user))
+    return users
+
+def get_user_info(user_id):
+    query = User.select().where(User.user_id=user_id)
+    if not query.exists():
+        return None # TODO: what should I return?
+    user = query.get()
+    return model_to_dict(user)
+
+def get_snapshots(user_id):
+    fields = ['snapshot_id', 'datetime']
+    query = Snapshot.select().where(Snapshot.user_id=user_id)
+    snapshots = []
+    for snapshot in query:
+        snapshot = model_to_dict(snapshot)
+        result = {key: snapshot[key] for key in fields}
+        snapshots.append(result)
+    return snapshots
+
+def get_snapshot(snapshot_id):
+    metadata = ['snapshot_id', 'datetime']
+    query = Snapshot.select().where(Snapshot.snapshot_id=snapshot_id)
+    if not query.exists():
+        return None # TODO: what should I return?
+    snapshot = query.get()
+    snapshot = model_to_dict(snapshot)
+    result = {key: snapshot[key] for key in metadata}
+    result['results'] = []
+    # Append available results (not None)
+    for key, value in snapshot.items():
+        if value and key not in metadata:
+            result['results'].append(key)
+    return result
