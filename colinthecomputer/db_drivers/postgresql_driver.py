@@ -156,7 +156,20 @@ def get_snapshot(snapshot_id):
     result = {key: snapshot[key] for key in metadata}
     result['results'] = []
     # Append available results (not None)
-    for key, value in snapshot.items():
-        if value and key not in metadata:
-            result['results'].append(key)
+    for field, value in snapshot.items():
+        if value and field not in metadata:
+            result['results'].append(field)
     return result
+
+def get_result(snapshot_id, result_name):
+    blobs = ['color_image', 'depth_image']
+    query = Snapshot.select().where(Snapshot.snapshot_id=snapshot_id)
+    if not query.exists():
+        return None # TODO: what should I return?
+    snapshot = query.get()
+    snapshot = model_to_dict(snapshot)
+    result = snapshot[result_name]
+    if result_name not in blobs:
+        return result
+    else:
+        pass # TODO
