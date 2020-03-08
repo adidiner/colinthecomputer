@@ -47,7 +47,7 @@ def user_message(user):
     user_id = user.user_id
     # TODO: does this make sense?
     user_dict = MessageToDict(user)
-    user_dict['user_id'] = user_dict.pop('userId')
+    user_dict['user_id'] = int(user_dict.pop('userId'))
     user_dict['gender'] = user.get_gender_char()
     print(user_dict)
     return json.dumps(user_dict)

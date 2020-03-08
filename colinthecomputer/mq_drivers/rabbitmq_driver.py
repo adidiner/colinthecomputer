@@ -49,7 +49,6 @@ def consume(on_message, host, port, segment='', queue='', topics=None):
 
         # Perform on_message when message received, ack the handeling
         def callback(ch, method, properties, body):
-            print(method.exchange, segment)
             topic = method.routing_key
             on_message(topic, body)
             ch.basic_ack(delivery_tag = method.delivery_tag) # TODO: huh?

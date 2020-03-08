@@ -10,7 +10,6 @@ def produce_consumer(mq_url):
 
     def consume(saver):
     	def on_message(topic, message):
-    		print(topic, message)
     		saver.save(topic, message)
     	driver.consume(on_message, host, port, segment='results', 
     				   topics=['user', 'pose', 'color_image', 'depth_image', 'feelings'])

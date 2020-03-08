@@ -6,6 +6,10 @@ python -m colinthecomputer.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:6789/
 
 python -m colinthecomputer.saver run-saver  'postgresql://colin:password@127.0.0.1:3456/colin' 'rabbitmq://127.0.0.1:6789/'
 
+
+run_api_server('127.0.0.1', 6000, "postgresql://colin:password@127.0.0.1:3460/colin")
+
+
 docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=colin -p  3456:5432 postgres
 
 docker run -d -p 6789:5672 rabbitmq
