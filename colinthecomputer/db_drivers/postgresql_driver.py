@@ -1,5 +1,5 @@
 from peewee import *
-from playhouse import model_to_dict
+from playhouse.shortcuts import model_to_dict
 import sqlite3
 import psycopg2
 
@@ -18,7 +18,7 @@ class User(BaseModel):
     user_id = IntegerField(primary_key=True)
     username = CharField()
     birthday = BigIntegerField() #todo DateTimeField()
-    gender = FixedCharField() # TODO: Enum?
+    gender = FixedCharField() # TODO: Enum? THERE IS A PROBLEM HERE
 
 
 class Translation(BaseModel):
@@ -65,15 +65,17 @@ class Snapshot(BaseModel):
 
 
 def init_db(name, host, port, username, password):
-    print(locals())
     db.init(name, host=host, port=port,
             user=username, password=password)
     db.connect()
     db.create_tables([User, Snapshot, Translation, Rotation,
                   Pose, ColorImage, DepthImage, Feelings])
+    print(get_users())
+
 
 def save_user(user_id, username, birthday, gender):
     user = User(**locals())
+    print('saving user')
     user.save()
 
 def save_pose(user_id, datetime, translation, rotation):
@@ -88,15 +90,11 @@ def save_pose(user_id, datetime, translation, rotation):
     snapshot.pose = pose
     # print("saved")
     snapshot.save()
-    for snapshot in Snapshot.select():
-        try:
-            print(snapshot.pose.translation.x)
-        except:
-            print("no translation")
-        try:
-            print(snapshot.color_image.path)
-        except:
-            print("no color image")
+    print('USERS', get_users())
+    print('USER_INF0', get_user_info(42))
+    #print(get_snapshots(42))
+    print('SNAPSHOT', get_snapshot(3))
+    print('RESULT', get_result(3, 'pose'))
 
 def save_color_image(user_id, datetime, path):
     color_image = ColorImage(path=path)
@@ -130,7 +128,7 @@ def get_users():
     return users
 
 def get_user_info(user_id):
-    query = User.select().where(User.user_id=user_id)
+    query = User.select().where(User.user_id==user_id)
     if not query.exists():
         return None # TODO: what should I return?
     user = query.get()
@@ -138,7 +136,7 @@ def get_user_info(user_id):
 
 def get_snapshots(user_id):
     fields = ['snapshot_id', 'datetime']
-    query = Snapshot.select().where(Snapshot.user_id=user_id)
+    query = Snapshot.select().where(Snapshot.user_id==user_id)
     snapshots = []
     for snapshot in query:
         snapshot = model_to_dict(snapshot)
@@ -148,7 +146,7 @@ def get_snapshots(user_id):
 
 def get_snapshot(snapshot_id):
     metadata = ['snapshot_id', 'datetime']
-    query = Snapshot.select().where(Snapshot.snapshot_id=snapshot_id)
+    query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
         return None # TODO: what should I return?
     snapshot = query.get()
@@ -157,13 +155,13 @@ def get_snapshot(snapshot_id):
     result['results'] = []
     # Append available results (not None)
     for field, value in snapshot.items():
-        if value and field not in metadata:
+        if value and field not in metadata + ['user_id']:
             result['results'].append(field)
     return result
 
 def get_result(snapshot_id, result_name):
     blobs = ['color_image', 'depth_image']
-    query = Snapshot.select().where(Snapshot.snapshot_id=snapshot_id)
+    query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
         return None # TODO: what should I return?
     snapshot = query.get()

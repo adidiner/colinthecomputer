@@ -1,0 +1,11 @@
+python -m colinthecomputer.client upload-sample -p 5000 ~/sample.mind.gz
+
+python -m colinthecomputer.server run-server -p 5000 'rabbitmq://127.0.0.1:6789/'
+
+python -m colinthecomputer.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:6789/'
+
+python -m colinthecomputer.saver run-saver  'postgresql://colin:password@127.0.0.1:3456/colin' 'rabbitmq://127.0.0.1:6789/'
+
+docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=colin -p  3456:5432 postgres
+
+docker run -d -p 6789:5672 rabbitmq
