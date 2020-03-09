@@ -12,6 +12,11 @@ class BaseModel(Model):
     class Meta:
         database = db
 
+    def dict(self):
+        result = model_to_dict(self)
+        del result['id']
+        return result
+
 
 class User(BaseModel):
     user_id = BigIntegerField(primary_key=True)
@@ -36,6 +41,12 @@ class Rotation(BaseModel):
 class Pose(BaseModel):
     translation = ForeignKeyField(Translation)
     rotation = ForeignKeyField(Rotation)
+
+    def dict(self):
+        result = {}
+        result['translation'] = self.translation.dict()
+        result['rotation'] = self.rotation.dict()
+        return result
 
 
 class ColorImage(BaseModel):
@@ -164,9 +175,10 @@ def get_result(snapshot_id, result_name):
     if not query.exists():
         return None # TODO: what should I return?
     snapshot = query.get()
-    snapshot = model_to_dict(snapshot)
-    result = snapshot[result_name]
+    #snapshot = model_to_dict(snapshot)
+    #result = snapshot[result_name]
     if result_name not in blobs:
+        result = snapshot.pose.dict()
         return result
     else:
         pass # TODO
