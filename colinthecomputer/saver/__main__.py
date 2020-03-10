@@ -11,7 +11,7 @@ def main():
 
 
 @main.command('save')
-@click.option('-d', '--database', default='postgresql://127.0.0.1:5432', type=str)
+@click.option('-d', '--database', default='postgresql://colin:password@127.0.0.1:5432/colin', type=str)
 @click.argument('topic', type=str)
 @click.argument('data', type=str)
 def cli_save(database, topic, data):
@@ -32,4 +32,4 @@ def cli_run_saver(db_url, mq_url):
 
 
 if __name__ == '__main__':
-    main(prog_name='colin-the-computer')
+    main(prog_name='colinthecomputer')

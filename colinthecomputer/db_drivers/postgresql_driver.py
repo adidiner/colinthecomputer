@@ -132,6 +132,7 @@ def get_users():
     fields = ['user_id', 'username']
     users = []
     for user in User.select():
+        print(user)
         user = model_to_dict(user)
         result = {key: user[key] for key in fields}
         users.append(result)
