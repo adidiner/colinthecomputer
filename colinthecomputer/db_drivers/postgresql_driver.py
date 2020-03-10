@@ -12,11 +12,6 @@ class BaseModel(Model):
     class Meta:
         database = db
 
-    def dict(self):
-        result = model_to_dict(self)
-        del result['id']
-        return result
-
 
 class User(BaseModel):
     user_id = BigIntegerField(primary_key=True)
@@ -41,12 +36,6 @@ class Rotation(BaseModel):
 class Pose(BaseModel):
     translation = ForeignKeyField(Translation)
     rotation = ForeignKeyField(Rotation)
-
-    def dict(self):
-        result = {}
-        result['translation'] = self.translation.dict()
-        result['rotation'] = self.rotation.dict()
-        return result
 
 
 class ColorImage(BaseModel):
@@ -95,13 +84,7 @@ def save_pose(user_id, datetime, translation, rotation):
     pose.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
     snapshot.pose = pose
-    # print("saved")
     snapshot.save()
-    #print('USERS', get_users())
-    #print('USER_INF0', get_user_info(42))
-    #print(get_snapshots(42))
-    #print('SNAPSHOT', get_snapshot(3))
-    #print('RESULT', get_result(3, 'pose'))
 
 def save_color_image(user_id, datetime, path):
     color_image = ColorImage(path=path)
@@ -129,13 +112,11 @@ savers = {'pose': save_pose, 'color_image': save_color_image, 'depth_image': sav
 
 
 def get_users():
-    fields = ['user_id', 'username']
     users = []
     for user in User.select():
-        print(user)
-        user = model_to_dict(user)
-        result = {key: user[key] for key in fields}
-        users.append(result)
+        user = model_to_dict(user, 
+                             only=[User.user_id, User.username])
+        users.append(user)
     return users
 
 def get_user_info(user_id):
@@ -146,43 +127,35 @@ def get_user_info(user_id):
     return model_to_dict(user)
 
 def get_snapshots(user_id):
-    fields = ['snapshot_id', 'datetime']
     query = Snapshot.select().where(Snapshot.user_id==user_id)
     snapshots = []
     for snapshot in query:
-        snapshot = model_to_dict(snapshot)
-        result = {key: snapshot[key] for key in fields}
-        snapshots.append(result)
+        snapshot = model_to_dict(snapshot, 
+                                 only=[Snapshot.snapshot_id, Snapshot.datetime])
+        snapshots.append(snapshot)
     return snapshots
 
 def get_snapshot_info(snapshot_id):
-    metadata = ['snapshot_id', 'datetime']
     query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
         return None # TODO: what should I return?
     snapshot = query.get()
-    snapshot = model_to_dict(snapshot)
-    result = {key: snapshot[key] for key in metadata}
-    result['results'] = []
-    # Append available results (not None)
-    for field, value in snapshot.items():
-        if value and field not in metadata + ['user_id']:
-            result['results'].append(field)
-    return result
+    metadata = model_to_dict(snapshot,
+                             only=[Snapshot.snapshot_id, Snapshot.datetime])
+    data = model_to_dict(snapshot,
+                            exclude=[Snapshot.snapshot_id, Snapshot.datetime, Snapshot.user_id])
+    results = [field for field in data if data[field]]
+    return {**metadata, 'results': results}
 
 def get_result(snapshot_id, result_name):
-    blobs = ['color_image', 'depth_image']
     query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
         return None # TODO: what should I return?
     snapshot = query.get()
-    #snapshot = model_to_dict(snapshot)
-    #result = snapshot[result_name]
-    if result_name not in blobs:
-        result = snapshot.pose.dict()
-        return result
-    else:
-        pass # TODO
+    snapshot = model_to_dict(snapshot, exclude=[Pose.id, Pose.translation.id, Pose.rotation.id,
+                                                ColorImage.id, DepthImage.id, Feelings.id])
+    result = snapshot[result_name]
+    return result
 
 getters = {'users': get_users, 'user_info': get_user_info, 'snapshots': get_snapshots,
           'snapshot_info': get_snapshot_info, 'result': get_result} # TODO: automatic collection

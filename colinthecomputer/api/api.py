@@ -26,9 +26,20 @@ def get_snapshots(user_id):
 def get_snapshot_info(user_id, snapshot_id):
     return json.dumps(driver.get_snapshot_info(snapshot_id))
 
-@api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result>')
-def get_result(user_id, snapshot_id, result):
-    return json.dumps(driver.get_result(snapshot_id, result_name=result))
+@api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>')
+def get_result(user_id, snapshot_id, result_name):
+    result = driver.get_result(snapshot_id, result_name=result_name)
+    blobs = ['color_image', 'depth_image']
+    if result_name not in blobs:
+        return json.dumps(result)
+    return {'path': f'/users/{user_id}/snapshots/{snapshot_id}/{result_name}/data.jpg'}
+
+@api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>/data.jpg')
+def get_blob_data(user_id, snapshot_id, result_name):
+    blobs = ['color_image', 'depth_image']
+    if result_name not in blobs:
+        return None # TODO: ?
+    path = driver.get_result(snapshot_id, result_name=result_name)['path']
 
 def run_api_server(host, port, database_url):
     db_url = furl(database_url)
