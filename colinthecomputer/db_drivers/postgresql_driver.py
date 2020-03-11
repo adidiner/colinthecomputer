@@ -122,7 +122,7 @@ def get_users():
 def get_user_info(user_id):
     query = User.select().where(User.user_id==user_id)
     if not query.exists():
-        return None # TODO: what should I return?
+        return None
     user = query.get()
     return model_to_dict(user)
 
@@ -138,7 +138,7 @@ def get_snapshots(user_id):
 def get_snapshot_info(snapshot_id):
     query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
-        return None # TODO: what should I return?
+        return None
     snapshot = query.get()
     metadata = model_to_dict(snapshot,
                              only=[Snapshot.snapshot_id, Snapshot.datetime])
@@ -150,10 +150,12 @@ def get_snapshot_info(snapshot_id):
 def get_result(snapshot_id, result_name):
     query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
-        return None # TODO: what should I return?
+        return None
     snapshot = query.get()
     snapshot = model_to_dict(snapshot, exclude=[Pose.id, Pose.translation.id, Pose.rotation.id,
                                                 ColorImage.id, DepthImage.id, Feelings.id])
+    if result_name not in snapshot:
+        return None
     result = snapshot[result_name]
     return result
 

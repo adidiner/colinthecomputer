@@ -1,6 +1,9 @@
 from flask import Flask
+from flask import send_file
+from flask import abort
+from flask import jsonify
 from furl import furl
-import json
+import io
 
 
 from colinthecomputer.db_drivers import postgresql_driver
@@ -12,34 +15,46 @@ api = Flask(__name__)
 
 @api.route('/users')
 def get_users():
-    return json.dumps(driver.get_users())
+    return jsonify(driver.get_users())
 
 @api.route('/users/<int:user_id>')
 def get_user_info(user_id):
-    return json.dumps(driver.get_user_info(user_id))
+    result = driver.get_user_info(user_id)
+    if not result:
+        abort(404)
+    return jsonify(result)
 
 @api.route('/users/<int:user_id>/snapshots')
 def get_snapshots(user_id):
-    return json.dumps(driver.get_snapshots(user_id))
+    return jsonify(driver.get_snapshots(user_id))
 
 @api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>')
 def get_snapshot_info(user_id, snapshot_id):
-    return json.dumps(driver.get_snapshot_info(snapshot_id))
+    result = driver.get_snapshot_info(snapshot_id)
+    if not result:
+        abort(404)
+    return jsonify(result)
 
 @api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>')
 def get_result(user_id, snapshot_id, result_name):
     result = driver.get_result(snapshot_id, result_name=result_name)
+    if not result:
+        abort(404)
     blobs = ['color_image', 'depth_image']
     if result_name not in blobs:
-        return json.dumps(result)
+        return jsonify(result)
     return {'path': f'/users/{user_id}/snapshots/{snapshot_id}/{result_name}/data.jpg'}
 
 @api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>/data.jpg')
 def get_blob_data(user_id, snapshot_id, result_name):
     blobs = ['color_image', 'depth_image']
-    if result_name not in blobs:
-        return None # TODO: ?
-    path = driver.get_result(snapshot_id, result_name=result_name)['path']
+    result = driver.get_result(snapshot_id, result_name=result_name)
+    if result_name not in blobs or not result:
+        abort(404)
+    path = result['path']
+    return send_file(path,
+                     attachment_filename=f'{result_name}.jpg',
+                     mimetype='image/jpg')
 
 def run_api_server(host, port, database_url):
     db_url = furl(database_url)
