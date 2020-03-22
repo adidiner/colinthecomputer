@@ -2,6 +2,7 @@ from flask import Flask
 from flask import send_file
 from flask import abort
 from flask import jsonify
+from flask_cors import CORS
 from furl import furl
 import io
 
@@ -12,6 +13,7 @@ drivers = {'postgresql': postgresql_driver}
 driver = None
 
 api = Flask(__name__)
+CORS(api)
 
 @api.route('/users')
 def get_users():
