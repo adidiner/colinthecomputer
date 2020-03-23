@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loading from './loading'
 
 const API_ROOT = "http://127.0.0.1:8000"
 
@@ -7,30 +8,20 @@ class Users extends Component {
   render() {
     if (!this.state.users) {
       return (
-        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-            <div class="spinner-grow text-warning" role="status">
-              <span class="sr-only">Thinking...</span>
-            </div>
-            <div class="spinner-grow text-warning" role="status">
-              <span class="sr-only">Thinking...</span>
-            </div>
-            <div class="spinner-grow text-warning" role="status">
-              <span class="sr-only">Thinking...</span>
-            </div>
-          </div>
+        <Loading />
         );
     }
 
     return (
-      <div>
-        <div style={{display: 'flex',  justifyContent:'center'}}>
+      <div class='jumbotron' style={{display: 'flex', height: '100vh'}}>
+        <div class="col text-center">
           <h2>Users</h2>
-        </div>
-        <div class="list-groups">
-          {this.state.users.map(user =>
-            (<a href={user.user_id} class="list-group-item list-group-item-action" key={user.user_id}>
-              {user.user_id} {user.username}
-              </a>))}
+          <div class="list-groups">
+            {this.state.users.map(user =>
+              (<a href={'users/' + user.user_id} class="list-group-item list-group-item-action" key={user.user_id}>
+                {user.user_id} {user.username}
+                </a>))}
+          </div>
         </div>
       </div>
       );

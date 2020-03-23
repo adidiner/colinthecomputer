@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loading from './loading'
 
 const API_ROOT = "http://127.0.0.1:8000"
 
@@ -36,17 +37,7 @@ class UserInfo extends Component {
   render() {
     if (!this.state.user_info) {
       return (
-        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-            <div class="spinner-grow text-warning" role="status">
-              <span class="sr-only">Thinking...</span>
-            </div>
-            <div class="spinner-grow text-warning" role="status">
-              <span class="sr-only">Thinking...</span>
-            </div>
-            <div class="spinner-grow text-warning" role="status">
-              <span class="sr-only">Thinking...</span>
-            </div>
-          </div>
+        <Loading />
         );
     }
 
@@ -58,7 +49,8 @@ class UserInfo extends Component {
           <h4>{"user #" + user_info.user_id}</h4>
           {this.renderGender(user_info.gender)}
           {this.renderBirthday(user_info.birthday)}
-          <button type="button" class="btn btn-outline-dark">view snapshots</button>
+          <a href={user_info.user_id + '/snapshots'} 
+            role="button" class="btn btn-outline-dark">view snapshots</a>
         </div>
       </div>
       );
@@ -66,7 +58,7 @@ class UserInfo extends Component {
 
   componentDidMount = () => {
     // console.log(this.props);
-    var id = this.props.match.params.id;
+    var id = this.props.match.params.user_id;
     fetch(API_ROOT + '/users/' + id, {
       method: 'GET',
       mode:'cors',

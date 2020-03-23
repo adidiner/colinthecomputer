@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import App from './App';
 import Users from './components/users';
-import UserInfo from './components/user_info'
+import UserInfo from './components/user_info';
+import Snapshots from './components/snapshots'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -19,7 +20,8 @@ const routing = (
     <div>
       <Route exact path="/" component={App} />
       <Route exact path="/users" component={Users} />
-      <Route path="/users/:id" component={UserInfo} />
+      <Route exact path="/users/:user_id" component={UserInfo} />
+      <Route exact path="/users/:user_id/snapshots" component={Snapshots} />
     </div>
   </Router>
 )
