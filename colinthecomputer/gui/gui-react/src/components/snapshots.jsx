@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import Loading from './loading'
+import Loading from './loading';
+import _ from 'lodash';
 
 const API_ROOT = "http://127.0.0.1:8000"
 
 class Snapshots extends Component {
   state = {snapshots: null}
+
+  renderDatetime(timestamp) {
+    var date = new Date(timestamp);
+    return (
+      <p>{date.toLocaleTimeString()}</p>
+      );
+  }
 
   render() {
     if (!this.state.snapshots) {
@@ -13,14 +21,15 @@ class Snapshots extends Component {
         );
     }
 
-    var snapshots = this.state.snapshots;
+    var snapshots = _.sortBy(this.state.snapshots, ['datetime']);
     var lis = [];
-    for (var i = 0; i < snapshots.length-3; i += 3) {
+    for (var i = 0; i < snapshots.length-6; i += 6) {
       var row = [];
-      for (var j = 0; j < Math.min(snapshots.length-i, 3); j++) {
+      for (var j = 0; j < Math.min(snapshots.length-i, 6); j++) {
         row.push(
-          <div class="col">
-            <a role="button" class="btn btn-info">{snapshots[i+j].snapshot_id}</a>      
+          <div class="btn-group">
+            <a role="button" href={'snapshots/' + snapshots[i+j].snapshot_id} class="btn btn-info">
+            {this.renderDatetime(snapshots[i+j].datetime)}</a>      
           </div>
         );
       }
@@ -28,8 +37,10 @@ class Snapshots extends Component {
     }
 
     return (
-      <div class='jumbotron' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-        {lis}
+      <div /*class="jumbotron jumbotron"*/ style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
+        <div class="text-center">
+          {lis}
+        </div>
       </div>
       );
   }

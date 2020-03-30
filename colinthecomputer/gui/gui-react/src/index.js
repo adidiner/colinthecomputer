@@ -5,6 +5,7 @@ import App from './App';
 import Users from './components/users';
 import UserInfo from './components/user_info';
 import Snapshots from './components/snapshots'
+import SnapshotInfo from './components/snapshot_info'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -22,6 +23,7 @@ const routing = (
       <Route exact path="/users" component={Users} />
       <Route exact path="/users/:user_id" component={UserInfo} />
       <Route exact path="/users/:user_id/snapshots" component={Snapshots} />
+      <Route exact path="/users/:user_id/snapshots/:snapshot_id" component={SnapshotInfo} />
     </div>
   </Router>
 )
