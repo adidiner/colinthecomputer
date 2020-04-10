@@ -5,6 +5,7 @@ def parse_feelings(data):
     feelings = {}
     feelings['data'] = {'feelings': data['feelings']}
     feelings['user_id'], feelings['datetime'] = data['userId'], data['datetime']
+    print(feelings)
     return json.dumps(feelings)
 
 parse_feelings.field = 'feelings'

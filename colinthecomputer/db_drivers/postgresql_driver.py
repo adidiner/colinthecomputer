@@ -101,8 +101,11 @@ def save_depth_image(user_id, datetime, path):
     snapshot.save()
 
 def save_feelings(user_id, datetime, feelings):
+    print(feelings)
     feelings = Feelings(**feelings)
+    print(feelings)
     feelings.save()
+    print(feelings)
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
     snapshot.feelings = feelings
     snapshot.save()

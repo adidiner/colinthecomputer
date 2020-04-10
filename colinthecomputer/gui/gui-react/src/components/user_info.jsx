@@ -43,7 +43,8 @@ class UserInfo extends Component {
 
     var user_info = this.state.user_info;
     return (
-      <div class='jumbotron' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>  
+      <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
+      <div class='jumbotron' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height:'80vh'}}>  
         <div class='col text-center'>
           <h2>{user_info.username}</h2>
           <h4>{"user #" + user_info.user_id}</h4>
@@ -52,6 +53,7 @@ class UserInfo extends Component {
           <a href={user_info.user_id + '/snapshots'} 
             role="button" class="btn btn-outline-dark">view snapshots</a>
         </div>
+      </div>
       </div>
       );
   }

@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import Loading from './loading';
+import Pose from './pose';
+import Image from './image';
+import Feelings from './feelings';
+import {Link} from "react-router-dom";
 import _ from 'lodash';
 
 const API_ROOT = "http://127.0.0.1:8000"
@@ -7,18 +11,61 @@ const API_ROOT = "http://127.0.0.1:8000"
 class SnapshotInfo extends Component {
   state = {loaded: null, user_id: null, datetime: null, snapshot_id: null, results: null}
 
+  containerize(component) {
+    return (
+      <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+        {component}
+      </div>
+      );
+  }
+
   render() {
     if (!this.state.loaded) {
       return (
         <Loading />
         );
     }
-
-    console.log(this.state)
+    var snapshots = this.props.location.state.snapshots;
+    var index = Number(this.props.location.state.index);
+    console.log(this.state, index)
+    console.log(snapshots, index+1, index, snapshots[index+1])
     return (
-      <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-          <Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>
-          <ColorImage user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>
+      <div class="mt-3 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+        <Link to={{
+            pathname: `${snapshots[index-1].snapshot_id}`,
+            state: {
+              snapshots: snapshots,
+              index: `${index-1}`
+            }
+          }}>
+          <img src="/arrows/left.PNG" alt="prev" title="prev" width="40px"/>
+        </Link>
+
+        <div class="col">
+          <div class="row">
+              {this.containerize(<Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+          </div>
+          <div class="row">
+              {this.containerize(<Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            {this.containerize(<Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
+          </div>
+          <div class="row">
+            {this.containerize(<Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='depth_image'/>)}
+          </div>
+        </div>
+        <Link to={{
+            pathname: `${snapshots[index+1].snapshot_id}`,
+            state: {
+              snapshots: snapshots,
+              index: `${index+1}`
+            }
+          }}>
+          <img src="/arrows/right.PNG" alt="next" title="next" width="40px"/>
+        </Link>
       </div>
       );
   }
@@ -58,113 +105,6 @@ class SnapshotInfo extends Component {
                     snapshot_id: snapshot_id, 
                     results: data.results});
       
-    })
-    .catch(error => {
-      console.log(error); // todo
-    });
-  }
-}
-
-
-class Pose extends Component {
-  state = {loaded: null, translation: null, rotation: null}
-  render() {
-    if (!this.state.loaded) {
-      return (
-        <Loading />
-        );
-    }
-
-    var translation = [];
-    var rotation = [];
-    console.log(this.state.rotation, Object.keys(this.state.rotation))
-    for (let i in Object.keys(this.state.translation)) {
-      let key = Object.keys(this.state.translation)[i];
-      translation.push(<a key={key} class="my-4"> {key + " = " + this.state.translation[key]} </a>);
-    } for (let i in Object.keys(this.state.rotation)) {
-      let key = Object.keys(this.state.rotation)[i];
-      rotation.push(<a key={key} class="my-4"> {key + " = " + this.state.rotation[key]} </a>);
-    }
-
-    console.log('agggggg' + this.state.translation)
-    return (
-      <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-        <div class="text-center">
-          <h4>Pose</h4>
-          <p class="lead">translation</p>
-          {translation}
-          <p class="lead">rotation</p>
-          {rotation}
-        </div>
-      </div>
-      );
-  }
-
-  componentDidMount = () => {
-    var user_id = this.props.user_id;
-    var snapshot_id = this.props.snapshot_id;
-    fetch(API_ROOT + '/users/' + user_id + '/snapshots/' + snapshot_id + '/pose', {
-      method: 'GET',
-      mode:'cors',
-      dataType: 'json'
-    })
-    .then(response => {
-      if (!response.ok) {
-        console.log(response);
-        throw Error(response.statusText);
-      }
-      return response;
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      this.setState({loaded: true, 
-                    translation: data.translation,
-                    rotation: data.rotation});
-    })
-    .catch(error => {
-      console.log(error); // todo
-    });
-  }
-}
-
-
-class ColorImage extends Component {
-  state = {loaded: null, path: null}
-  render() {
-    if (!this.state.loaded) {
-      return (
-        <Loading />
-        );
-    }
-
-    return (
-      <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-        <img src={API_ROOT + this.state.path} width="500"/>
-      </div>
-      );
-  }
-
-  componentDidMount = () => {
-    var user_id = this.props.user_id;
-    var snapshot_id = this.props.snapshot_id;
-    fetch(API_ROOT + '/users/' + user_id + '/snapshots/' + snapshot_id + '/color_image', {
-      method: 'GET',
-      mode:'cors',
-      dataType: 'json'
-    })
-    .then(response => {
-      if (!response.ok) {
-        console.log(response);
-        throw Error(response.statusText);
-      }
-      return response;
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      this.setState({loaded: true, 
-                    path: data.path});
     })
     .catch(error => {
       console.log(error); // todo

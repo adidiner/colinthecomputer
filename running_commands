@@ -10,6 +10,6 @@ python -m colinthecomputer.saver run-saver  'postgresql://colin:password@127.0.0
 python -m colinthecomputer.api run-server -d 'postgresql://colin:password@127.0.0.1:3469/colin' 
 
 
-docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=colin -p  3469:5432 postgres
+sudo docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=colin -p  3469:5432 postgres
 
-docker run -d -p 6789:5672 rabbitmq
+sudo docker run -d -p 6789:5672 rabbitmq

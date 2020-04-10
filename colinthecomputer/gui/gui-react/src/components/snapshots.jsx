@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Loading from './loading';
+import {Link} from "react-router-dom";
 import _ from 'lodash';
 
 const API_ROOT = "http://127.0.0.1:8000"
@@ -10,7 +11,7 @@ class Snapshots extends Component {
   renderDatetime(timestamp) {
     var date = new Date(timestamp);
     return (
-      <p>{date.toLocaleTimeString()}</p>
+      <p>{`${date.toLocaleTimeString()}`}</p>
       );
   }
 
@@ -26,10 +27,27 @@ class Snapshots extends Component {
     for (var i = 0; i < snapshots.length-6; i += 6) {
       var row = [];
       for (var j = 0; j < Math.min(snapshots.length-i, 6); j++) {
-        row.push(
+        /*row.push(
           <div class="btn-group">
             <a role="button" href={'snapshots/' + snapshots[i+j].snapshot_id} class="btn btn-info">
             {this.renderDatetime(snapshots[i+j].datetime)}</a>      
+          </div>
+        );*/
+        let prev = snapshots[i+j-1] ? snapshots[i+j-1].snapshot_id : null;
+        let next = snapshots[i+j+1] ? snapshots[i+j+1].snapshot_id : null;
+        row.push(
+          <div class="jumbotron m-2" style={{display: 'flex', justifyContent:'center', alignItems:'center', height: "35vh", width: "35vh"}}>
+            <Link style={{color: "green"}} to={{
+              pathname: `${'snapshots/' + snapshots[i+j].snapshot_id}`,
+              state: {
+                snapshots: snapshots,
+                index: `${i+j}`
+              }
+            }}>
+
+            {`snapshot #${i+j+1}: `}
+            {this.renderDatetime(snapshots[i+j].datetime)}
+            </Link>
           </div>
         );
       }
@@ -37,7 +55,7 @@ class Snapshots extends Component {
     }
 
     return (
-      <div /*class="jumbotron jumbotron"*/ style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
+      <div /*class="jumbotron jumbotron"*/ style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
         <div class="text-center">
           {lis}
         </div>

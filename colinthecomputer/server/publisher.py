@@ -57,8 +57,9 @@ def snapshot_message(snapshot, user_id, image_path):
     snapshot_metadata.CopyFrom(snapshot)
     snapshot_metadata.color_image.ClearField('data')
     snapshot_metadata.depth_image.ClearField('data')
-    snapshot_dict = MessageToDict(snapshot_metadata)
+    snapshot_dict = MessageToDict(snapshot_metadata, including_default_value_fields=True)
     snapshot_dict['userId'] = user_id
     snapshot_dict['colorImage']['path'] = str(image_path / 'color_image')
     snapshot_dict['depthImage']['path'] = str(image_path / 'depth_image.npy')
+    print(snapshot_dict)
     return json.dumps(snapshot_dict)
