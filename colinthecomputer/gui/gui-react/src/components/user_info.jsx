@@ -46,6 +46,7 @@ class UserInfo extends Component {
       <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
       <div class='jumbotron' style={{display: 'flex',  justifyContent:'center', alignItems:'center', height:'80vh'}}>  
         <div class='col text-center'>
+          <img src="/icons/user.PNG" alt="" width="100px"/>
           <h2>{user_info.username}</h2>
           <h4>{"user #" + user_info.user_id}</h4>
           {this.renderGender(user_info.gender)}

@@ -26,7 +26,7 @@ class Pose extends Component {
 
     console.log('agggggg' + this.state.translation)
     return (
-      <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+      <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center', width:'60vh', height: '40vh'}}>
         <div class="text-center">
           <h5>Pose</h5>
           <h6 class="mb-0">translation</h6>

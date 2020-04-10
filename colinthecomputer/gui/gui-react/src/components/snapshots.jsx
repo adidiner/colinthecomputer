@@ -36,18 +36,21 @@ class Snapshots extends Component {
         let prev = snapshots[i+j-1] ? snapshots[i+j-1].snapshot_id : null;
         let next = snapshots[i+j+1] ? snapshots[i+j+1].snapshot_id : null;
         row.push(
-          <div class="jumbotron m-2" style={{display: 'flex', justifyContent:'center', alignItems:'center', height: "35vh", width: "35vh"}}>
-            <Link style={{color: "green"}} to={{
-              pathname: `${'snapshots/' + snapshots[i+j].snapshot_id}`,
-              state: {
-                snapshots: snapshots,
-                index: `${i+j}`
-              }
-            }}>
+          <div class="jumbotron m-1" style={{display: 'flex', justifyContent:'center', alignItems:'center', height: "36vh", width: "36vh"}}>
+            <div class="col text-center">
+              <img src="/icons/snapshot.PNG" alt="" width="40px"/>
+              <Link style={{color: "green", fontSize:"14px"}} to={{
+                pathname: `${'snapshots/' + snapshots[i+j].snapshot_id}`,
+                state: {
+                  snapshots: snapshots,
+                  index: `${i+j}`
+                }
+              }}>
 
-            {`snapshot #${i+j+1}: `}
-            {this.renderDatetime(snapshots[i+j].datetime)}
-            </Link>
+              {`\nsnapshot #${i+j+1}: `}
+              {this.renderDatetime(snapshots[i+j].datetime)}
+              </Link>
+            </div>
           </div>
         );
       }

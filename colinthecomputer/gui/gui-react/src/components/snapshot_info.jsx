@@ -11,20 +11,57 @@ const API_ROOT = "http://127.0.0.1:8000"
 class SnapshotInfo extends Component {
   state = {loaded: null, user_id: null, datetime: null, snapshot_id: null, results: null}
 
-  show_field(field, component) {
-    if (!(field in self.state.results)) {
+  renderField(field, component) {
+    console.log(field, this.state.results, this.state.results.includes(field));
+    if (!this.state.results.includes(field)) {
       return (
-        <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-          {`${field} is not available`}
+        <div class="m-2 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+          <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center', width:'42vh', height: '40vh'}}>
+            <p class="text-center"> {`${field.replace("_", " ")} is not available`} </p>
+          </div>
         </div>
         );
     }
     return (
-      <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+      <div class="m-2 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
         {component}
       </div>
       );
   }
+
+  renderNav(direction) {
+    var snapshots = this.props.location.state.snapshots;
+    var index = Number(this.props.location.state.index);
+    var toIndex, arrow;
+    if (direction == "prev") {
+      toIndex = index - 1;
+      arrow = "/arrows/left.PNG";
+    }
+    else if (direction == "next") {
+      toIndex = index + 1;
+      arrow = "/arrows/right.PNG";
+    }
+
+    if (toIndex < 0 || toIndex > snapshots.length) {
+      return (<a/>);
+    }
+
+    return (
+      <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+        <Link to={{
+            pathname: `${snapshots[toIndex].snapshot_id}`,
+            state: {
+              snapshots: snapshots,
+              index: toIndex
+            }
+          }}>
+          <img src={arrow} alt={direction} title={direction} width="40px"/>
+        </Link>
+      </div>
+      );
+  }
+
+
 
   render() {
     if (!this.state.loaded) {
@@ -32,49 +69,33 @@ class SnapshotInfo extends Component {
         <Loading />
         );
     }
-    var snapshots = this.props.location.state.snapshots;
-    var index = Number(this.props.location.state.index);
-    console.log(this.state, index)
-    console.log(snapshots, index+1, index, snapshots[index+1])
+    //console.log(this.state, index)
+    //console.log(snapshots, index+1, index, snapshots[index+1])
     return (
       <div class="mt-3 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
         <div class="col">
-          <Link to={{
-              pathname: `${snapshots[index-1].snapshot_id}`,
-              state: {
-                snapshots: snapshots,
-                index: `${index-1}`
-              }
-            }}>
-            <img src="/arrows/left.PNG" alt="prev" title="prev" width="40px"/>
-          </Link>
+          {this.renderNav("prev")}
         </div>
         <div class="col">
           <div class="row">
-              {this.show_field("pose", <Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+              {this.renderField("pose", <Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
           </div>
           <div class="row">
-              {this.show_field("feelings", <Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+              {this.renderField("feelings", <Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
           </div>
         </div>
         <div class="col">
           <div class="row">
-            {this.show_field("color_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
+            {this.renderField("color_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
           </div>
           <div class="row">
-            {this.show_field("depth_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='depth_image'/>)}
+            {this.renderField("depth_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='depth_image'/>)}
           </div>
         </div>
         <div class="col">
-          <Link to={{
-              pathname: `${snapshots[index+1].snapshot_id}`,
-              state: {
-                snapshots: snapshots,
-                index: `${index+1}`
-              }
-            }}>
-            <img src="/arrows/right.PNG" alt="next" title="next" width="40px"/>
-          </Link>
+          <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+            {this.renderNav("next")}
+          </div>
         </div>
       </div>
       );

@@ -35,7 +35,7 @@ class Feelings extends Component {
 
     console.log("ahhhhhhhhhhh" + feelings)
     return (
-      <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+      <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center', width:'60vh', height: '40vh'}}>
         <div class="text-center">
           <h5>Feelings</h5>
           {feelings}
