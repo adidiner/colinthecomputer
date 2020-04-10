@@ -14,10 +14,9 @@ class Users extends Component {
 
     return (
       <div>
-        <nav class="navbar navbar-light bg-light">
-          <a class="navbar-brand" href="#">
-            <img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""/>
-            Bootstrap
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="/">
+            <img src="/icons/colin.PNG" width="40px" class="d-inline-block align-top" alt=""/>
           </a>
         </nav>
       <div class='jumbotron' style={{display: 'flex', height: '100vh'}}>

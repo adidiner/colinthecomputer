@@ -72,29 +72,41 @@ class SnapshotInfo extends Component {
     //console.log(this.state, index)
     //console.log(snapshots, index+1, index, snapshots[index+1])
     return (
-      <div class="mt-3 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-        <div class="col">
-          {this.renderNav("prev")}
-        </div>
-        <div class="col">
-          <div class="row">
-              {this.renderField("pose", <Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+      <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="/">
+            <img src="/icons/colin.PNG" width="40px" class="d-inline-block align-top" alt=""/>
+          </a>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href={`/users/${this.state.user_id}/snapshots/`}>back</a>
+            </div>
           </div>
-          <div class="row">
-              {this.renderField("feelings", <Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+        </nav>
+        <div class="mt-3 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+          <div class="col">
+            {this.renderNav("prev")}
           </div>
-        </div>
-        <div class="col">
-          <div class="row">
-            {this.renderField("color_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
+          <div class="col">
+            <div class="row">
+                {this.renderField("pose", <Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+            </div>
+            <div class="row">
+                {this.renderField("feelings", <Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+            </div>
           </div>
-          <div class="row">
-            {this.renderField("depth_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='depth_image'/>)}
+          <div class="col">
+            <div class="row">
+              {this.renderField("color_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
+            </div>
+            <div class="row">
+              {this.renderField("depth_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='depth_image'/>)}
+            </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-            {this.renderNav("next")}
+          <div class="col">
+            <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+              {this.renderNav("next")}
+            </div>
           </div>
         </div>
       </div>

@@ -58,9 +58,21 @@ class Snapshots extends Component {
     }
 
     return (
-      <div /*class="jumbotron jumbotron"*/ style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-        <div class="text-center">
-          {lis}
+      <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="/">
+            <img src="/icons/colin.PNG" width="40px" class="d-inline-block align-top" alt=""/>
+          </a>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href={`/users/${this.state.user_id}/`}>back</a>
+            </div>
+          </div>
+        </nav>
+        <div /*class="jumbotron jumbotron"*/ style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+          <div class="text-center">
+            {lis}
+          </div>
         </div>
       </div>
       );
@@ -84,7 +96,8 @@ class Snapshots extends Component {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      this.setState({snapshots: data});
+      this.setState({user_id: user_id,
+                     snapshots: data});
     })
     .catch(error => {
       console.log(error); // todo
