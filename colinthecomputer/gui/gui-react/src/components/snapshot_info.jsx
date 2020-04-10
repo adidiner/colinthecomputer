@@ -11,7 +11,14 @@ const API_ROOT = "http://127.0.0.1:8000"
 class SnapshotInfo extends Component {
   state = {loaded: null, user_id: null, datetime: null, snapshot_id: null, results: null}
 
-  containerize(component) {
+  show_field(field, component) {
+    if (!(field in self.state.results)) {
+      return (
+        <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+          {`${field} is not available`}
+        </div>
+        );
+    }
     return (
       <div class="container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
         {component}
@@ -31,41 +38,44 @@ class SnapshotInfo extends Component {
     console.log(snapshots, index+1, index, snapshots[index+1])
     return (
       <div class="mt-3 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-        <Link to={{
-            pathname: `${snapshots[index-1].snapshot_id}`,
-            state: {
-              snapshots: snapshots,
-              index: `${index-1}`
-            }
-          }}>
-          <img src="/arrows/left.PNG" alt="prev" title="prev" width="40px"/>
-        </Link>
-
+        <div class="col">
+          <Link to={{
+              pathname: `${snapshots[index-1].snapshot_id}`,
+              state: {
+                snapshots: snapshots,
+                index: `${index-1}`
+              }
+            }}>
+            <img src="/arrows/left.PNG" alt="prev" title="prev" width="40px"/>
+          </Link>
+        </div>
         <div class="col">
           <div class="row">
-              {this.containerize(<Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+              {this.show_field("pose", <Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
           </div>
           <div class="row">
-              {this.containerize(<Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
+              {this.show_field("feelings", <Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
           </div>
         </div>
         <div class="col">
           <div class="row">
-            {this.containerize(<Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
+            {this.show_field("color_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
           </div>
           <div class="row">
-            {this.containerize(<Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='depth_image'/>)}
+            {this.show_field("depth_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='depth_image'/>)}
           </div>
         </div>
-        <Link to={{
-            pathname: `${snapshots[index+1].snapshot_id}`,
-            state: {
-              snapshots: snapshots,
-              index: `${index+1}`
-            }
-          }}>
-          <img src="/arrows/right.PNG" alt="next" title="next" width="40px"/>
-        </Link>
+        <div class="col">
+          <Link to={{
+              pathname: `${snapshots[index+1].snapshot_id}`,
+              state: {
+                snapshots: snapshots,
+                index: `${index+1}`
+              }
+            }}>
+            <img src="/arrows/right.PNG" alt="next" title="next" width="40px"/>
+          </Link>
+        </div>
       </div>
       );
   }
