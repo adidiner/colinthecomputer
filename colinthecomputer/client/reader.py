@@ -3,11 +3,6 @@ import os
 
 from . import read_drivers
 
-
-drivers = {'binary': read_drivers.binary_reader,
-           'protobuf': read_drivers.protobuf_reader}
-
-
 class Reader:
     """Reader of a sample file, exposing iteration over snapshots.
 
@@ -18,7 +13,7 @@ class Reader:
     """
     def __init__(self, path, file_format):
         self.path = path
-        self.driver = drivers[file_format]
+        self.driver = read_drivers[file_format]
         self._offset = 0
         self.open = gzip.open if path.endswith('.gz') else open
         with self.open(path, 'rb') as f:

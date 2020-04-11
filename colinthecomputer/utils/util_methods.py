@@ -1,4 +1,9 @@
 import io
+import sys
+import os
+import pathlib
+import importlib
+import inspect
 
 
 CHUNK = 1000000
@@ -37,8 +42,21 @@ def make_path(root, *dirs):
 
 
 def load_modules(root):
+    modules = []
     sys.path.insert(0, str(root.parent))
     for path in root.iterdir():
         if path.name.startswith('_') or not path.suffix == '.py':
             continue
         modules.append(importlib.import_module(f'{root.name}.{path.stem}', package=root.name))
+    return modules
+
+def load_drivers(modules):
+    drivers = {}
+    for module in modules:
+        name = pathlib.Path(module.__file__).stem
+        if name.endswith('_driver'):
+            drivers[name[:-len('_driver')]] = module
+    return drivers
+
+
+
