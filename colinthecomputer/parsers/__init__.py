@@ -3,16 +3,11 @@ import pathlib
 import importlib
 import inspect
 
+from colinthecomputer.utils import load_modules
+
 modules = []
 parsers = {} # TODO: parsers support multiple fields? do I even need this?
 root = pathlib.Path.cwd() / 'colinthecomputer/parsers/'
-
-def load_modules(root):
-    sys.path.insert(0, str(root.parent))
-    for path in root.iterdir():
-        if path.name.startswith('_') or not path.suffix == '.py':
-            continue
-        modules.append(importlib.import_module(f'{root.name}.{path.stem}', package=root.name))
 
 def load_parsers(module):
     for key, value in module.__dict__.items():

@@ -9,6 +9,13 @@ drivers = {'binary': read_drivers.binary_reader,
 
 
 class Reader:
+    """Reader of a sample file, exposing iteration over snapshots.
+
+    :param path: path to the sample file
+    :type path: str
+    :param file_format: the sample file format
+    :type file_format: str
+    """
     def __init__(self, path, file_format):
         self.path = path
         self.driver = drivers[file_format]
@@ -28,6 +35,7 @@ class Reader:
         file_size = os.path.getsize(self.path)
         with self.open(self.path, 'rb') as f:
             f.seek(self._offset)
+            # read snapshots with driver
             while file_size - self._offset > 8:
                 snapshot, offset = self.driver.read_snapshot(f)
                 self._offset += offset
@@ -35,7 +43,13 @@ class Reader:
 
 
 def read(path, file_format):
+    """Read and print all snapshots in sample file.
+
+    :param path: path to the sample file
+    :type path: str
+    :param file_format: the sample file format
+    :type file_format: str
+    """
     reader = Reader(path, file_format)
-    print(reader)
     for snapshot in reader:
         print(snapshot)

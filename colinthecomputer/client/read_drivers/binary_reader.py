@@ -19,6 +19,13 @@ FLOAT = 4
 
 
 def read_user(stream):
+    """Read user information from stream.
+    
+    :param stream: data stream, beginning with the user information
+    :type stream: bytes-like object
+    :returns: size of read data
+    :rtype: int
+    """
     user_id, username_len = struct.unpack('QI',
                                           stream.read(UINT64+UINT32))
     username = stream.read(username_len).decode('utf-8')
@@ -34,6 +41,13 @@ def read_user(stream):
 
 
 def read_snapshot(stream):
+    """Read snapshot from stream.
+    
+    :param stream: data stream, beginning with the snapshot
+    :type stream: bytes-like object
+    :returns: size of read data
+    :rtype: int
+    """
     timestamp, = struct.unpack('Q', stream.read(UINT64))
     translation = Pose.Translation.from_tuple(
         struct.unpack('ddd', stream.read(DOUBLE*3)))
@@ -55,6 +69,13 @@ def read_snapshot(stream):
 
 
 def _read_color_image(stream):
+    """Read color image from stream.
+    
+    :param stream: data stream, beginning with the color image
+    :type stream: bytes-like object
+    :returns: size of read data
+    :rtype: int
+    """
     height, width = struct.unpack('II', stream.read(UINT32*2))
     data = iterated_read(stream, height*width*3)
     # Save as RGB
@@ -65,6 +86,13 @@ def _read_color_image(stream):
 
 
 def _read_depth_image(stream):
+    """Read depth image from stream.
+    
+    :param stream: data stream, beginning with the depth image
+    :type stream: bytes-like object
+    :returns: size of read data
+    :rtype: int
+    """
     height, width = struct.unpack('II', stream.read(UINT32*2))
     data = iterated_read(stream, height*width*FLOAT) # TODO: this doesnt work
     offset = UINT32*2 + len(data)
