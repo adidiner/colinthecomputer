@@ -79,7 +79,9 @@ class SnapshotInfo extends Component {
           </a>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href={`/users/${this.state.user_id}/snapshots/`}>back</a>
+              <a class="nav-item nav-link" href={`/users/${this.state.user_id}/snapshots/`}>
+                <img src="/arrows/back.PNG" width="40px" class="d-inline-block align-top" alt=""/>
+              </a>
             </div>
           </div>
         </nav>

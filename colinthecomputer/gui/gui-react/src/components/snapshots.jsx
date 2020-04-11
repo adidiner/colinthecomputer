@@ -24,38 +24,28 @@ class Snapshots extends Component {
 
     var snapshots = _.sortBy(this.state.snapshots, ['datetime']);
     var lis = [];
-    for (var i = 0; i < snapshots.length-6; i += 6) {
-      var row = [];
-      for (var j = 0; j < Math.min(snapshots.length-i, 6); j++) {
-        /*row.push(
-          <div class="btn-group">
-            <a role="button" href={'snapshots/' + snapshots[i+j].snapshot_id} class="btn btn-info">
-            {this.renderDatetime(snapshots[i+j].datetime)}</a>      
-          </div>
-        );*/
-        let prev = snapshots[i+j-1] ? snapshots[i+j-1].snapshot_id : null;
-        let next = snapshots[i+j+1] ? snapshots[i+j+1].snapshot_id : null;
-        row.push(
+    for (var i = 0; i < snapshots.length; i++) {
+      lis.push(
+        <div>
           <div class="jumbotron m-1" style={{display: 'flex', justifyContent:'center', alignItems:'center', height: "36vh", width: "36vh"}}>
             <div class="col text-center">
               <img src="/icons/snapshot.PNG" alt="" width="40px"/>
               <Link style={{color: "green", fontSize:"14px"}} to={{
-                pathname: `${'snapshots/' + snapshots[i+j].snapshot_id}`,
+                pathname: `/users/${this.state.user_id}/snapshots/${snapshots[i].snapshot_id}`,
                 state: {
                   snapshots: snapshots,
-                  index: `${i+j}`
+                  index: `${i}`
                 }
               }}>
-
-              {`\nsnapshot #${i+j+1}: `}
-              {this.renderDatetime(snapshots[i+j].datetime)}
+              {`\nsnapshot #${i+1}: `}
+              {this.renderDatetime(snapshots[i].datetime)}
               </Link>
             </div>
           </div>
+        </div>
         );
-      }
-      lis.push(<div class="row">{row}</div>);
     }
+      //lis.push(<div> {row} </div>);
 
     return (
       <div>
@@ -65,13 +55,17 @@ class Snapshots extends Component {
           </a>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href={`/users/${this.state.user_id}/`}>back</a>
+              <a class="nav-item nav-link" href={`/users/${this.state.user_id}/`}>
+                <img src="/arrows/back.PNG" width="40px" class="d-inline-block align-top" alt=""/>
+              </a>
             </div>
           </div>
         </nav>
-        <div /*class="jumbotron jumbotron"*/ style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-          <div class="text-center">
-            {lis}
+        <div class="mx-3" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+          <div class="col text-center">
+            <div class="row text-center">
+              {lis}
+            </div>
           </div>
         </div>
       </div>
