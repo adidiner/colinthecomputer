@@ -3,6 +3,17 @@ import socket
 
 
 class Listener:
+    """A connection listener, listening to and accepting connections.
+    
+    :param port: listener port
+    :type port: number
+    :param host: listener host address, defaults to '0.0.0.0'
+    :type host: str, optional
+    :param backlog: listem backlog, defaults to 1000
+    :type backlog: number, optional
+    :param reuseaddr: whehter to enable reuseaddr, defaults to True
+    :type reuseaddr: bool, optional
+    """
     def __init__(self, port, host='0.0.0.0', backlog=1000, reuseaddr=True):
         self.port = port
         self.host = host
@@ -24,11 +35,15 @@ class Listener:
         self.stop()
 
     def start(self):
+        """Start listening on (self.host,self.port)
+        """
         self.socket.bind((self.host, self.port))
         self.socket.listen(self.backlog)
 
     def stop(self):
+        """Stop listening"""
         self.socket.close()
 
     def accept(self):
+        """Accept new connection"""
         return Connection(self.socket.accept()[0])

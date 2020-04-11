@@ -5,7 +5,7 @@ def parse_pose(data):
     pose = {}
     print(data)
     pose['data'] = data['pose']
-    pose['user_id'], pose['datetime'] = data['userId'], data['datetime']
+    pose['user_id'], pose['datetime'] = data['user_id'], data['datetime']
     return json.dumps(pose)
 
 parse_pose.field = 'pose'

@@ -41,7 +41,7 @@ def send_hello(connection, hello):
 
 def receive_config(connection):
     """Recieves config message from a server.
-    
+
     :param connection: connection object to the server
     :type connection: Connection
     :return: the received config message

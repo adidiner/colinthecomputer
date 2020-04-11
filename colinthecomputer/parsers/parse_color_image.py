@@ -10,8 +10,8 @@ def parse_color_image(data):
     data = json.loads(data)
     # Create parsed metadata json
     metadata = {}
-    color_image = data['colorImage']
-    metadata['user_id'], metadata['datetime'] = data['userId'], data['datetime']
+    color_image = data['color_image']
+    metadata['user_id'], metadata['datetime'] = data['user_id'], data['datetime']
     path = Path(color_image['path'].replace('raw_data', 'results')).parent # TODO: temp sol
     if not path.exists():
          path.mkdir(parents=True)

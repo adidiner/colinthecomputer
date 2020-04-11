@@ -1,3 +1,8 @@
+"""Module of patched protobuf classes, used for client-server communication.
+(this file simply patches basic functions as str,
+making testing and interaction more conveniente.
+See protocol format in colin.proto"""
+
 import datetime as dt
 
 
@@ -46,6 +51,7 @@ User.get_gender_char = gender_char
 
 
 ### Patch Snapshot ###
+
 def snapshot_str(self):
     datetime = self.datetime_object()
     fdate = datetime.strftime('%B %d, %Y')
@@ -64,6 +70,7 @@ def snapshot_datetime(self):
 Snapshot.__str__ = snapshot_str
 Snapshot.__getitem__ = snapshot_getitem
 Snapshot.datetime_object = snapshot_datetime
+
 
 ### Patch Pose ###
 
@@ -104,7 +111,6 @@ def color_image_str(self):
 ColorImage.__str__ = color_image_str
 
 
-
 ### Patch DepthImage ###
 
 def depth_image_str(self):
@@ -113,7 +119,7 @@ def depth_image_str(self):
 DepthImage.__str__ = depth_image_str
 
 
-### Patch Feelings
+### Patch Feelings ###
 
 def feelings_str(self):
     return f'(hunger={self.hunger}, thirst={self.thirst}, ' \

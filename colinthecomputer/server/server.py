@@ -10,12 +10,14 @@ from colinthecomputer.protocol import User, Config, Snapshot
 HEADER_SIZE = 20
 
 
-class Context:
-    def __init__(self, directory):
-        self.directory = directory
-
-
 class Handler(threading.Thread):
+    """Handels a single connection from client.
+
+    :param client: client connection
+    :type client: Connection
+    :param publish: publishing function (for client message)
+    :type publish: callable
+    """
     lock = threading.Lock()
 
     def __init__(self, client, publish):
@@ -24,6 +26,9 @@ class Handler(threading.Thread):
         self.publish = publish
 
     def run(self):
+        """Run handler, communicating in hello -> condif -> snapshot protocol.
+        Use self.publish to publish the snapshot. 
+        """
         with self.client:
             # Receive hello
             data = self.client.receive_message()
@@ -45,6 +50,16 @@ class Handler(threading.Thread):
 
 
 def run_server(host, port, publish):
+    """Run server, which starts a listner and handles 
+    every client connection in a new thread.
+    
+    :param host: server ip address
+    :type host: str
+    :param port: server port
+    :type port: int
+    :param publish: publishing function to incoming snapshots
+    :type publish: callable
+    """
     # Setup server
     with Listener(host=host, port=port) as server:
         while True:

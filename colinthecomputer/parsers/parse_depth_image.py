@@ -9,8 +9,8 @@ def parse_depth_image(data):
     data = json.loads(data)
     # Create parsed metadata json
     metadata = {}
-    depth_image = data['depthImage']
-    metadata['user_id'], metadata['datetime'] = data['userId'], data['datetime']
+    depth_image = data['depth_image']
+    metadata['user_id'], metadata['datetime'] = data['user_id'], data['datetime']
     path = Path(depth_image['path'].replace('raw_data', 'results')).parent # TODO: temp sol
     if not path.exists():
          path.mkdir(parents=True)
