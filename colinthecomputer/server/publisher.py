@@ -39,7 +39,7 @@ def produce_publisher(mq_url):
         user, snapshot = message
         user_id = user.user_id
         message = _json_user_message(user)
-        driver.publish(message, host, port, segment='results', topic='user')
+        driver.topic_publish(message, host, port, topic='user', segment='results')
 
         # Save BLOBs to filesystem
         datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')

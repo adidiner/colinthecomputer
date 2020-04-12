@@ -1,15 +1,15 @@
 import json
 
-from colinthecompuer.utils import filtered_dict
+from colinthecomputer.utils import filtered_dict
 
 def parse_pose(data):
-	"""Parse pose from snapshot data.
-	
-	:param data: snapshot as consumbed from the message queue
-	:type data: json
-	:returns: parsed snapshot pose 
-	:rtype: json
-	"""
+    """Parse pose from snapshot data.
+    
+    :param data: snapshot as consumbed from the message queue
+    :type data: json
+    :returns: parsed snapshot pose 
+    :rtype: json
+    """
     data = json.loads(data)
     pose = filtered_dict(data, ['user_id', 'datetime'])
     print(data)

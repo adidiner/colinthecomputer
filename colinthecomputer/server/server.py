@@ -29,25 +29,28 @@ class Handler(threading.Thread):
         """Run handler, communicating in hello -> condif -> snapshot protocol.
         Use self.publish to publish the snapshot. 
         """
-        with self.client:
-            # Receive hello
-            data = self.client.receive_message()
-            user = User()
-            user.ParseFromString(data)
-            # Send config
-            config = Config(fields=parsers.keys())
-            data = config.SerializeToString()
-            self.client.send_message(data)
-            # Receive snapshot
-            data = self.client.receive_message()
-            snapshot = Snapshot()
-            snapshot.ParseFromString(data)
+        try:
+            with self.client:
+                # Receive hello
+                data = self.client.receive_message()
+                user = User()
+                user.ParseFromString(data)
+                # Send config
+                config = Config(fields=parsers.keys())
+                data = config.SerializeToString()
+                self.client.send_message(data)
+                # Receive snapshot
+                data = self.client.receive_message()
+                snapshot = Snapshot()
+                snapshot.ParseFromString(data)
 
-        # TODO: figure out exception handling
-        with Handler.lock:
-            self.publish((user, snapshot))
+            with Handler.lock:
+                self.publish((user, snapshot))
+
+        except Exception as error:
+            print(f"ERROR: {error}")
+            return
         
-
 
 def run_server(host, port, publish):
     """Run server, which starts a listner and handles 

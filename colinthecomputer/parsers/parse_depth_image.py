@@ -3,7 +3,7 @@ import numpy as np
 import json
 from pathlib import Path
 
-from colinthecompuer.utils import filtered_dict
+from colinthecomputer.utils import filtered_dict
 
 directory = Path('/home/user/colinfs/results') # TODO
 

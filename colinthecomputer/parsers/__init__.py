@@ -22,4 +22,14 @@ for module in modules:
     load_parsers(module)
 
 def run_parser(field, data):
-    parsers[field](data)
+    """Run available parser for field, on the given data.
+    
+    :param field: snapshot field to parse
+    :type field: str
+    :param data: data as consumed from the message queue
+    :type data: json
+    """
+    try:
+        parsers[field](data)
+    except Exception as error:
+        print(f"ERROR: {error}")
