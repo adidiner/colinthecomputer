@@ -7,6 +7,11 @@ from colinthecomputer.db_drivers import postgresql_driver
 drivers = {'postgresql': postgresql_driver}
 
 class Saver:
+    """Saver class, 
+    
+    :param db_url: database url, in the form db://username:password@host:port/db_name
+    :type db_url: str
+    """
     def __init__(self, db_url):
         # TODO: db url changes
         db_url = furl(db_url)
@@ -20,6 +25,14 @@ class Saver:
         return f'Saver(db_url={self.db_url})'
 
     def save(self, topic, data):
+        """Saves data of a given topic to the database.
+        
+        :param topic: the topic of the data 
+        (supported topics: user, pose, color_image, depth_image, feelings)
+        :type topic: str
+        :param data: the given data, as cosumed from the parsed result in the mq
+        :type data: json
+        """
         data = json.loads(data)
         # Save user information
         if topic == 'user':
