@@ -10,12 +10,28 @@ CHUNK = 1000000
 
 
 def to_stream(data):
+    """Converts data to byte-stream
+    
+    :param data: given data
+    :type data: bytes-like object (can be string)
+    :returns: bytestream
+    :rtype: io.BytesIO
+    """
     if type(data) is io.BytesIO:
         return data
     return io.BytesIO(data)
 
 
 def iterated_read(stream, size):
+    """Read size bytes from stream iterativly.
+    
+    :param stream: byte data stream
+    :type stream: bytes-like stream
+    :param size: amount to read
+    :type size: int
+    :returns: read data
+    :rtype: bytestring
+    """
     read = 0
     chunks = []
     while read + CHUNK < size:
@@ -42,6 +58,13 @@ def make_path(root, *dirs):
 
 
 def load_modules(root):
+    """Loads all modules under root path, returns module dict.
+    
+    :param root: path to root directory where the requested modules are defined
+    :type root: pathlib.Path (TODO)
+    :returns: module dictionary, in the form {'mod_name': mod}
+    :rtype: dict[str: module]
+    """
     modules = []
     sys.path.insert(0, str(root.parent))
     for path in root.iterdir():
@@ -50,7 +73,15 @@ def load_modules(root):
         modules.append(importlib.import_module(f'{root.name}.{path.stem}', package=root.name))
     return modules
 
+
 def load_drivers(modules):
+    """Load all modules marked as drivers in the given module.
+    
+    :param modules: module dictionary, in the form {'mod_name': mod}
+    :type modules: dict[str: module]
+    :returns: driver dictionary, in the form {'driver_name': driver}
+    :rtype: dict[str: module]
+    """
     drivers = {}
     for module in modules:
         name = pathlib.Path(module.__file__).stem
@@ -58,8 +89,14 @@ def load_drivers(modules):
             drivers[name[:-len('_driver')]] = module
     return drivers
 
+
 def filtered_dict(d, filter_keys):
+    """Filter d to a dict with only the filter keys.
+    
+    Returns a new dict, containing the values of d only if key is in filter_keys.
+    :param d: inirt dict
+    :type d: dict
+    :param filter_keys: keys to filter by
+    :type filter_keys: list
+    """
     return {key: value for key, value in d.items() if key in filter_keys}
-
-
-

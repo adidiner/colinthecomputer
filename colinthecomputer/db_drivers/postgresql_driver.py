@@ -20,6 +20,8 @@ docker run --name postgres -d -e POSTGRES_PASSWORD=password -e
 '''
 db = PostgresqlDatabase(None)
 
+################## TABLE CLASSES ##################
+
 class BaseModel(Model):
     class Meta:
         database = db
@@ -83,6 +85,8 @@ def init_db(name, host, port, username, password):
                   Pose, ColorImage, DepthImage, Feelings])
 
 
+################## SAVERS ##################
+
 def save_user(user_id, username, birthday, gender):
     user, _ = User.get_or_create(**locals())
     user.save()
@@ -126,6 +130,8 @@ def save_feelings(user_id, datetime, feelings):
 savers = {'pose': save_pose, 'color_image': save_color_image, 'depth_image': save_depth_image,
           'feelings': save_feelings, 'user': save_user} # TODO: automatic collection
 
+
+################## GETTERS ##################
 
 def get_users():
     users = []
