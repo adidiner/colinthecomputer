@@ -1,16 +1,23 @@
 from furl import furl
-from colinthecomputer.mq_drivers import rabbitmq_driver
-drivers = {'rabbitmq':rabbitmq_driver}
+import colinthecomputer.mq_drivers as drivers
 
 
 def produce_consumer(mq_url):
+	"""[summary]
+	
+	[description]
+	:param mq_url: [description]
+	:type mq_url: [type]
+	:returns: [description]
+	:rtype: {[type]}
+	"""
     mq_url = furl(mq_url)
     mq, host, port = mq_url.scheme, mq_url.host, mq_url.port
     driver = drivers[mq]
 
     def consume(parser, field):
         def on_message(topic, message):
-            driver.publish(parser(message), host, port, segment='results', topic=field) 
-        driver.consume(on_message, host, port, segment='raw_data', queue=field)
+            driver.topic_publish(parser(message), host, port, topic=field, segment='results') 
+        driver.fanout_consume(on_message, host, port, topic=field, segment='raw_data')
 
     return consume

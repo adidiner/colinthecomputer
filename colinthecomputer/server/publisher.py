@@ -1,4 +1,3 @@
-from colinthecomputer.mq_drivers import rabbitmq_driver
 from colinthecomputer.protocol import ColorImage, DepthImage, Snapshot
 from colinthecomputer.utils import make_path
 import colinthecomputer.mq_drivers as drivers
@@ -8,8 +7,9 @@ import json
 import pathlib
 import numpy as np
 from furl import furl
+import humps
 
-# todo env variable
+# TODO: env variable
 directory = pathlib.Path('/home/user/colinfs/raw_data') # TODO
 
 
@@ -38,7 +38,7 @@ def produce_publisher(mq_url):
         """
         user, snapshot = message
         user_id = user.user_id
-        message = user_message(user)
+        message = _json_user_message(user)
         driver.publish(message, host, port, segment='results', topic='user')
 
         # Save BLOBs to filesystem
@@ -51,14 +51,14 @@ def produce_publisher(mq_url):
         np.save(str(path / 'depth_image'), depth_image_data)
 
         # Create JSON representation of snapshot without BLOBs
-        message = snapshot_message(snapshot, user_id, path)
-        driver.publish(message, host, port, segment='raw_data')
+        message = _json_snapshot_message(snapshot, user_id, path)
+        driver.fanout_publish(message, host, port, segment='raw_data')
         print('published :)')
    
     return publish
 
 
-def user_message(user):
+def _json_user_message(user):
     """Convert protocol-user to json.
 
     :param user: user object
@@ -73,7 +73,8 @@ def user_message(user):
     print(user_dict)
     return json.dumps(user_dict)
 
-def snapshot_message(snapshot, user_id, image_path):
+
+def _json_snapshot_message(snapshot, user_id, image_path):
     """Convert protocol-snapshot to json, replacing binary data with path to data.
 
     :param snapshot: snapshot object
@@ -91,7 +92,8 @@ def snapshot_message(snapshot, user_id, image_path):
     snapshot_metadata.depth_image.ClearField('data')
     snapshot_dict = MessageToDict(snapshot_metadata, including_default_value_fields=True)
     snapshot_dict['user_id'] = user_id
-    snapshot_dict['color_image']['path'] = str(image_path / 'color_image')
-    snapshot_dict['depth_image']['path'] = str(image_path / 'depth_image.npy')
+    snapshot_dict['colorImage']['data'] = str(image_path / 'color_image')
+    snapshot_dict['depthImage']['data'] = str(image_path / 'depth_image.npy')
+    snapshot_dict = humps.decamelize(snapshot_dict)
     print(snapshot_dict)
     return json.dumps(snapshot_dict)

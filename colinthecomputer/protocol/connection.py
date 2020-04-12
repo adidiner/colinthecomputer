@@ -26,10 +26,7 @@ class Connection:
         :rtype: Connection
         """
         sock = socket.socket()
-        try:
-            sock.connect((host, port))
-        except ConnectionRefusedError:
-            return None
+        sock.connect((host, port))
         return Connection(sock)
 
     def __repr__(self):

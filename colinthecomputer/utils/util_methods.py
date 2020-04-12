@@ -58,5 +58,8 @@ def load_drivers(modules):
             drivers[name[:-len('_driver')]] = module
     return drivers
 
+def filtered_dict(d, filter_keys):
+    return {key: value for key, value in d.items() if key in filter_keys}
+
 
 
