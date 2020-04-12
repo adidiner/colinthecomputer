@@ -12,21 +12,21 @@ import humps
 # TODO: env variable
 directory = pathlib.Path('/home/user/colinfs/raw_data') # TODO
 
-
-def produce_publisher(mq_url):
-    """Produce a publish function for the server,
-    which receives a message and publishes it to the message queue.
+class Publisher:
+    """Publisher which publishes messages to a given message queue.
     
     :param mq_url: a url describing the mq, in the form 'mq://host:port'
     :type mq_url: str
-    :returns: a publish function
-    :rtype: function
     """
-    mq_url = furl(mq_url)
-    mq, host, port = mq_url.scheme, mq_url.host, mq_url.port
-    driver = drivers[mq]
-    
-    def publish(message):
+    def __init__(self, mq_url):
+        mq_url = furl(mq_url)
+        mq, self.host, self.port, self.mq_url = mq_url.scheme, mq_url.host, mq_url.port, mq_url
+        self.driver = drivers[mq]
+
+    def __repr__(self):
+        return f'Publisher(mq_url={mq_url})'
+
+    def publish(self, message):
         """Publish message to the message queue.
 
         The message is given as the protocol User, Snapshot
@@ -39,7 +39,7 @@ def produce_publisher(mq_url):
         user, snapshot = message
         user_id = user.user_id
         message = _json_user_message(user)
-        driver.topic_publish(message, host, port, topic='user', segment='results')
+        self.driver.topic_publish(message, self.host, self.port, topic='user', segment='results')
 
         # Save BLOBs to filesystem
         datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
@@ -52,10 +52,8 @@ def produce_publisher(mq_url):
 
         # Create JSON representation of snapshot without BLOBs
         message = _json_snapshot_message(snapshot, user_id, path)
-        driver.fanout_publish(message, host, port, segment='raw_data')
+        self.driver.fanout_publish(message, self.host, self.port, segment='raw_data')
         print('published :)')
-   
-    return publish
 
 
 def _json_user_message(user):

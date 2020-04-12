@@ -4,7 +4,7 @@ import sys
 
 from . import run_parser
 from . import parsers
-from .consumer import produce_consumer
+from .worker import Worker
 
 @click.group()
 def main():
@@ -25,10 +25,10 @@ def cli_parse(topic, data):
 @click.argument('mq_url', type=str)
 def cli_run_parser(parser, mq_url):
 	try:
-	    consume = produce_consumer(mq_url)
-	    consume(parsers[parser], parser)
+	    work = Worker(mq_url).work
+	    work(parsers[parser], parser)
 	except Exception as error:
-		print(f"ERROR: {error}")
+		print(f"ERROR in {__name__}: {error}")
 
 
 

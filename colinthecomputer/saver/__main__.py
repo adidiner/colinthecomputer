@@ -3,7 +3,7 @@ import sys
 
 
 from . import Saver
-from .consumer import produce_consumer
+from .consumer import Consumer
 
 @click.group()
 def main():
@@ -26,7 +26,7 @@ def cli_save(database, topic, data):
 @click.argument('mq_url', type=str)
 def cli_run_saver(db_url, mq_url):
     saver = Saver(db_url)
-    consume = produce_consumer(mq_url)
+    consume = Consumer(mq_url).consume
     consume(saver)
 
 

@@ -26,7 +26,7 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
                 config = receive_config(connection)
                 send_snapshot(connection, config, snapshot)
         except Exception as error:
-            print(f"ERROR: {error}")
+            print(f"ERROR in {__name__}: {error}")
             break
         #time.sleep(0.2)  # TODO: figure out threading problem
 

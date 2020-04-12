@@ -48,7 +48,7 @@ class Handler(threading.Thread):
                 self.publish((user, snapshot))
 
         except Exception as error:
-            print(f"ERROR: {error}")
+            print(f"ERROR in {__name__}: {error}")
             return
         
 

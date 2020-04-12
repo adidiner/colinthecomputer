@@ -1,3 +1,15 @@
+"""Database driver for postgresql, using peewee
+Classes represent sql tables:
+user
+translation
+rotation
+pose
+color image
+depth image
+feelings
+snapshot
+"""
+
 from peewee import *
 from playhouse.shortcuts import model_to_dict
 import psycopg2
@@ -69,6 +81,7 @@ def init_db(name, host, port, username, password):
     db.connect()
     db.create_tables([User, Snapshot, Translation, Rotation,
                   Pose, ColorImage, DepthImage, Feelings])
+
 
 def save_user(user_id, username, birthday, gender):
     user, _ = User.get_or_create(**locals())

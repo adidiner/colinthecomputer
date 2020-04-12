@@ -59,10 +59,23 @@ def get_blob_data(user_id, snapshot_id, result_name):
                      mimetype='image/jpg')
 
 def run_api_server(host, port, database_url):
-    db_url = furl(database_url)
-    db_name, *_ = db_url.path.segments
-    global driver
-    driver = drivers[db_url.scheme]
-    driver.init_db(name=db_name, host=db_url.host, port=db_url.port,
-                   username=db_url.username, password=db_url.password)
-    api.run(host=host, port=port)
+    """Run the API server on (host, port), quering the given db.
+    
+    :param host: API ip address
+    :type host: str
+    :param port: API port
+    :type port: int
+    :param database_url: specifies the database to serve from,
+    in the form db://username:password@host:port/db_name
+    :type database_url: str
+    """
+    try:
+        db_url = furl(database_url)
+        db_name, *_ = db_url.path.segments
+        global driver
+        driver = drivers[db_url.scheme]
+        driver.init_db(name=db_name, host=db_url.host, port=db_url.port,
+                       username=db_url.username, password=db_url.password)
+        api.run(host=host, port=port)
+    except Exception as error:
+        print(f"ERROR in {__name__}: {error}")

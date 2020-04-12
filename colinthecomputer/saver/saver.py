@@ -7,7 +7,7 @@ from colinthecomputer.db_drivers import postgresql_driver
 drivers = {'postgresql': postgresql_driver}
 
 class Saver:
-    """Saver class, 
+    """Saver which saves results to a given database.
     
     :param db_url: database url, in the form db://username:password@host:port/db_name
     :type db_url: str
