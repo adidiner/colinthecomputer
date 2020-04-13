@@ -45,5 +45,5 @@ class Listener:
         self.socket.close()
 
     def accept(self):
-        """Accept new connection"""
+        """Accept a new connection"""
         return Connection(self.socket.accept()[0])

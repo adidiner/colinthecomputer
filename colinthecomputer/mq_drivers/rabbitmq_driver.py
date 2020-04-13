@@ -1,10 +1,11 @@
 import pika
 
 
-def fanout_publish(message, host, port, *, segment):
-    """Fanout publish message to queue, on a given segment.
+def task_publish(message, host, port, *, segment):
+    """Publish task message to queue, on a given segment.
     
-    The message is published to all subscribers on the segment.
+    The message is published to all subscribered workers on the segment.
+    The task will be consumed by a single worker of each kind (see task_consume).
     :param message: message to be published
     :type message: json
     :param host: mq host address
@@ -30,12 +31,13 @@ def fanout_publish(message, host, port, *, segment):
     connection.close()
 
 
-def topic_publish(message, host, port, *, topic, segment):
-    """Topic publish message to queue, on a given segment.
+def share_publish(message, host, port, *, topic, segment):
+    """Share message to queue, on a given segment.
     
     The message will be routed by the given topic, 
     meaning only subscribers subscribed to the given topic 
     will receive the message.
+    All subscribers of a topic will receive the message.
     :param message: message to be published
     :type message: json
     :param host: mq host address
@@ -64,12 +66,12 @@ def topic_publish(message, host, port, *, topic, segment):
     connection.close()
 
 
-def fanout_consume(on_message, host, port, topic, segment):
-    """Consume fanout-published messages, perform on_message when receiving.
+def task_consume(on_message, host, port, topic, segment):
+    """Consume tasks, perform on_message when receiving.
 
-    Topic is used to specify the type of the consumer - 
-    if several comsumers are active with the same topic,
-    the messages will be distributed between them.
+    Topic is used to specify the type of the worker - 
+    if several workers are active with the same topic,
+    the tasks will be distributed between them.
     :param on_message: an action to perform when receiving message,
     arguments are the topic and the message body
     :type on_message: function
@@ -108,10 +110,11 @@ def fanout_consume(on_message, host, port, topic, segment):
     connection.close()
 
 
-def topic_consume(on_message, host, port, topics, segment):
-    """Consume topic-published messages, perform on_message when receiving.
+def share_consume(on_message, host, port, topics, segment):
+    """Consume shared messages, perform on_message when receiving.
     
     Consumes all messages published with the specified topics.
+    All consumers of a given topic will view the shared p
     :param on_message: an action to perform when receiving message,
     arguments are the topic and the message body
     :type on_message: function

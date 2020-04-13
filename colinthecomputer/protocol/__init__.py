@@ -1,3 +1,7 @@
+"""Protocol utilites, including protobuf classes and
+network connection and listener abstractions.
+"""
+
 from .messages import User
 from .messages import Snapshot
 from .messages import Pose
