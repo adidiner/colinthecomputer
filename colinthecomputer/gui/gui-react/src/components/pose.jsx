@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Loading from './loading';
 
-const API_ROOT = "http://127.0.0.1:8000"
-
 
 class Pose extends Component {
   state = {loaded: null, translation: null, rotation: null}

@@ -5,6 +5,7 @@ import Loading from './loading'
 class Users extends Component {
   state = {users: null}
   render() {
+    console.log(window.api_root)
     if (!this.state.users) {
       return (
         <Loading />
