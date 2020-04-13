@@ -1,4 +1,4 @@
-import click
+"""import click
 import sys
 
 from . import upload_sample
@@ -39,17 +39,18 @@ def run_client(address, sample):
 def run_server(address, data):
     _run_server(_parse_address(address), data)
 
-
+"""
 """@main.command('read')
 @click.argument('path', type=str)
 @click.argument('file_format', type=str)
 def read(path, file_format):
     _read(path, file_format)"""
 
-
+"""
 if __name__ == '__main__':
     #try:
     main(prog_name='colin-the-computer')
     '''except Exception as error:
         print(f'ERROR: {error}')
         sys.exit(1)'''
+"""

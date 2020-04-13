@@ -5,7 +5,23 @@
 
 A project for Advanced System Design course, simulating a Brain Computer Interface. See [full documentation](https://colin-the-computer.readthedocs.io/en/latest).
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+- [Usage](#usage)
+    - [The Client](#the-client)
+    - [The Server](#the-server)
+        - [The Publisher](#the-publisher)
+    - [The Parsers](#the-parsers)
+    - [The Saver](#the-saver)
+    - [The API](#the-api)
+    - [The CLI](#the-cli)
+    - [The GUI](#the-gui)
+
 ## Installation
+
+TODO
 
 1. Clone the repository and enter it:
 
@@ -31,89 +47,85 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
     $ pytest tests/
     ...
     ```
+
+## Basic Usage
+
+TODO
+
 ## Usage
 
-The `colin` package provides the following class:
+The `colinthecomputer` package consists of 7 subpackages:
+- [The Client](#the-client)
+- [The Server](#the-server)
+- [The Parsers](#the-parsers)
+- [The Saver](#the-saver)
+- [The API](#the-api)
+- [The CLI](#the-cli)
+- [The GUI](#the-gui)
 
-- `Thought`
+### The Client
 
-    This class represents a thought, which is defined by a user, a timestamp and the thought itself.
+Available as `colinthecomputer.client`.
 
-    It provides the `serialize` method to serialize the thought as bytes, and the `desrialize` class method to create a new thought object from a serilized thought.
+Provides the following function:
+
+- `upload_sample`
+    Used to read and upload a snapshots sample to the server.
 
     ```pycon
-    >>> from colin import Thought
-    >>> thought1 = Thought(1, datetime(2000, 1, 1, 12, 0), "I'm hungry")
-	>>> thought1
-	Thought(user_id=1, timestamp=datetime.datetime(2000, 1, 1, 12, 0), thought="I'm hungry")
-	>>> print(thought1)
-	[2000-01-01 12:00:00] user 1: I'm hungry
-    >>> thought1.serialize()
-	b"\x01\x00\x00\x00\x00\x00\x00\x00…"
-	>>> thought2 = Thought.deserialize(_)
-	>>> thought1 == thought2
-	True
+    >>> from cortex.client import upload_sample
+    >>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz')
+    … # upload path to host:port
     ```
 
-The package also provides the following functions:
+The client also provides the following CLI:
+
+```sh
+$ python -m cortex.client upload-sample \
+      -h/--host '127.0.0.1'             \
+      -p/--port 8000                    \
+      'snapshot.mind.gz'
+…
+```
+
+### The Server
+
+Available as `colinthecomputer.server`.
+
+Provides the following function:
+
 - `run_server`
+    Runs the server in a given address. 
+    The server recieves snapshots from client connection, and uses a passed publish function to publish them.
+    Use the [Publisher](#the-publisher) to obtain a publishing function to the message queue.
 
-    This function runs a server in a given addres, which recieves serilized thoughts from users, and stores them in a given data directory.
+The server also provides the following CLI:
+
+```sh
+$ python -m cortex.server run-server \
+      -h/--host '127.0.0.1'          \
+      -p/--port 8000                 \
+      'rabbitmq://127.0.0.1:5672/'
+```
+
+The `run-server` command recieves a URL to a message queue, which the server will publish the recieved snapshots to.
+The URL is of the form `'mq://host:port`.
+
+#### The Publisher
+
+TODO (should this even be here?)
+
+### The Parsers
+
+Available as `colinthecomputer.parsers`
+
+Provides the following function:
+
+- `run_parser`
+    Runs a parser to a given field, parsing raw data as consumed from the message queue (a.k.a the snapshots published by the server), and returns the result.
 
     ```pycon
-    >>> from colin import run_server
-    >>> run_server(('127.0.0.1', 5000), 'data/')
+    >>> from cortex.parsers import run_parser
+    >>> data = … 
+    >>> result = run_parser('pose', data)
     ```
-
-- `upload_thought`
-
-    This function uploads a thought (user id and thought) to a connection in a given address.
-
-    ```pycon
-    >>> from colin import upload_thought
-    >>> upload_thought(('127.0.0.1', 5000), 1, "I'm hungery")
-    ```
-    If the upload time is for example [2000-01-01 12:00:00], the server from the previous example would write "I'm hungry" to /data/1/2000-01-01_12-00-00.txt
-
-- `run_webserver`
-
-    This function runs a webserver at a given address, serving the data from a given directory
-
-    ```pycon
-    >>> from colin import run_webserver
-    >>> run_webserver(('127.0.0.1', 8000), 'data/')
-    ```
-
-The `colin` package also provides a command-line interface:
-
-```sh
-$ python -m colin
-Usage: colin [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --help  Show this message and exit.
-
-Commands:
-  serve
-  upload
-  webserve
-```
-
-The CLI provides the `serve`, `upload` and `webserve` command, corresponding to the `run_server`, `upload_thought` and `run_webserver` methods.
-
-#### Usage examples:
-```sh
-$ python -m colin serve '127.0.0.1:5000' '/data'
-# serving at host 127.0.0.1, port 5000
-```
-
-```sh
-$ python -m colin upload '127.0.0.1:5000' 1 "I'm hungry"
-# upload "I'm hungry" from user 1
-```
-
-```sh
-$ python -m colin webserve '127.0.0.1:8000' '/data'
-# serving the data directory in a webserver, at host 127.0.0.1 and port 8000
-```
-
