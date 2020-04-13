@@ -61,7 +61,12 @@ class SnapshotInfo extends Component {
       );
   }
 
-
+  renderDatetime(timestamp) {
+    var date = new Date(timestamp);
+    return (
+      <p>{`${date.toLocaleString()}`}</p>
+      );
+  }
 
   render() {
     if (!this.state.loaded) {
@@ -78,11 +83,14 @@ class SnapshotInfo extends Component {
             <img src="/icons/colin.PNG" width="40px" class="d-inline-block align-top" alt=""/>
           </a>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+            <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href={`/users/${this.state.user_id}/snapshots/`}>
                 <img src="/arrows/back.PNG" width="40px" class="d-inline-block align-top" alt=""/>
               </a>
             </div>
+            <span class="navbar-text">
+              {this.renderDatetime(this.state.datetime)}
+            </span>
           </div>
         </nav>
         <div class="mt-3 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
