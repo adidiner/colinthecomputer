@@ -4,7 +4,8 @@ from werkzeug.routing import BaseConverter
 
 
 API_HOST = '127.0.0.1'
-API_PORT = 8000
+API_PORT = 5000
+
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
@@ -21,31 +22,41 @@ gui.url_map.converters['regex'] = RegexConverter
 @gui.route('/', defaults={'path': ''})
 @gui.route('/<path:path>')
 def serve_react(path):
+    """FLASK FUNCTION
+    Serve the react app.
+    All routes are routed to the react app.
+    
+    :param path: path browsed (doesn't have real usage)
+    :type path: str
+    """
     api_root = f"http://{API_HOST}:{API_PORT}"
     return render_template("index.html", api_root=api_root)
 
 
-@gui.route("/<regex(r'(.*?)\.(json|txt|png|PNG|ico|js)$'):file>", methods=["GET"])
+@gui.route("/<regex(r'(.*?)\.(png|PNG|ico|js)$'):file>", methods=["GET"])
 def public(file):
-    print(f"sending gui-react/build/{file}")
+    """FLASK FUNCITON
+    Routes to all resources in the react public folder.
+    
+    :param file: filename from /public
+    :type file: str
+    """
     return send_from_directory('gui-react/build', file)
 
-"""@gui.route('/')
-def serve_react(path):
-    api_root = f"http://{API_HOST}:{API_PORT}"
-    return render_template("index.html", api_root=api_root)
-"""
 
-
-"""@gui.route('/', defaults={'path': ''})
-@gui.route('/<path:path>')
-def serve(path):
-    if path != "" and os.path.exists("gui-react/build/static/" + path):
-        return send_from_directory('gui-react/build/static', path)
-    else:
-        return send_from_directory('gui-react/build/static', 'index.html')"""
-
-def run_server(host, port, api_host, api_port):
+def run_server(host='127.0.0.1', port=8080, api_host='127.0.0.1', api_port=5000):
+    """"Run GUI server on given (host, port),
+    quering the API in (api_host, api_port).
+    
+    :param host: GUI ip address, defaults to '127.0.0.1'
+    :type host: str, optional
+    :param port: GUI port, defaults to 8080
+    :type port: int, optional
+    :param api_host: API ip address, defaults to '127.0.0.1'
+    :type api_host: str, optional
+    :param api_port: API port, defaults to 5000
+    :type api_port: int, optional
+    """
     global API_HOST, API_PORT
     API_HOST = api_host
     API_PORT = api_port
