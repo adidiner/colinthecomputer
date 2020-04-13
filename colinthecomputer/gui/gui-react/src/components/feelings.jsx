@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Loading from './loading';
 
-const API_ROOT = "http://127.0.0.1:8000"
-
 
 class Feelings extends Component {
   state = {loaded: null, feelings: null}
@@ -12,7 +10,6 @@ class Feelings extends Component {
         <Loading />
         );
     }
-    console.log(this.state.feelings)
     var feelings = [];
     for (let i in Object.keys(this.state.feelings)) {
       let key = Object.keys(this.state.feelings)[i];
@@ -29,11 +26,9 @@ class Feelings extends Component {
       } else {
         icon = `/icons/${key}-1.PNG`
       } 
-      console.log(icon)
       feelings.push(<img src={icon} title={key} alt={`${key}: ${value.toFixed(3)}`} width='35px'/>);
     } 
 
-    console.log("ahhhhhhhhhhh" + feelings)
     return (
       <div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center', width:'60vh', height: '40vh'}}>
         <div class="text-center">
@@ -47,7 +42,7 @@ class Feelings extends Component {
   componentDidMount = () => {
     var user_id = this.props.user_id;
     var snapshot_id = this.props.snapshot_id;
-    fetch(`${API_ROOT}/users/${user_id}/snapshots/${snapshot_id}/feelings`, {
+    fetch(`${window.api_root}/users/${user_id}/snapshots/${snapshot_id}/feelings`, {
       method: 'GET',
       mode:'cors',
       dataType: 'json'

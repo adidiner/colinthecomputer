@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Loading from './loading'
 
-const API_ROOT = "http://127.0.0.1:8000"
 
 class UserInfo extends Component {
   state = {user_info: null}
@@ -22,7 +21,6 @@ class UserInfo extends Component {
             <span class="badge badge-pill badge-info">gender: other</span>
           </div>
           );
-    // todo <span class="bagde badge-pill badge-light">gender</span>
     }
   }
 
@@ -76,7 +74,7 @@ class UserInfo extends Component {
   componentDidMount = () => {
     // console.log(this.props);
     var id = this.props.match.params.user_id;
-    fetch(API_ROOT + '/users/' + id, {
+    fetch(window.api_root + '/users/' + id, {
       method: 'GET',
       mode:'cors',
       dataType: 'json'

@@ -6,13 +6,11 @@ import Feelings from './feelings';
 import {Link} from "react-router-dom";
 import _ from 'lodash';
 
-const API_ROOT = "http://127.0.0.1:8000"
 
 class SnapshotInfo extends Component {
   state = {loaded: null, user_id: null, datetime: null, snapshot_id: null, results: null}
 
   renderField(field, component) {
-    console.log(field, this.state.results, this.state.results.includes(field));
     if (!this.state.results.includes(field)) {
       return (
         <div class="m-2 container" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
@@ -135,7 +133,7 @@ class SnapshotInfo extends Component {
     // console.log(this.props);
     var user_id = this.props.match.params.user_id;
     var snapshot_id = this.props.match.params.snapshot_id;
-    fetch(API_ROOT + '/users/' + user_id + '/snapshots/' + snapshot_id, {
+    fetch(window.api_root + '/users/' + user_id + '/snapshots/' + snapshot_id, {
       method: 'GET',
       mode:'cors',
       dataType: 'json'

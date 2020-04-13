@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Loading from './loading'
 
-const API_ROOT = "http://127.0.0.1:8000"
 
 class Users extends Component {
   state = {users: null}
@@ -36,14 +35,13 @@ class Users extends Component {
   }
 
   componentDidMount = () => {
-    fetch(API_ROOT + '/users', {
+    fetch(window.api_root + '/users', {
       method: 'GET',
       mode:'cors',
       dataType: 'json'
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       this.setState({users: data});
     });
   }

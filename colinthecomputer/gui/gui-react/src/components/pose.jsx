@@ -41,7 +41,7 @@ class Pose extends Component {
   componentDidMount = () => {
     var user_id = this.props.user_id;
     var snapshot_id = this.props.snapshot_id;
-    fetch(API_ROOT + '/users/' + user_id + '/snapshots/' + snapshot_id + '/pose', {
+    fetch(window.api_root + '/users/' + user_id + '/snapshots/' + snapshot_id + '/pose', {
       method: 'GET',
       mode:'cors',
       dataType: 'json'

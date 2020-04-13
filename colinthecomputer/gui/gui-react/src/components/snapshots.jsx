@@ -3,7 +3,6 @@ import Loading from './loading';
 import {Link} from "react-router-dom";
 import _ from 'lodash';
 
-const API_ROOT = "http://127.0.0.1:8000"
 
 class Snapshots extends Component {
   state = {snapshots: null}
@@ -45,8 +44,7 @@ class Snapshots extends Component {
         </div>
         );
     }
-      //lis.push(<div> {row} </div>);
-
+    
     return (
       <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -75,7 +73,7 @@ class Snapshots extends Component {
   componentDidMount = () => {
     // console.log(this.props);
     var user_id = this.props.match.params.user_id;
-    fetch(API_ROOT + '/users/' + user_id + '/snapshots', {
+    fetch(window.api_root + '/users/' + user_id + '/snapshots', {
       method: 'GET',
       mode:'cors',
       dataType: 'json'

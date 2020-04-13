@@ -9,13 +9,6 @@ import SnapshotInfo from './components/snapshot_info'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const element = <h1>hey yall</h1>;
-
-/*ReactDOM.render(
-  <Users />,
-  document.getElementById('root')
-);*/
-
 const routing = (
   <Router>
     <div>
