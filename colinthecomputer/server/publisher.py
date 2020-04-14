@@ -39,7 +39,7 @@ class Publisher:
         user, snapshot = message
         user_id = user.user_id
         message = _json_user_message(user)
-        self.driver.topic_publish(message, self.host, self.port, topic='user', segment='results')
+        self.driver.share_publish(message, self.host, self.port, topic='user', segment='results')
 
         # Save BLOBs to filesystem
         datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
@@ -52,7 +52,7 @@ class Publisher:
 
         # Create JSON representation of snapshot without BLOBs
         message = _json_snapshot_message(snapshot, user_id, path)
-        self.driver.fanout_publish(message, self.host, self.port, segment='raw_data')
+        self.driver.task_publish(message, self.host, self.port, segment='raw_data')
         print('published :)')
 
 

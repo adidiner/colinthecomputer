@@ -74,6 +74,25 @@ def load_modules(root):
     return modules
 
 
+def load_packages(root):
+    """Loads all modules under root path, returns module dict.
+    
+    :param root: path to root directory where the requested modules are defined
+    :type root: pathlib.Path (TODO)
+    :returns: module dictionary, in the form {'mod_name': mod}
+    :rtype: dict[str: module]
+    """
+    packages = []
+    sys.path.insert(0, str(root.parent))
+    for path in root.iterdir():
+        if path.name.startswith('_') or not path.is_dir():
+            continue
+        if (path / pathlib.Path('__init__.py')) not in [child for child in path.iterdir()]:
+            continue
+        packages.append(importlib.import_module(f'{root.name}.{path.stem}', package=root.name))
+    return packages
+
+
 def load_drivers(modules):
     """Load all modules marked as drivers in the given module.
     
@@ -84,7 +103,7 @@ def load_drivers(modules):
     """
     drivers = {}
     for module in modules:
-        name = pathlib.Path(module.__file__).stem
+        name = module.__name__.split('.')[-1]
         if name.endswith('_driver'):
             drivers[name[:-len('_driver')]] = module
     return drivers

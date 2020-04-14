@@ -2,9 +2,7 @@ from furl import furl
 import json
 import datetime as dt
 
-from colinthecomputer.db_drivers import postgresql_driver
-
-drivers = {'postgresql': postgresql_driver}
+from colinthecomputer.db_drivers import drivers
 
 class Saver:
     """Saver which saves results to a given database.
@@ -13,8 +11,8 @@ class Saver:
     :type db_url: str
     """
     def __init__(self, db_url):
-        # TODO: db url changes
-        db_url = furl(db_url)
+        self.db_url = db_url
+        db_url = furl(self.db_url)
         db_name, *_ = db_url.path.segments
         driver = drivers[db_url.scheme]
         driver.init_db(name=db_name, host=db_url.host, port=db_url.port,

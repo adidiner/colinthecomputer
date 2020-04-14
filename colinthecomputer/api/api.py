@@ -7,10 +7,8 @@ from furl import furl
 import io
 
 
-from colinthecomputer.db_drivers import postgresql_driver
-
-drivers = {'postgresql': postgresql_driver}
-driver = None
+from colinthecomputer.db_drivers import drivers
+getters = None
 
 api = Flask(__name__)
 CORS(api)
@@ -22,7 +20,7 @@ def get_users():
     :returns: users json, in the form [{"user_id":id, "username":name}, ...]
     :rtype: json
     """
-    return jsonify(driver.get_users())
+    return jsonify(getters['users']())
 
 @api.route('/users/<int:user_id>')
 def get_user_info(user_id):
@@ -34,7 +32,7 @@ def get_user_info(user_id):
     {"birthday":sec from epoch,"gender":"m"/"f"/"o","user_id":id,"username":name}
     :rtype: json
     """
-    result = driver.get_user_info(user_id)
+    result = getters['user_info'](user_id)
     if not result:
         abort(404)
     return jsonify(result)
@@ -49,7 +47,7 @@ def get_snapshots(user_id):
     [{"datetime":milisec from epoch,"snapshot_id":id}, ...]
     :rtype: json
     """
-    return jsonify(driver.get_snapshots(user_id))
+    return jsonify(getters['snapshots'](user_id))
 
 @api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>')
 def get_snapshot_info(user_id, snapshot_id):
@@ -63,7 +61,7 @@ def get_snapshot_info(user_id, snapshot_id):
     {"datetime":milisec frm epoch,"results":[available results],"snapshot_id":id}
     :rtype: json
     """
-    result = driver.get_snapshot_info(snapshot_id)
+    result = getters['snapshot_info'](snapshot_id)
     if not result:
         abort(404)
     return jsonify(result)
@@ -83,7 +81,7 @@ def get_result(user_id, snapshot_id, result_name):
     for BLOBS, the json contains path to the binary data
     :rtype: json
     """
-    result = driver.get_result(snapshot_id, result_name=result_name)
+    result = getters['result'](snapshot_id, result_name=result_name)
     if not result:
         abort(404)
     blobs = ['color_image', 'depth_image']
@@ -105,7 +103,7 @@ def get_blob_data(user_id, snapshot_id, result_name):
     :rtype: jpg
     """
     blobs = ['color_image', 'depth_image']
-    result = driver.get_result(snapshot_id, result_name=result_name)
+    result = getters['result'](snapshot_id, result_name=result_name)
     if result_name not in blobs or not result:
         abort(404)
     path = result['path']
@@ -127,8 +125,9 @@ def run_api_server(host, port, database_url):
     try:
         db_url = furl(database_url)
         db_name, *_ = db_url.path.segments
-        global driver
+        global getters
         driver = drivers[db_url.scheme]
+        getters = driver.getters
         driver.init_db(name=db_name, host=db_url.host, port=db_url.port,
                        username=db_url.username, password=db_url.password)
         api.run(host=host, port=port)

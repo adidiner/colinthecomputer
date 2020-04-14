@@ -30,7 +30,7 @@ class Consumer:
             topics = ['user', 'pose', 'color_image', 'depth_image', 'feelings']
         def on_message(topic, message):
             saver.save(topic, message)
-        self.driver.topic_consume(on_message, self.host, self.port,
+        self.driver.share_consume(on_message, self.host, self.port,
                        topics=topics,
                        segment='results')
 
