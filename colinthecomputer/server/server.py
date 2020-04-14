@@ -1,11 +1,13 @@
 import pathlib
 import threading
 
-from colinthecomputer.protocol import Listener
+'''from colinthecomputer.protocol import Listener
 from colinthecomputer.parsers import run_parser
 from colinthecomputer.parsers import parsers
-from colinthecomputer.protocol import User, Config, Snapshot
+from colinthecomputer.protocol import User, Config, Snapshot'''
 
+import colinthecomputer.protocol as ptc
+from colinthecomputer.parsers import parsers
 
 HEADER_SIZE = 20
 
@@ -33,15 +35,15 @@ class Handler(threading.Thread):
             with self.client:
                 # Receive hello
                 data = self.client.receive_message()
-                user = User()
+                user = ptc.User()
                 user.ParseFromString(data)
                 # Send config
-                config = Config(fields=parsers.keys())
+                config = ptc.Config(fields=parsers.keys())
                 data = config.SerializeToString()
                 self.client.send_message(data)
                 # Receive snapshot
                 data = self.client.receive_message()
-                snapshot = Snapshot()
+                snapshot = ptc.Snapshot()
                 snapshot.ParseFromString(data)
 
             with Handler.lock:
@@ -50,21 +52,25 @@ class Handler(threading.Thread):
         except Exception as error:
             print(f"ERROR in {__name__}: {error}")
             return
-        
+       
+def print_message(message):
+    print(message) 
 
-def run_server(host, port, publish):
+
+def run_server(host='127.0.0.1', port=8000, publish=print_message):
     """Run server, which starts a listner and handles 
     every client connection in a new thread.
     
-    :param host: server ip address
-    :type host: str
-    :param port: server port
-    :type port: int
-    :param publish: publishing function to incoming snapshots
-    :type publish: callable
+    :param host: server ip address, defaults to '127.0.0.1'
+    :type host: str, optional
+    :param port: server port, defaults to 8000
+    :type port: int, optional
+    :param publish: publishing function to incoming snapshots,
+    defaults to printing to STDOUT
+    :type publish: callable, optional
     """
     # Setup server
-    with Listener(host=host, port=port) as server:
+    with ptc.Listener(host=host, port=port) as server:
         while True:
             # Recieve message
             client = server.accept()

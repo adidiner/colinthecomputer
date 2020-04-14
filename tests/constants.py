@@ -46,3 +46,4 @@ CONFIG = Config(fields=['pose',
                         'color_image', 
                         'depth_image', 
                         'feelings'])
+
