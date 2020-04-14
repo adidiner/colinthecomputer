@@ -3,7 +3,7 @@ import time
 
 import pytest
 
-from colin.utils import Listener
+from colinthecomputer.protocol import Listener
 
 
 _PORT = 1234

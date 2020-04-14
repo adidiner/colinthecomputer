@@ -3,7 +3,7 @@ import time
 
 import pytest
 
-from colin.utils import Connection
+from colinthecomputer.protocol import Connection
 
 
 _PORT = 1234

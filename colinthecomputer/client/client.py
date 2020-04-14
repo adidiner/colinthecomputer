@@ -1,9 +1,11 @@
 import time
 
-from colinthecomputer.protocol import Connection
-from .reader import Reader
-from colinthecomputer.protocol import User, Config, Snapshot
+'''from colinthecomputer.protocol import Connection
+from colinthecomputer.client.reader import Reader
+from colinthecomputer.protocol import User, Config, Snapshot'''
 
+import colinthecomputer.protocol as ptc
+import colinthecomputer.client.reader as rd
 
 def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
     """Uploads sample from given path to the server.
@@ -18,10 +20,10 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
      defaults to protobuf
     :type file_format: str, optional
     """
-    reader = Reader(path, file_format)
+    reader = rd.Reader(path, file_format)
     for snapshot in reader:
         try:
-            with Connection.connect(host, port) as connection:
+            with ptc.Connection.connect(host, port) as connection:
                 send_hello(connection, reader.user)
                 config = receive_config(connection)
                 send_snapshot(connection, config, snapshot)
@@ -52,7 +54,7 @@ def receive_config(connection):
     :rtype: Config
     """
     message = connection.receive_message()
-    config = Config()
+    config = ptc.Config()
     config.ParseFromString(message)
     return config
 
@@ -67,6 +69,6 @@ def send_snapshot(connection, config, snapshot):
     :type snapshot: Snapshot
     """
     fields = {field: snapshot[field] for field in config}
-    snapshot = Snapshot(datetime=snapshot.datetime, **fields)
+    snapshot = ptc.Snapshot(datetime=snapshot.datetime, **fields)
     message = snapshot.SerializeToString()
     connection.send_message(message)
