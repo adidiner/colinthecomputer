@@ -9,8 +9,6 @@ import numpy as np
 from furl import furl
 import humps
 
-# TODO: env variable
-directory = pathlib.Path('/home/user/colinfs/raw_data') # TODO
 
 class Publisher:
     """Publisher which publishes messages to a given message queue.
@@ -18,13 +16,14 @@ class Publisher:
     :param mq_url: a url describing the mq, in the form 'mq://host:port'
     :type mq_url: str
     """
-    def __init__(self, mq_url):
+    def __init__(self, mq_url, directory):
         mq_url = furl(mq_url)
         mq, self.host, self.port, self.mq_url = mq_url.scheme, mq_url.host, mq_url.port, mq_url
         self.driver = drivers[mq]
+        self.directory = pathlib.Path(directory)
 
     def __repr__(self):
-        return f'Publisher(mq_url={mq_url})'
+        return f'Publisher(mq_url={self.mq_url}, blob_dir={self.directory})'
 
     def publish(self, message):
         """Publish message to the message queue.
@@ -42,10 +41,10 @@ class Publisher:
         self.driver.share_publish(message, self.host, self.port, topic='user', segment='results')
 
         # Save BLOBs to filesystem
-        datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
-        path = directory / str(user_id) / datetime
+        # datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
+        path = self.directory / str(user_id) / str(snapshot.datetime)
         if not path.exists():
-            path.mkdir()
+            path.mkdir(parents=True)
         (path / 'color_image').write_bytes(snapshot.color_image.data)
         depth_image_data = np.array(snapshot.depth_image.data)
         np.save(str(path / 'depth_image'), depth_image_data)
@@ -68,7 +67,6 @@ def _json_user_message(user):
     user_dict = MessageToDict(user)
     user_dict['user_id'] = int(user_dict.pop('userId'))
     user_dict['gender'] = user.get_gender_char()
-    print(user_dict)
     return json.dumps(user_dict)
 
 
@@ -93,5 +91,4 @@ def _json_snapshot_message(snapshot, user_id, image_path):
     snapshot_dict['colorImage']['data'] = str(image_path / 'color_image')
     snapshot_dict['depthImage']['data'] = str(image_path / 'depth_image.npy')
     snapshot_dict = humps.decamelize(snapshot_dict)
-    print(snapshot_dict)
     return json.dumps(snapshot_dict)

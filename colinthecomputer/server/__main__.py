@@ -14,7 +14,8 @@ def main():
 @click.option('-p', '--port', default=8000, type=int)
 @click.argument('mq_url', type=str)
 def cli_run_server(host, port, mq_url):
-    publish = Publisher(mq_url).publish
+	# TODO - directory is env var
+    publish = Publisher(mq_url, '/home/user/colinfs/raw_data').publish
     run_server(host=host, port=port, publish=publish)
 
 def dummy_publish(message):
