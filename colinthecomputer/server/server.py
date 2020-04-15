@@ -10,6 +10,7 @@ import colinthecomputer.protocol as ptc
 from colinthecomputer.parsers import parsers
 
 HEADER_SIZE = 20
+run = True
 
 
 class Handler(threading.Thread):
@@ -35,6 +36,10 @@ class Handler(threading.Thread):
             with self.client:
                 # Receive hello
                 data = self.client.receive_message()
+                if (data == b'kill'):
+                    global run
+                    run = False
+                    return
                 user = ptc.User()
                 user.ParseFromString(data)
                 # Send config
@@ -50,6 +55,7 @@ class Handler(threading.Thread):
                 self.publish((user, snapshot))
 
         except Exception as error:
+            raise
             print(f"ERROR in {__name__}: {error}")
             return
        
@@ -71,7 +77,7 @@ def run_server(host='127.0.0.1', port=8000, publish=print_message):
     """
     # Setup server
     with ptc.Listener(host=host, port=port) as server:
-        while True:
+        while run:
             # Recieve message
             client = server.accept()
             handler = Handler(client, publish)

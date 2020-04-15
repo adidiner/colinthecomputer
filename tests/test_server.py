@@ -15,8 +15,8 @@ import colinthecomputer.client.reader as rd
 class MockListener:
     received_messages = []
     class MockClient:
-        def __init__(self, snapshot):
-            self.snapshot = snapshot
+        def __init__(self, connection):
+            self.connection = connection
             self.gets = 0
 
         def __enter__(self):
@@ -29,12 +29,14 @@ class MockListener:
             MockListener.received_messages.append(message)
 
         def receive_message(self):
+            if self.connection == 2:
+                return b'kill'
             if self.gets == 0:
+                self.gets += 1
                 return USER.SerializeToString()
-                self.gets += 1
             if self.gets == 1:
-                return SNAPSHOTS[snapshot].SerializeToString()
                 self.gets += 1
+                return SNAPSHOTS[self.connection].SerializeToString()
 
         def close(self):
             return
@@ -55,7 +57,7 @@ class MockListener:
         return
 
     def accept(self):
-        if self.connections < 2:
+        if self.connections < 3:
             client = MockListener.MockClient(self.connections)
             self.connections += 1
             return client
@@ -70,11 +72,12 @@ def mock_listener(monkeypatch):
 
 def test_run_server(capsys, mock_listener):
     MockListener.received_messages = []
+    run_server()
     stdout, stderr = capsys.readouterr()
-    thread = threading.Thread(target=run_server)
-    thread.start()
-    time.sleep(3)
-    #thread.join()
-    config_message = CONFIG.SerializeToString()
-    assert MockListener.received_messages == [config_message, config_message]
-    assert stdout == f"({USER}, {SNAPSHOTS[0]})\n({USER}, {SNAPSHOTS[1]})"
+    config = ptc.Config()
+    received_cofigs = []
+    for message in MockListener.received_messages:
+        config.ParseFromString(message)
+        received_cofigs.append(set(config.fields))
+    assert received_cofigs == [set(CONFIG.fields), set(CONFIG.fields)]
+    assert stdout == f"{(USER, SNAPSHOTS[0])!r}\n{(USER, SNAPSHOTS[1])!r}\n"
