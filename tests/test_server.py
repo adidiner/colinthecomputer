@@ -13,7 +13,6 @@ import colinthecomputer.client.reader as rd
 
 
 class MockListener:
-    received_messages = []
     class MockClient:
         def __init__(self, connection):
             self.connection = connection
@@ -26,7 +25,7 @@ class MockListener:
             return
 
         def send_message(self, message):
-            MockListener.received_messages.append(message)
+            return
 
         def receive_message(self):
             if self.connection == 2:
@@ -74,10 +73,4 @@ def test_run_server(capsys, mock_listener):
     MockListener.received_messages = []
     run_server()
     stdout, stderr = capsys.readouterr()
-    config = ptc.Config()
-    received_cofigs = []
-    for message in MockListener.received_messages:
-        config.ParseFromString(message)
-        received_cofigs.append(set(config.fields))
-    assert received_cofigs == [set(CONFIG.fields), set(CONFIG.fields)]
     assert stdout == f"{(USER, SNAPSHOTS[0])!r}\n{(USER, SNAPSHOTS[1])!r}\n"

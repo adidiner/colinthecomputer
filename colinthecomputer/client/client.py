@@ -25,8 +25,7 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
         try:
             with ptc.Connection.connect(host, port) as connection:
                 send_hello(connection, reader.user)
-                config = receive_config(connection)
-                send_snapshot(connection, config, snapshot)
+                send_snapshot(connection, snapshot)
         except Exception as error:
             print(f"ERROR in {__name__}: {error}")
             break
@@ -59,7 +58,7 @@ def receive_config(connection):
     return config
 
 
-def send_snapshot(connection, config, snapshot):
+def send_snapshot(connection, snapshot):
     """Sends snapshot message to a server, including only the fields specifed in config.
     :param connection: connection object to the server
     :type connection: Connection
@@ -68,7 +67,5 @@ def send_snapshot(connection, config, snapshot):
     :param snapshot: snapshot to be sent
     :type snapshot: Snapshot
     """
-    fields = {field: snapshot[field] for field in config}
-    snapshot = ptc.Snapshot(datetime=snapshot.datetime, **fields)
     message = snapshot.SerializeToString()
     connection.send_message(message)

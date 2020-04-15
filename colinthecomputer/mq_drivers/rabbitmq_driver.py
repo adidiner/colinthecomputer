@@ -91,7 +91,7 @@ def task_consume(on_message, host, port, topic, segment):
     _exchange_declare(channel, exchange=segment, exchange_type='fanout')
 
     # Wait in queue based on topic
-    result = channel.queue_declare(queue=topic, exclusive=True)
+    result = channel.queue_declare(queue=topic)
     queue_name = result.method.queue
     channel.queue_bind(exchange=segment,
                        queue=queue_name,
@@ -135,7 +135,7 @@ def share_consume(on_message, host, port, topics, segment):
 
     for topic in topics:
         # Wait in queue based on topic
-        result = channel.queue_declare(queue='', exclusive=True)
+        result = channel.queue_declare(queue='')
         queue_name = result.method.queue
         channel.queue_bind(exchange=segment,
                            queue=queue_name,

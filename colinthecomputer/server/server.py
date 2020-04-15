@@ -42,10 +42,6 @@ class Handler(threading.Thread):
                     return
                 user = ptc.User()
                 user.ParseFromString(data)
-                # Send config
-                config = ptc.Config(fields=parsers.keys())
-                data = config.SerializeToString()
-                self.client.send_message(data)
                 # Receive snapshot
                 data = self.client.receive_message()
                 snapshot = ptc.Snapshot()

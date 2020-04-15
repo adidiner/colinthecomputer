@@ -27,7 +27,7 @@ class MockConnection:
         MockConnection.received_messages.append(message)
 
     def receive_message(self):
-        return CONFIG.SerializeToString()
+        return
 
     def close(self):
         return
