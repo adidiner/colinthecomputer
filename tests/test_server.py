@@ -10,8 +10,6 @@ import colinthecomputer.protocol as ptc
 import colinthecomputer.client.reader as rd
 
 
-
-
 class MockListener:
     class MockClient:
         def __init__(self, connection):

@@ -15,7 +15,7 @@ def task_publish(message, host, port, *, segment):
     :param segment: segment to be published to
     :type segment: str
     """
-    # Set up rabbitmq connectin
+    # Set up rabbitmq connection
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host=host,
                                   port=port))
@@ -49,7 +49,7 @@ def share_publish(message, host, port, *, topic, segment):
     :param segment: segment to be published to
     :type segment: str
     """
-    # Set up rabbitmq connectin
+    # Set up rabbitmq connection
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host=host,
                                   port=port))
