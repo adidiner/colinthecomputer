@@ -1,7 +1,7 @@
 import pytest
 from click.testing import CliRunner
 
-from constants import USER, CONFIG, SNAPSHOTS
+from constants import USER, SNAPSHOTS
 from colinthecomputer.client import upload_sample
 from colinthecomputer.client.__main__ import cli_upload_sample
 import colinthecomputer.protocol as ptc

@@ -25,6 +25,7 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
         try:
             with ptc.Connection.connect(host, port) as connection:
                 send_hello(connection, reader.user)
+                print(repr(reader.user), type(reader.user))
                 send_snapshot(connection, snapshot)
         except Exception as error:
             print(f"ERROR in {__name__}: {error}")

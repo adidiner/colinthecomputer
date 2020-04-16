@@ -45,8 +45,8 @@ def gender_char(self):
     else:
         return 'o'
 
-User.__str__ = user_str
-User.gender_char_to_enum = gender_char_to_enum
+"""User.__str__ = user_str
+User.gender_char_to_enum = gender_char_to_enum"""
 User.get_gender_char = gender_char
 
 

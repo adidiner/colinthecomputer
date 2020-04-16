@@ -31,7 +31,7 @@ def read_user(stream):
     username = stream.read(username_len).decode('utf-8')
     birth_timestamp, gender = struct.unpack('Ic',
                                             stream.read(UINT32+CHAR))
-    gender = User.gender_char_to_enum(gender.decode('utf-8'))
+    gender = _gender_char_to_enum(gender.decode('utf-8'))
     user = User(user_id=user_id,
                 username=username,
                 birthday=birth_timestamp,
@@ -94,6 +94,18 @@ def _read_depth_image(stream):
     :rtype: int
     """
     height, width = struct.unpack('II', stream.read(UINT32*2))
-    data = iterated_read(stream, height*width*FLOAT) # TODO: this doesnt work
-    offset = UINT32*2 + len(data)
+    data = []
+    for _ in range(height*width):
+        value, = struct.unpack('f', stream.read(FLOAT))
+        data.append(value)
+    #data = iterated_read(stream, height*width*FLOAT) # TODO: this doesnt work
+    offset = UINT32*2 + len(data)*FLOAT
     return DepthImage(width=width, height=height, data=data), offset
+
+
+def _gender_char_to_enum(gender):
+    if gender == 'm':
+        return User.Gender.MALE
+    if gender == 'f':
+        return User.Gender.FEMALE
+    return User.Gender.OTHER

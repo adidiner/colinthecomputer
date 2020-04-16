@@ -11,7 +11,7 @@ _COLOR_IMAGE = ColorImage(width=10,
                           data=b'0'*20*10*3)
 _DEPTH_IMAGE = DepthImage(width=5, 
                           height=7, 
-                          data=[0.0 for _ in range(35)])
+                          data=[6.409690556097303e-10 for _ in range(35)])
 _POSE1 = Pose(translation=Pose.Translation(x=1.0, y=2.0, z=3.0),
               rotation=Pose.Rotation(x=1.0, y=2.0, z=3.0, w=4.0))
 _POSE2 = Pose(translation=Pose.Translation(x=0.5, y=3.0, z=4.0),

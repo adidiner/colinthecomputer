@@ -1,9 +1,8 @@
 import pytest
-from click.testing import CliRunner
 import threading
 import time
 
-from constants import USER, CONFIG, SNAPSHOTS
+from constants import USER, SNAPSHOTS
 from colinthecomputer.server import run_server
 from colinthecomputer.client.__main__ import cli_upload_sample
 import colinthecomputer.protocol as ptc

@@ -6,7 +6,7 @@ from pathlib import Path
 import json
 
 
-def parse_color_image(data, directory=Path('/home/user/colinfs/results')):Path('/home/user/colinfs/results')
+def parse_color_image(data, directory=Path('/home/user/colinfs/results')):
     """Parse color image from snapshot data, save BLOB to fs.
     
     :param data: snapshot as consumed from the message queue
