@@ -20,4 +20,6 @@ def task_consume(on_message, host, port, topic, segment):
 
 
 def share_consume(on_message, host, port, topics, segment):
-	pass
+	for (topic, message) in message_box[segment]:
+		if topic in topics:
+			on_message(topic, message)

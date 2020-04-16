@@ -39,8 +39,10 @@ def fields_data(fields):
 def test_save_get_user(init):
     user = json.loads(USER_JSON)
     driver.savers['user'](**user)
+    print(driver.getters['users']())
     assert driver.getters['users']() == [{'user_id': user['user_id'],
                                         'username': user['username']}]
+    print(driver.getters['user_info'](user['user_id']))
     assert driver.getters['user_info'](user['user_id']) == user
 
 
@@ -49,8 +51,12 @@ def test_save_get_snapshot(init, fields, fields_data):
     snapshot = json.loads(SNAPSHOTS_JSON[0])
     for field in fields:
         driver.savers[field](**fields_data[field])
+    print(driver.getters['snapshots'](user['user_id']))
     assert len(driver.getters['snapshots'](user['user_id'])) == 1
+    print(driver.getters['snapshot_info'](snapshot_id=1))
     assert driver.getters['snapshot_info'](snapshot_id=1) == \
            {'datetime': int(snapshot['datetime']), 'results': fields, 'snapshot_id': 1}
     for field in fields:
+        print(driver.getters['result'](1, field))
         assert driver.getters['result'](1, field) == fields_data[field]['data']
+    assert False

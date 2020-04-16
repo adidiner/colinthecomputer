@@ -6,14 +6,14 @@ from flask_cors import CORS
 from furl import furl
 import io
 
-
 import colinthecomputer.db_drivers as drivers
 getters = None
 
-api = Flask(__name__)
-CORS(api)
 
-@api.route('/users')
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/users')
 def get_users():
     """GET all available users.
     
@@ -22,7 +22,7 @@ def get_users():
     """
     return jsonify(getters['users']())
 
-@api.route('/users/<int:user_id>')
+@app.route('/users/<int:user_id>')
 def get_user_info(user_id):
     """GET the given user's information.
     
@@ -37,7 +37,7 @@ def get_user_info(user_id):
         abort(404)
     return jsonify(result)
 
-@api.route('/users/<int:user_id>/snapshots')
+@app.route('/users/<int:user_id>/snapshots')
 def get_snapshots(user_id):
     """GET the user's available snapshots.
     
@@ -49,7 +49,7 @@ def get_snapshots(user_id):
     """
     return jsonify(getters['snapshots'](user_id))
 
-@api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>')
+@app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>')
 def get_snapshot_info(user_id, snapshot_id):
     """GET the snapshot's information.
     
@@ -66,7 +66,7 @@ def get_snapshot_info(user_id, snapshot_id):
         abort(404)
     return jsonify(result)
 
-@api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>')
+@app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>')
 def get_result(user_id, snapshot_id, result_name):
     """GET result json, only  if available. 
     
@@ -89,7 +89,7 @@ def get_result(user_id, snapshot_id, result_name):
         return jsonify(result)
     return {'path': f'/users/{user_id}/snapshots/{snapshot_id}/{result_name}/data.jpg'}
 
-@api.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>/data.jpg')
+@app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>/data.jpg')
 def get_blob_data(user_id, snapshot_id, result_name):
     """GET blob data of a result (can be viewd in the browser).
     
@@ -130,6 +130,6 @@ def run_api_server(host, port, database_url):
         getters = driver.getters
         driver.init_db(name=db_name, host=db_url.host, port=db_url.port,
                        username=db_url.username, password=db_url.password)
-        api.run(host=host, port=port)
+        app.run(host=host, port=port)
     except Exception as error:
         print(f"ERROR in {__name__}: {error}")
