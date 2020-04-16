@@ -10,8 +10,8 @@ import json
 
 
 @pytest.fixture
-def publisher(tmpdir):
-    p = Publisher(mq_url='rabbitmq://127.0.0.1:6789/', directory=tmpdir)
+def publisher(tmp_path):
+    p = Publisher(mq_url='rabbitmq://127.0.0.1:6789/', directory=tmp_path)
     p.driver = mq
     return p
 
