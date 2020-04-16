@@ -14,6 +14,7 @@ def parse_pose(data):
     pose = filtered_dict(data, ['user_id', 'datetime'])
     print(data)
     pose['data'] = data['pose']
+    print(json.dumps(pose))
     return json.dumps(pose)
 
 parse_pose.field = 'pose'

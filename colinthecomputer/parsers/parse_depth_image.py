@@ -5,9 +5,8 @@ from pathlib import Path
 
 from colinthecomputer.utils import filtered_dict
 
-directory = Path('/home/user/colinfs/results') # TODO
 
-def parse_depth_image(data):
+def parse_depth_image(data, directory=Path('/home/user/colinfs/results')):
     """Parse depth image from snapshot data, save BLOB to fs.
     
     :param data: snapshot as consumed from the message queue

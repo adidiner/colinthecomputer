@@ -30,6 +30,6 @@ def run_parser(field, data):
     :type data: json
     """
     try:
-        parsers[field](data)
+        return parsers[field](data)
     except Exception as error:
         print(f"ERROR: {error}")

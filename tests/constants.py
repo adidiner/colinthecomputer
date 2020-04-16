@@ -11,7 +11,7 @@ _COLOR_IMAGE = ColorImage(width=10,
                           data=b'0'*20*10*3)
 _DEPTH_IMAGE = DepthImage(width=5, 
                           height=7, 
-                          data=b'0'*7*5*4)
+                          data=[0.0 for _ in range(35)])
 _POSE1 = Pose(translation=Pose.Translation(x=1.0, y=2.0, z=3.0),
               rotation=Pose.Rotation(x=1.0, y=2.0, z=3.0, w=4.0))
 _POSE2 = Pose(translation=Pose.Translation(x=0.5, y=3.0, z=4.0),
@@ -45,7 +45,7 @@ SNAPSHOTS = [_SNAPSHOT1, _SNAPSHOT2]
 
 USER_JSON = '{"username": "Adi Dinerstein", "birthday": 974239200, "gender": "f", "user_id": 49}'
 SNAPSHOTS_JSON = ['{"datetime": "1576237612000", ' \
-                  '"pose": {"translation": {"x": 1.0, "y": 2.0, "z": 3.0}, '
+                  '"pose": {"translation": {"x": 1.0, "y": 2.0, "z": 3.0}, ' \
                            '"rotation": {"x": 1.0, "y": 2.0, "z": 3.0, "w": 4.0}}, ' \
                   '"color_image": {"width": 10, "height": 20, "data": "tmpdir/49/1576237612000/color_image"}, ' \
                   '"depth_image": {"width": 5, "height": 7, "data": "tmpdir/49/1576237612000/depth_image.npy"}, ' \
@@ -53,8 +53,27 @@ SNAPSHOTS_JSON = ['{"datetime": "1576237612000", ' \
                   '"user_id": 49}',
                   '{"datetime": "1576237618000", ' \
                   '"pose": {"translation": {"x": 0.5, "y": 3.0, "z": 4.0}, ' \
-                           '"rotation": {"x": 3.0, "y": 3.0, "z": 3.0, "w": 3.0}}, '\
+                           '"rotation": {"x": 3.0, "y": 3.0, "z": 3.0, "w": 3.0}}, ' \
                   '"color_image": {"width": 10, "height": 20, "data": "tmpdir/49/1576237618000/color_image"}, ' \
                   '"depth_image": {"width": 5, "height": 7, "data": "tmpdir/49/1576237618000/depth_image.npy"}, ' \
                   '"feelings": {"hunger": 0.5, "thirst": 0.125, "exhaustion": 1.0, "happiness": -0.5}, ' \
                   '"user_id": 49}']
+
+POSE_JSON = ['{"datetime": "1576237612000", "user_id": 49, ' \
+             '"data": {"translation": {"x": 1.0, "y": 2.0, "z": 3.0}, ' \
+                      '"rotation": {"x": 1.0, "y": 2.0, "z": 3.0, "w": 4.0}}}',
+             '{"datetime": "1576237618000", "user_id": 49, ' \
+             '"data": {"translation": {"x": 0.5, "y": 3.0, "z": 4.0}, ' \
+             '"rotation": {"x": 3.0, "y": 3.0, "z": 3.0, "w": 3.0}}}']
+COLOR_IMAGE_JSON = ['{"datetime": "1576237612000", "user_id": 49, ' \
+                    '"data": {"path": "tmpdir/results/49/1576237612000/color_image.jpg"}}',
+                    '{"datetime": "1576237612000", "user_id": 49, ' \
+                    '"data": {"path": "tmpdir/results/49/1576237612000/color_image.jpg"}}']
+DEPTH_IMAGE_JSON = ['{"datetime": "1576237612000", "user_id": 49, ' \
+                    '"data": {"path": "tmpdir/results/49/1576237612000/depth_image.jpg"}}',
+                    '{"datetime": "1576237612000", "user_id": 49, ' \
+                    '"data": {"path": "tmpdir/results/49/1576237612000/depth_image.jpg"}}']
+FEELINGS_JSON = ['{"datetime": "1576237612000", "user_id": 49, ' \
+                 '"data": {"feelings": {"hunger": -0.5, "thirst": -0.125, "exhaustion": -0.5, "happiness": 0.5}}}', 
+                 '{"datetime": "1576237618000", "user_id": 49, ' \
+                 '"data": {"feelings": {"hunger": 0.5, "thirst": 0.125, "exhaustion": 1.0, "happiness": -0.5}}}']

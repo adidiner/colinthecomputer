@@ -3,7 +3,7 @@ import pytest
 
 from constants import USER, SNAPSHOTS, USER_JSON, SNAPSHOTS_JSON
 import mock_mq_driver as mq
-from colinthecomputer.parsers.worker import Worker
+from colinthecomputer.parsers import parsers
 import json
 
 
@@ -14,9 +14,8 @@ def worker(tmpdir):
     return w
 
 
-def mock_parser(message):
-	return message
-
+def test_parse_pose():
+    
 
 def test_worker(worker):
     mq.message_box = {'raw_data': ['1', '2', '3']}
