@@ -1,4 +1,3 @@
-
 def create_mock_connection(receive_message):
 	class MockConnection:
 	    received_messages = []

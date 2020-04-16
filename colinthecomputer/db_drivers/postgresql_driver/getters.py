@@ -12,12 +12,14 @@ def get_users():
         users.append(user)
     return users
 
+
 def get_user_info(user_id):
     query = User.select().where(User.user_id==user_id)
     if not query.exists():
         return None
     user = query.get()
     return model_to_dict(user)
+
 
 def get_snapshots(user_id):
     query = Snapshot.select().where(Snapshot.user_id==user_id)
@@ -39,6 +41,7 @@ def get_snapshot_info(snapshot_id):
                             exclude=[Snapshot.snapshot_id, Snapshot.datetime, Snapshot.user_id])
     results = [field for field in data if data[field]]
     return {**metadata, 'results': results}
+
 
 def get_result(snapshot_id, result_name):
     query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)

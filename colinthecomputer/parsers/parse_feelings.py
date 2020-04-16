@@ -13,7 +13,7 @@ def parse_feelings(data):
     """
     data = json.loads(data)
     feelings = filtered_dict(data, ['user_id', 'datetime'])
-    feelings['data'] = {'feelings': data['feelings']}
+    feelings['data'] = data['feelings']
     print(feelings)
     return json.dumps(feelings)
 

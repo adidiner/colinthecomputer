@@ -7,7 +7,7 @@ from furl import furl
 import io
 
 
-from colinthecomputer.db_drivers import drivers
+import colinthecomputer.db_drivers as drivers
 getters = None
 
 api = Flask(__name__)

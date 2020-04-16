@@ -25,3 +25,4 @@ for driver in drivers.values():
 		driver.savers = _load_utils('save', driver.savers)
 	if inspect.ismodule(driver.getters):
 		driver.getters = _load_utils('get', driver.getters)
+sys.modules[__name__] = drivers

@@ -2,7 +2,7 @@ from furl import furl
 import json
 import datetime as dt
 
-from colinthecomputer.db_drivers import drivers
+import colinthecomputer.db_drivers as drivers
 
 class Saver:
     """Saver which saves results to a given database.
@@ -32,11 +32,4 @@ class Saver:
         :type data: json
         """
         data = json.loads(data)
-        # Save user information
-        if topic == 'user':
-            self.savers[topic](**data)
-            return
-        # Save parser results
-        unpack = lambda user_id, datetime, data: (user_id, datetime, data)
-        user_id, datetime, data = unpack(**data)
-        self.savers[topic](user_id, datetime, **data)
+        self.savers[topic](**data)

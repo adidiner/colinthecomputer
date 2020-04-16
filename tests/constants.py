@@ -74,6 +74,6 @@ DEPTH_IMAGE_JSON = ['{"datetime": "1576237612000", "user_id": 49, ' \
                     '{"datetime": "1576237618000", "user_id": 49, ' \
                     '"data": {"path": "tmpdir/49/1576237618000/depth_image.jpg"}}']
 FEELINGS_JSON = ['{"datetime": "1576237612000", "user_id": 49, ' \
-                 '"data": {"feelings": {"hunger": -0.5, "thirst": -0.125, "exhaustion": -0.5, "happiness": 0.5}}}', 
+                 '"data": {"hunger": -0.5, "thirst": -0.125, "exhaustion": -0.5, "happiness": 0.5}}', 
                  '{"datetime": "1576237618000", "user_id": 49, ' \
-                 '"data": {"feelings": {"hunger": 0.5, "thirst": 0.125, "exhaustion": 1.0, "happiness": -0.5}}}']
+                 '"data": {"hunger": 0.5, "thirst": 0.125, "exhaustion": 1.0, "happiness": -0.5}}']
