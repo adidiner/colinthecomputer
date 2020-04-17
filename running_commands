@@ -15,4 +15,4 @@ sudo docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=colin -p  3469
 sudo docker run -d -p 6789:5672 rabbitmq
 
 
-d
+daa
