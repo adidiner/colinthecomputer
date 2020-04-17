@@ -284,7 +284,7 @@ Provides the following function:
     Runs he GUI server in a given address.
 
     ```pycon
-    >>> from cortex.gui import run_server
+    >>> from colinthecomputer.gui import run_server
     >>> run_server(
     ...     host = '127.0.0.1',
     ...     port = 8080,
@@ -296,7 +296,7 @@ Provides the following function:
 The GUI also provides the following CLI:
 
 ```sh
-$ python -m cortex.gui run-server \
+$ python -m colinthecomputer.gui run-server \
       -h/--host '127.0.0.1'       \
       -p/--port 8080              \
       -H/--api-host '127.0.0.1'   \
