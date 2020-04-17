@@ -29,7 +29,6 @@ def parse_depth_image(data, directory=Path('/home/user/colinfs/results')):
     blob = blob.reshape(data['height'], data['width'])
     plt.imshow(blob)
     plt.savefig(path)
-    print(depth_image)
     return json.dumps(depth_image)
 
 

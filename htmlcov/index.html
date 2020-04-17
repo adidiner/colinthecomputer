@@ -1,0 +1,491 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">79%</span>
+        </h1>
+
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+
+<div id="index">
+    <table class="index">
+        <thead>
+            
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>975</td>
+                <td>205</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="770 975">79%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer___init___py.html">colinthecomputer/__init__.py</a></td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="2 2">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer___main___py.html">colinthecomputer/__main__.py</a></td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 1">0%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_api___init___py.html">colinthecomputer/api/__init__.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_api___main___py.html">colinthecomputer/api/__main__.py</a></td>
+                <td>14</td>
+                <td>14</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 14">0%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_api_api_py.html">colinthecomputer/api/api.py</a></td>
+                <td>56</td>
+                <td>11</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="45 56">80%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_client___init___py.html">colinthecomputer/client/__init__.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_client___main___py.html">colinthecomputer/client/__main__.py</a></td>
+                <td>15</td>
+                <td>2</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 15">87%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_client_client_py.html">colinthecomputer/client/client.py</a></td>
+                <td>20</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="17 20">85%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_client_read_drivers___init___py.html">colinthecomputer/client/read_drivers/__init__.py</a></td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="10 10">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_client_read_drivers_binary_driver_py.html">colinthecomputer/client/read_drivers/binary_driver.py</a></td>
+                <td>52</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="52 52">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_client_read_drivers_protobuf_driver_py.html">colinthecomputer/client/read_drivers/protobuf_driver.py</a></td>
+                <td>15</td>
+                <td>8</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="7 15">47%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_client_reader_py.html">colinthecomputer/client/reader.py</a></td>
+                <td>30</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="24 30">80%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_db_drivers___init___py.html">colinthecomputer/db_drivers/__init__.py</a></td>
+                <td>21</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="21 21">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_db_drivers_postgresql_driver___init___py.html">colinthecomputer/db_drivers/postgresql_driver/__init__.py</a></td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="7 7">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_db_drivers_postgresql_driver_getters_py.html">colinthecomputer/db_drivers/postgresql_driver/getters.py</a></td>
+                <td>42</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="39 42">93%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_db_drivers_postgresql_driver_savers_py.html">colinthecomputer/db_drivers/postgresql_driver/savers.py</a></td>
+                <td>35</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="35 35">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_db_drivers_postgresql_driver_tables_py.html">colinthecomputer/db_drivers/postgresql_driver/tables.py</a></td>
+                <td>41</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="41 41">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_gui___init___py.html">colinthecomputer/gui/__init__.py</a></td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 1">0%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_gui___main___py.html">colinthecomputer/gui/__main__.py</a></td>
+                <td>15</td>
+                <td>15</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 15">0%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_gui_gui_py.html">colinthecomputer/gui/gui.py</a></td>
+                <td>23</td>
+                <td>23</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 23">0%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_mq_drivers___init___py.html">colinthecomputer/mq_drivers/__init__.py</a></td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="10 10">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_mq_drivers_rabbitmq_driver_py.html">colinthecomputer/mq_drivers/rabbitmq_driver.py</a></td>
+                <td>54</td>
+                <td>7</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="47 54">87%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_parsers___init___py.html">colinthecomputer/parsers/__init__.py</a></td>
+                <td>23</td>
+                <td>5</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="18 23">78%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_parsers___main___py.html">colinthecomputer/parsers/__main__.py</a></td>
+                <td>26</td>
+                <td>7</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="19 26">73%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_parsers_parse_color_image_py.html">colinthecomputer/parsers/parse_color_image.py</a></td>
+                <td>19</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="18 19">95%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_parsers_parse_depth_image_py.html">colinthecomputer/parsers/parse_depth_image.py</a></td>
+                <td>20</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="19 20">95%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_parsers_parse_feelings_py.html">colinthecomputer/parsers/parse_feelings.py</a></td>
+                <td>8</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 8">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_parsers_parse_pose_py.html">colinthecomputer/parsers/parse_pose.py</a></td>
+                <td>8</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 8">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_parsers_worker_py.html">colinthecomputer/parsers/worker.py</a></td>
+                <td>13</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 13">92%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_protocol___init___py.html">colinthecomputer/protocol/__init__.py</a></td>
+                <td>12</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 12">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_protocol_colin_pb2_py.html">colinthecomputer/protocol/colin_pb2.py</a></td>
+                <td>54</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="54 54">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_protocol_connection_py.html">colinthecomputer/protocol/connection.py</a></td>
+                <td>40</td>
+                <td>4</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="36 40">90%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_protocol_listener_py.html">colinthecomputer/protocol/listener.py</a></td>
+                <td>25</td>
+                <td>2</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="23 25">92%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_protocol_messages_py.html">colinthecomputer/protocol/messages.py</a></td>
+                <td>34</td>
+                <td>17</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="17 34">50%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_saver___init___py.html">colinthecomputer/saver/__init__.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_saver___main___py.html">colinthecomputer/saver/__main__.py</a></td>
+                <td>25</td>
+                <td>25</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 25">0%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_saver_consumer_py.html">colinthecomputer/saver/consumer.py</a></td>
+                <td>15</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="14 15">93%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_saver_saver_py.html">colinthecomputer/saver/saver.py</a></td>
+                <td>17</td>
+                <td>9</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 17">47%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_server___init___py.html">colinthecomputer/server/__init__.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_server___main___py.html">colinthecomputer/server/__main__.py</a></td>
+                <td>18</td>
+                <td>18</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 18">0%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_server_publisher_py.html">colinthecomputer/server/publisher.py</a></td>
+                <td>48</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="47 48">98%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_server_server_py.html">colinthecomputer/server/server.py</a></td>
+                <td>37</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="34 37">92%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_utils___init___py.html">colinthecomputer/utils/__init__.py</a></td>
+                <td>8</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 8">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="colinthecomputer_utils_util_methods_py.html">colinthecomputer/utils/util_methods.py</a></td>
+                <td>57</td>
+                <td>16</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="41 57">72%</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.4</a>,
+            created at 2020-04-17 21:57
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

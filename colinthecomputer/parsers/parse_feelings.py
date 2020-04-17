@@ -14,7 +14,6 @@ def parse_feelings(data):
     data = json.loads(data)
     feelings = filtered_dict(data, ['user_id', 'datetime'])
     feelings['data'] = data['feelings']
-    print(feelings)
     return json.dumps(feelings)
 
 parse_feelings.field = 'feelings'

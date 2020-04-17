@@ -1,11 +1,12 @@
 import pytest
+from click.testing import CliRunner
 
 
 from constants import USER, SNAPSHOTS, SNAPSHOTS_JSON, POSE_JSON, COLOR_IMAGE_JSON, DEPTH_IMAGE_JSON, FEELINGS_JSON
 import mock_mq_driver as mq
 from colinthecomputer.parsers import parsers
+from colinthecomputer.parsers.__main__ import cli_parse
 import numpy as np
-from colinthecomputer.server.publisher import Publisher
 
 @pytest.fixture
 def blob_dir(tmp_path):
@@ -40,3 +41,12 @@ def test_parse_depth_image(blob_dir):
 def test_feelings():
     for snapshot, result in zip(SNAPSHOTS_JSON, FEELINGS_JSON):
         assert parsers['feelings'](snapshot) == result
+
+
+def test_cli_parse(tmp_path):
+    file = tmp_path / 'data.txt'
+    file.write_text(SNAPSHOTS_JSON[0])
+    runner = CliRunner()
+    result = runner.invoke(cli_parse, ['pose', str(file)])
+    assert result.exit_code == 0
+    assert result.output == f'{POSE_JSON[0]}\n'

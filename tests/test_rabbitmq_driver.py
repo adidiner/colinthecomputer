@@ -1,6 +1,7 @@
 import pika
 from multiprocessing import Process
 import time
+from pytest_cov.embed import cleanup_on_sigterm
 
 import colinthecomputer.mq_drivers as drivers
 driver = drivers['rabbitmq']
@@ -72,3 +73,5 @@ def test_share_queue(tmp_path):
     assert set(results) == {'1:1\n', '1:1\n',
                             '2:2\n', '2:2\n',
                             '2:3\n', '2:3\n'}
+
+cleanup_on_sigterm()

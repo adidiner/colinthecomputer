@@ -28,7 +28,6 @@ def parse_color_image(data, directory=Path('/home/user/colinfs/results')):
     with open(data['data'], 'rb') as file:
         result = Image.frombytes('RGB', (data['width'], data['height']), file.read()) 
     result.save(path)
-    print(color_image)
     return json.dumps(color_image)
 
 parse_color_image.field = 'color_image'
