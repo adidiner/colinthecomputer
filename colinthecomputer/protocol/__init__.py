@@ -2,12 +2,15 @@
 network connection and listener abstractions.
 """
 
-from .messages import User
-from .messages import Snapshot
-from .messages import Pose
-from .messages import ColorImage
-from .messages import DepthImage
-from .messages import Feelings
-from .messages import Config
+from .colin_pb2 import User
+from .colin_pb2 import Snapshot
+from .colin_pb2 import Pose
+from .colin_pb2 import ColorImage
+from .colin_pb2 import DepthImage
+from .colin_pb2 import Feelings
+from .messages import gender_enum_to_char
+from .messages import gender_char_to_enum
+from .messages import snapshot_str
+from .messages import user_str
 from .connection import Connection
 from .listener import Listener

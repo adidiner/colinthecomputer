@@ -1,4 +1,4 @@
-from colinthecomputer.protocol import ColorImage, DepthImage, Snapshot
+from colinthecomputer.protocol import ColorImage, DepthImage, Snapshot, gender_enum_to_char
 from colinthecomputer.utils import make_path
 import colinthecomputer.mq_drivers as drivers
 
@@ -66,7 +66,7 @@ def _json_user_message(user):
     user_id = user.user_id
     user_dict = MessageToDict(user)
     user_dict['user_id'] = int(user_dict.pop('userId'))
-    user_dict['gender'] = user.get_gender_char()
+    user_dict['gender'] = gender_enum_to_char(user.gender)
     return json.dumps(user_dict)
 
 

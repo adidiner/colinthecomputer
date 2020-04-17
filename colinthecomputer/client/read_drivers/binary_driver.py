@@ -8,6 +8,7 @@ from colinthecomputer.protocol import DepthImage
 from colinthecomputer.protocol import Pose
 from colinthecomputer.protocol import Feelings
 from colinthecomputer.protocol import User
+from colinthecomputer.protocol import gender_char_to_enum
 from colinthecomputer.utils import iterated_read
 
 
@@ -31,7 +32,7 @@ def read_user(stream):
     username = stream.read(username_len).decode('utf-8')
     birth_timestamp, gender = struct.unpack('Ic',
                                             stream.read(UINT32+CHAR))
-    gender = _gender_char_to_enum(gender.decode('utf-8'))
+    gender = gender_char_to_enum(gender.decode('utf-8'))
     user = User(user_id=user_id,
                 username=username,
                 birthday=birth_timestamp,
@@ -49,15 +50,16 @@ def read_snapshot(stream):
     :rtype: int
     """
     timestamp, = struct.unpack('Q', stream.read(UINT64))
-    translation = Pose.Translation.from_tuple(
-        struct.unpack('ddd', stream.read(DOUBLE*3)))
-    rotation = Pose.Rotation.from_tuple(
-        struct.unpack('dddd', stream.read(DOUBLE*4)))
+    x, y, z = struct.unpack('ddd', stream.read(DOUBLE*3))
+    translation = Pose.Translation(x=x, y=y, z=z)
+    x, y, z, w = struct.unpack('dddd', stream.read(DOUBLE*4))
+    rotation = Pose.Rotation(x=x, y=y, z=z, w=w)
     pose = Pose(translation=translation, rotation=rotation)
     color_image, ci_offset = _read_color_image(stream)
     depth_image, di_offset = _read_depth_image(stream)
-    feelings = Feelings.from_tuple(
-        struct.unpack('ffff', stream.read(FLOAT*4)))
+    hunger, thirst, exhaustion, happiness = struct.unpack('ffff', stream.read(FLOAT*4))
+    feelings = Feelings(hunger=hunger, thirst=thirst,
+                        exhaustion=exhaustion, happiness=happiness)
     snapshot = Snapshot(datetime=timestamp,
                         pose=pose,
                         color_image=color_image,
@@ -101,11 +103,3 @@ def _read_depth_image(stream):
     #data = iterated_read(stream, height*width*FLOAT) # TODO: this doesnt work
     offset = UINT32*2 + len(data)*FLOAT
     return DepthImage(width=width, height=height, data=data), offset
-
-
-def _gender_char_to_enum(gender):
-    if gender == 'm':
-        return User.Gender.MALE
-    if gender == 'f':
-        return User.Gender.FEMALE
-    return User.Gender.OTHER

@@ -1,4 +1,4 @@
-from colinthecomputer.protocol import User, Config, Snapshot, Pose, ColorImage, DepthImage, Feelings
+from colinthecomputer.protocol import User, Snapshot, Pose, ColorImage, DepthImage, Feelings
 
 
 _USER_ID = 49

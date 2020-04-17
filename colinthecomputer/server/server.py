@@ -1,11 +1,6 @@
 import pathlib
 import threading
 
-'''from colinthecomputer.protocol import Listener
-from colinthecomputer.parsers import run_parser
-from colinthecomputer.parsers import parsers
-from colinthecomputer.protocol import User, Config, Snapshot'''
-
 import colinthecomputer.protocol as ptc
 from colinthecomputer.parsers import parsers
 
@@ -51,10 +46,10 @@ class Handler(threading.Thread):
                 self.publish((user, snapshot))
 
         except Exception as error:
-            raise
             print(f"ERROR in {__name__}: {error}")
             return
-       
+ 
+
 def print_message(message):
     print(message) 
 

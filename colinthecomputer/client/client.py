@@ -45,20 +45,6 @@ def send_hello(connection, hello):
     connection.send_message(message)
 
 
-def receive_config(connection):
-    """Recieves config message from a server.
-
-    :param connection: connection object to the server
-    :type connection: Connection
-    :return: the received config message
-    :rtype: Config
-    """
-    message = connection.receive_message()
-    config = ptc.Config()
-    config.ParseFromString(message)
-    return config
-
-
 def send_snapshot(connection, snapshot):
     """Sends snapshot message to a server, including only the fields specifed in config.
     :param connection: connection object to the server
