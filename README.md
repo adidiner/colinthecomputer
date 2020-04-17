@@ -65,15 +65,16 @@ The `colinthecomputer` package consists of 7 subpackages:
 
 ### The Client
 
+A client which reads snapshots samples, uploading them to the server.
 Available as `colinthecomputer.client`.
 
 Provides the following function:
 
 - `upload_sample`
-    Used to read and upload a snapshots sample to the server.
+    Used to read and upload a sample to the server.
 
     ```pycon
-    >>> from cortex.client import upload_sample
+    >>> from colinthecomputer.client import upload_sample
     >>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz')
     … # upload path to host:port
     ```
@@ -81,7 +82,7 @@ Provides the following function:
 The client also provides the following CLI:
 
 ```sh
-$ python -m cortex.client upload-sample \
+$ python -m colinthecomputer.client upload-sample \
       -h/--host '127.0.0.1'             \
       -p/--port 8000                    \
       'snapshot.mind.gz'
@@ -90,6 +91,7 @@ $ python -m cortex.client upload-sample \
 
 ### The Server
 
+A server which acceptes client connections as mentioned above, and publishes the data to a message queue.
 Available as `colinthecomputer.server`.
 
 Provides the following function:
@@ -102,7 +104,7 @@ Provides the following function:
 The server also provides the following CLI:
 
 ```sh
-$ python -m cortex.server run-server \
+$ python -m colinthecomputer.server run-server \
       -h/--host '127.0.0.1'          \
       -p/--port 8000                 \
       'rabbitmq://127.0.0.1:5672/'
@@ -117,6 +119,7 @@ TODO (should this even be here?)
 
 ### The Parsers
 
+A collection of parsers which consumed raw data from the message queue, then publishing the results to this message queue.
 Available as `colinthecomputer.parsers`
 
 Provides the following function:
@@ -125,7 +128,75 @@ Provides the following function:
     Runs a parser to a given field, parsing raw data as consumed from the message queue (a.k.a the snapshots published by the server), and returns the result.
 
     ```pycon
-    >>> from cortex.parsers import run_parser
+    >>> from colinthecomputer.parsers import run_parser
     >>> data = … 
     >>> result = run_parser('pose', data)
     ```
+
+The parsers also provides the following CLI:
+
+- 
+    ```sh
+     python -m colinthecomputer.parsers parse 'pose' 'snapshot.raw' > 'pose.result'
+    ```
+
+    Which accepts a path to some raw data as consumed from the message queue, and prints the result (can be redirected).
+
+- 
+    ```sh
+    python -m colinthecomputer.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:5672/'
+    ```
+
+    Which runs the parser so it consumes raw data from the message queue, and publishes the results back to it.
+
+The current available parsers are:
+
+- `pose`: collects the snapshot's tranlation and rotation.
+
+- `color_image`: collects the snapshot's raw color image data, and converts it to a `JPG` image.
+
+- `depth_image`: collects the snapshot's raw depth image data, and creates a 2D heatmap representation, accessible as a `JPG` image.
+
+- `feelings`: collects the snapshot's feelings.
+
+### The Saver
+
+A saver which connects to a database, and parsed results to it.
+Available as `colinthecomputer.server`
+
+Provides the following class:
+
+- `Saver`
+    Initialized with a database URL of the form `db://username:password@host:port/db_name`.
+    Provides the `save` function, receiving parsed data and its topic and saving it to the database.
+
+    ```pycon
+    >>> from colinthecomputer.saver import Saver
+    >>> saver = Saver(database_url)
+    >>> data = …
+    >>> saver.save('pose', data)
+    ```
+
+The saver also provides the following CLI:
+
+-
+    ```sh
+    $ python -m colinthecomputer.saver save                     \
+          -d/--database 'postgresql://colin:password@127.0.0.1:5432/colin' \
+         'pose'                                       \
+         'pose.result'
+    ```
+
+    Which accepts a topic and a path to parsed data, saving it to the database.
+
+- 
+    ```sh
+    $ python -m cortex.saver run-saver  \
+      'postgresql://colin:password@127.0.0.1:5432/colin' \
+      'rabbitmq://127.0.0.1:5672/'
+    ```
+    Which consumes the parsed data from the message queue, then saving it to the database.
+
+### The API
+
+
