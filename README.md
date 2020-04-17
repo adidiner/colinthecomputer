@@ -12,12 +12,16 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
 - [Usage](#usage)
     - [The Client](#the-client)
     - [The Server](#the-server)
-        - [The Publisher](#the-publisher)
     - [The Parsers](#the-parsers)
     - [The Saver](#the-saver)
     - [The API](#the-api)
     - [The CLI](#the-cli)
     - [The GUI](#the-gui)
+- [Sub Functionalities]
+    - [The Reader](#the-reader)
+    - [The Publisher](#the-publisher)
+    - [The Worker](#the-worker)
+    - [THe Consumer](#the-consumer)
 
 ## Installation
 
@@ -151,13 +155,13 @@ The parsers also provides the following CLI:
 
 The current available parsers are:
 
-- `pose`: collects the snapshot's tranlation and rotation.
+- `pose` - collects the snapshot's tranlation and rotation.
 
-- `color_image`: collects the snapshot's raw color image data, and converts it to a `JPG` image.
+- `color_image` - collects the snapshot's raw color image data, and converts it to a `JPG` image.
 
-- `depth_image`: collects the snapshot's raw depth image data, and creates a 2D heatmap representation, accessible as a `JPG` image.
+- `depth_image` - collects the snapshot's raw depth image data, and creates a 2D heatmap representation, accessible as a `JPG` image.
 
-- `feelings`: collects the snapshot's feelings.
+- `feelings` - collects the snapshot's feelings.
 
 ### The Saver
 
@@ -191,7 +195,7 @@ The saver also provides the following CLI:
 
 - 
     ```sh
-    $ python -m cortex.saver run-saver  \
+    $ python -m colinthecomputer.saver run-saver  \
       'postgresql://colin:password@127.0.0.1:5432/colin' \
       'rabbitmq://127.0.0.1:5672/'
     ```
@@ -199,4 +203,112 @@ The saver also provides the following CLI:
 
 ### The API
 
+A RESTful API exposing the data available in the database.
+Available as `colinthecomputer.api`.
 
+Provides the following function:
+
+- `run_api_server`
+    Runs the API server at a given address, serving from a given dataabase.
+
+    ```pycon
+    >>> run_api_server(
+    ...     host = '127.0.0.1',
+    ...     port = 5000,
+    ...     database_url = 'postgresql://colin:password@127.0.0.1:5432/colin',
+    ... )
+    … # listen on host:port and serve data from database_url
+    ```
+
+The API also provides the following CLI:
+
+```sh
+$ python -m colinthecomputer.api run-server \
+      -h/--host '127.0.0.1'       \
+      -p/--port 5000              \
+      -d/--database 'postgresql://colin:password@127.0.0.1:5432/colin'
+```
+
+It exposes the following endpoints:
+
+- `GET /users`
+    The users list.
+
+- `GET /users/user-id`
+    The user's data.
+
+- `GET /users/user-id/snapshots`
+    The user's available snapshots.
+
+- `GET /users/user-id/snapshots/snapshot-id`
+    The snapshot's available results.
+
+- `GET /users/user-id/snapshots/snapshot-id/result-name`
+    The result data.
+
+- `GET /users/user-id/snapshots/snapshot-id/color-image/data.jpg`
+    Binary data, only for BLOBS.
+
+### The CLI
+
+The CLI consumes the API and reflects it.
+Available as `colinthecomputer.cli`.
+
+The provided CLI corresponds the API's endpoints, e.g
+
+```sh
+$ python -m colinthecomputer.cli get-users
+…
+$ python -m colinthecomputer.cli get-user 1
+…
+$ python -m colinthecomputer.cli get-snapshots 1
+…
+$ python -m colinthecomputer.cli get-snapshot 1 2
+…
+$ python -m colinthecomputer.cli get-result 1 2 'pose'
+…
+```
+
+The commands receive `-h/--host` and `-p/--port` flags to configure the API's address.
+
+The `get-result` command receives `-s/--save` flag, which receives a path to save the binary data to.
+
+### The GUI
+
+The GUI consumes the API and reflects it, in a user-friendly manner.
+Available as `colinthecomputer.gui`.
+
+Provides the following function:
+
+- `run_server`
+    Runs he GUI server in a given address.
+
+    ```pycon
+    >>> from cortex.gui import run_server
+    >>> run_server(
+    ...     host = '127.0.0.1',
+    ...     port = 8080,
+    ...     api_host = '127.0.0.1',
+    ...     api_port = 5000,
+    ... )
+    ```
+
+The GUI also provides the following CLI:
+
+```sh
+$ python -m cortex.gui run-server \
+      -h/--host '127.0.0.1'       \
+      -p/--port 8080              \
+      -H/--api-host '127.0.0.1'   \
+      -P/--api-port 5000
+```
+
+## Sub Functionalities
+
+### The Reader
+
+### The Publisher
+
+### The Worker
+
+### The Consumer
