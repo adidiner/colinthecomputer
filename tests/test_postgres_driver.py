@@ -59,4 +59,4 @@ def test_save_get_snapshot(init, fields, fields_data):
     for field in fields:
         print(driver.getters['result'](1, field))
         assert driver.getters['result'](1, field) == fields_data[field]['data']
-    assert False
+    assert driver.getters['result'](1, 'roy') == None
