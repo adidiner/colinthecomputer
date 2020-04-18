@@ -14,3 +14,5 @@ before_install:
 - docker run -d -p 2222:5672 rabbitmq
 - docker pull postgres
 - docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=test -p  3333:5432 postgres
+env:
+  -BLOB_DIR="path"
