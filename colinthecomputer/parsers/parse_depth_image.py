@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import json
+import os
 from pathlib import Path
 
 from colinthecomputer.utils import filtered_dict
 
 
-def parse_depth_image(data, directory=Path('/home/user/colinfs/results')):
+def parse_depth_image(data, directory=os.environ['BLOB_DIR'] + '/results'):
     """Parse depth image from snapshot data, save BLOB to fs.
     
     :param data: snapshot as consumed from the message queue
@@ -14,6 +15,7 @@ def parse_depth_image(data, directory=Path('/home/user/colinfs/results')):
     :returns: parsed snapshot depth image, with a path to the parsed binary data
     :rtype: json
     """
+    directory = Path(directory)
     data = json.loads(data)
     # Create parsed metadata json
     depth_image = filtered_dict(data, ['user_id', 'datetime'])

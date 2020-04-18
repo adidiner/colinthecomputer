@@ -4,9 +4,10 @@ from colinthecomputer.utils import filtered_dict
 from PIL import Image
 from pathlib import Path
 import json
+import os
 
 
-def parse_color_image(data, directory=Path('/home/user/colinfs/results')):
+def parse_color_image(data, directory=os.environ['BLOB_DIR'] + '/results'):
     """Parse color image from snapshot data, save BLOB to fs.
     
     :param data: snapshot as consumed from the message queue
@@ -14,6 +15,7 @@ def parse_color_image(data, directory=Path('/home/user/colinfs/results')):
     :returns: parsed snapshot color image, with a path to the parsed binary data
     :rtype: json
     """
+    directory = Path(directory)
     data = json.loads(data)
     # Create parsed metadata json
     color_image = filtered_dict(data, ['user_id', 'datetime'])
