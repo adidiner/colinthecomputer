@@ -4,6 +4,7 @@ making testing and interaction more conveniente.
 See protocol format in colin.proto"""
 
 import datetime as dt
+from google.protobuf.json_format import MessageToJson
 
 
 from .colin_pb2 import User
@@ -36,11 +37,12 @@ def snapshot_str(snapshot):
     datetime = dt.datetime.fromtimestamp(snapshot.datetime*(10**(-3)))
     fdate = datetime.strftime('%B %d, %Y')
     ftime = datetime.strftime('%X.%f')
-    return f'Snapshot from {fdate} at {ftime} on ' \
-           f'{snapshot.pose} ' \
-           f'{snapshot.color_image.width}x{snapshot.color_image.height} color image ' \
-           f'and {snapshot.depth_image.width}x{snapshot.depth_image.height} depth image ' \
-           f'feelings: {snapshot.feelings}' 
+    nl = '\n'
+    return f'Snapshot from {fdate} at {ftime}:{nl}' \
+           f'pose: {MessageToJson(snapshot.pose, including_default_value_fields=True)}{nl}' \
+           f'color image: {snapshot.color_image.width}x{snapshot.color_image.height} image{nl}' \
+           f'depth image: {snapshot.depth_image.width}x{snapshot.depth_image.height} image{nl}' \
+           f'feelings: {MessageToJson(snapshot.feelings, including_default_value_fields=True)}' 
 
 
 def user_str(user):

@@ -305,10 +305,82 @@ $ python -m colinthecomputer.gui run-server \
 
 ## Sub Functionalities
 
+Some of the components of `colinthecomputer` include a smaller utility, which can be used seperatly of the entire component.
+
+These provide a more advanced usage of the package.
+
 ### The Reader
+
+A reader which reads sample files, enabling iteration over the available snapshots.
+Available as `colinthecomputer.client.reader`.
+
+Provides the following utilities:
+
+- `Reader`
+    A reader class initialized by a path to the sample and the file format, then exposing iteration over the sample.
+
+    ```pycon
+    >>> from colinthecomputer.client.reader import Reader
+    >>> reader = Reader('sample.mind', 'protobuf')
+    >>> reader.user
+    … # user infortmation
+    >>> for snapshot in reader:
+    ...     print(snapshot)
+    … # prints full snapshot data
+    ```
+
+- `read`
+    Receives the sample path and format, and prints the data (without binary data).
+
+    ```pycon
+    >>> from colinthecomputer.client.reader import read
+    >>> read('sample.mind', 'protobuf')
+    user 5: Yellow Guy, born June 19, 1955 (male)
+    Snapshot from December 04, 2019 at 10:08:07.476000:
+    pose: {
+      "translation": {
+        "x": -0.05,
+        ...
+    }
+    color image: 1920x1080 image
+    depth image: 224x172 image
+    feelings: {
+      "hunger": 0.5,
+      ...
+    }
+    ```
 
 ### The Publisher
 
+A publisher built for working with the message queue. 
+Receives protobuf messages and publishes it in `JSON` format to the message queue.
+Available as `colinthecomputer.server.publisher`
+
+Provides the following class:
+
+- `Publisher`
+    Initialized with a message queue and a directory to save binary data to.
+    Provides the `publish` method, receiving `(user, snapshot)` and publishing the data to the mq.
+
+    ```pycon
+    >>> from colinthecomputer.server.publisher import Publisher
+    >>> from colinthecomputer.protocol import User, Snapshot
+    >>> user = User(...)
+    >>> snapshot = Snapshot(...)
+    >>> publisher = Publisher('rabbitmq://127.0.0.1:5672/', 'colin/')
+    >>> publisher.publish((user, snapshot))
+    … # publish user and snapshot data to the message queue
+    … # snapshot is published as raw data, user is published as result
+    ```
+
 ### The Worker
+
+A worker built for consuming raw data from the message queue, passing it to any given parser and publishing its output as a result.
+Available as `colinthecomputer.parsers.worker`
+
+Provides the following class:
+
+- `Worker`
+    
 
 ### The Consumer
