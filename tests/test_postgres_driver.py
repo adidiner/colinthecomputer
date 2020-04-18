@@ -3,6 +3,7 @@ from multiprocessing import Process
 import json
 import pytest
 
+
 from constants import USER, SNAPSHOTS, USER_JSON, SNAPSHOTS_JSON, POSE_JSON, COLOR_IMAGE_JSON, DEPTH_IMAGE_JSON, FEELINGS_JSON
 import colinthecomputer.db_drivers as drivers
 driver = drivers['postgresql']
@@ -15,7 +16,6 @@ _PASSWORD = 'password'
 
 # sudo docker run -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=test -p  3333:5432 postgres
 # db://username:password@host:port/db_name
-# postgresql://colin:password@127.0.0.1:3469/colin
 
 @pytest.fixture
 def init():

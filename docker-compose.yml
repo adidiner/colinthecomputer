@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    image: 'rabbitmq'
+    ports:
+      - '5672:5672'
+  db:
+    image: 'postgres'
+    environment:
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_USER: 'colin'
+    ports:
+      - '5432:5432'
