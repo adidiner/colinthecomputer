@@ -10,7 +10,7 @@ RUN /pyenv/bin/pyenv install -v 3.8.0
 RUN /pyenv/bin/pyenv global 3.8.0
 RUN pip3 install --upgrade pip
 ADD requirements.txt /requirements.txt
-RUN pip3 install -r /requirements.txt
+RUN pip3.8 install -r /requirements.txt
 ADD colinthecomputer /colinthecomputer
 RUN apt-get install -y sudo npm
 RUN sudo npm install -g npm@latest
@@ -18,4 +18,4 @@ RUN sudo npm install colinthecomputer/gui/gui-react
 RUN python3 -m virtualenv .env --prompt "[colin] "
 RUN find .env -name site-packages -exec bash -c 'echo "../../../../" > {}/self.pth' \;
 ENV PYTHONPATH "/"
-ENTRYPOINT ["python3", "-m"]
+ENTRYPOINT ["python3.8", "-m"]

@@ -48,13 +48,9 @@ class Handler(threading.Thread):
         except Exception as error:
             print(f"ERROR in {__name__}: {error}")
             return
- 
-
-def print_message(message):
-    print(message) 
 
 
-def run_server(host='127.0.0.1', port=8000, publish=print_message):
+def run_server(host='0.0.0.0', port=8000, publish=print):
     """Run server, which starts a listner and handles 
     every client connection in a new thread.
     

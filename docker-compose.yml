@@ -2,13 +2,47 @@ version: '3.7'
 
 services:
   rabbitmq:
-    image: 'rabbitmq'
+    image: rabbitmq:managment
     ports:
-      - '5672:5672'
+      - 5672:5672
+      - 15672:15672
   db:
-    image: 'postgres'
+    image: postgres
     environment:
       POSTGRES_PASSWORD: 'password'
       POSTGRES_USER: 'colin'
     ports:
-      - '5432:5432'
+      - 5432:5432
+  server:
+    image: colinthecomputer
+    build: .
+    depends_on:
+      - rabbitmq
+    ports:
+      - 8000:8000
+    command: colinthecomputer.server run-server 'rabbitmq://rabbitmq:5672'
+  pose_parser:
+    image: colinthecomputer
+    depends_on: 
+      - server
+      - rabbitmq
+    command: colinthecomputer.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672'  
+  saver:
+    image: colinthecomputer
+    depends_on:
+      - server
+      - rabbitmq
+      - postgres
+    command: colinthecomputer.saver run-saver 'postgresql://colin:password@postgres:5432/colin' 'rabbitmq://127.0.0.1:5672/'
+  api:
+    image: colinthecomputer
+    depends_on:
+      - server
+      - postgres
+    command: colinthecomputer.api run-server 'postgresql://colin:password@postgres:5432/colin'
+  gui:
+    image: colinthecomputer
+    depends_on:
+      - server
+      - postgres
+    command: colinthecomputer.gui run-server
