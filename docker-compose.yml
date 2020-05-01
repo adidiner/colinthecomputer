@@ -1,4 +1,10 @@
-version: '3'
+version: '3.7'
+
+x-blob_dir: &blob_dir
+  environment:
+    BLOB_DIR: '/colinfs'
+  volumes:
+    - shared_data:/colinfs
 
 services:
   rabbitmq:
@@ -15,8 +21,7 @@ services:
   server:
     image: colinthecomputer
     build: .
-    volumes:
-      - shared_data:/home/user/colinfs
+    <<: *blob_dir
     depends_on:
       - rabbitmq
     ports:
@@ -24,40 +29,35 @@ services:
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.server run-server 'rabbitmq://rabbitmq:5672'
   pose_parser:
     image: colinthecomputer
-    volumes:
-      - shared_data:/home/user/colinfs
+    <<: *blob_dir
     depends_on: 
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672'
   color_image_parser:
     image: colinthecomputer
-    volumes:
-      - shared_data:/home/user/colinfs
+    <<: *blob_dir
     depends_on: 
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'color_image' 'rabbitmq://rabbitmq:5672'
   depth_image_parser:
     image: colinthecomputer
-    volumes:
-      - shared_data:/home/user/colinfs
+    <<: *blob_dir
     depends_on: 
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672'
   feelings_parser:
     image: colinthecomputer
-    volumes:
-      - shared_data:/home/user/colinfs
+    <<: *blob_dir
     depends_on: 
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'feelings' 'rabbitmq://rabbitmq:5672'
   saver:
     image: colinthecomputer
-    volumes:
-      - shared_data:/home/user/colinfs
+    <<: *blob_dir
     depends_on:
       - server
       - rabbitmq
@@ -65,8 +65,7 @@ services:
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.saver run-saver 'postgresql://colin:password@postgres:5432/colin' 'rabbitmq://rabbitmq:5672/'
   api:
     image: colinthecomputer
-    volumes:
-      - shared_data:/home/user/colinfs
+    <<: *blob_dir
     depends_on:
       - server
       - postgres
@@ -75,6 +74,7 @@ services:
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.api run-server -d 'postgresql://colin:password@postgres:5432/colin'
   gui:
     image: colinthecomputer
+    <<: *blob_dir
     depends_on:
       - server
       - postgres

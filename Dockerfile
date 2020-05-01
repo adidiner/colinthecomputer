@@ -14,3 +14,5 @@ RUN pip3.8 install -r /requirements.txt
 
 ADD colinthecomputer /colinthecomputer
 RUN npm install colinthecomputer/gui/gui-react
+
+ENV BLOB_DIR='/colinfs'

@@ -15,16 +15,10 @@ def task_publish(message, host, port, *, segment):
     :param segment: segment to be published to
     :type segment: str
     """
-    # Set up rabbitmq connection
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host=host,
-                                  port=port))
-    channel = connection.channel()
-
+    connection, channel = _setup(host, port)
     # Message is published to all queues binded to exchange
     _exchange_declare(channel, exchange=segment, exchange_type='fanout')
 
-    print(f"PUBLISHING TO {segment}")
     channel.basic_publish(exchange=segment,
                           routing_key='',
                           body=message)
@@ -49,20 +43,13 @@ def share_publish(message, host, port, *, topic, segment):
     :param segment: segment to be published to
     :type segment: str
     """
-    # Set up rabbitmq connection
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host=host,
-                                  port=port))
-    channel = connection.channel()
-
+    connection, channel = _setup(host, port)
     # Message is published to all queues binded to exchange
     _exchange_declare(channel, exchange=segment, exchange_type='direct')
 
-    print(f"PUBLISHING TO {segment}")
     channel.basic_publish(exchange=segment,
                           routing_key=topic,
                           body=message)
-
     connection.close()
 
 
@@ -84,10 +71,7 @@ def task_consume(on_message, host, port, topic, segment):
     :param segment: segment to be consumed from
     :type segment: str
     """
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host=host,
-                                  port=port))
-    channel = connection.channel()
+    connection, channel = _setup(host, port)
     _exchange_declare(channel, exchange=segment, exchange_type='fanout')
 
     # Wait in queue based on topic
@@ -96,16 +80,14 @@ def task_consume(on_message, host, port, topic, segment):
     channel.queue_bind(exchange=segment,
                        queue=queue_name,
                        routing_key=topic)
-    print(f"queue binded, exchange={segment}, topic={topic}")
 
-    # Perform on_message when message received, ack the handeling
+    # Perform on_message when message received
     def callback(ch, method, properties, body):
         topic = method.routing_key
         on_message(topic, body)
-        ch.basic_ack(delivery_tag = method.delivery_tag) # TODO: huh?
+        ch.basic_ack(delivery_tag = method.delivery_tag)
 
     channel.basic_consume(queue=queue_name, on_message_callback=callback)
-
     channel.start_consuming()
     connection.close()
 
@@ -127,10 +109,7 @@ def share_consume(on_message, host, port, topics, segment):
     :param segment: segment to be consumed from
     :type segment: str
     """
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host=host,
-                                  port=port))
-    channel = connection.channel()
+    connection, channel = _setup(host, port)
     _exchange_declare(channel, exchange=segment, exchange_type='direct')
 
     for topic in topics:
@@ -140,18 +119,25 @@ def share_consume(on_message, host, port, topics, segment):
         channel.queue_bind(exchange=segment,
                            queue=queue_name,
                            routing_key=topic)
-        print(f"queue binded, exchange={segment}, topic={topic}")
 
-        # Perform on_message when message received, ack the handeling
+        # Perform on_message when message received
         def callback(ch, method, properties, body):
             topic = method.routing_key
             on_message(topic, body)
-            ch.basic_ack(delivery_tag = method.delivery_tag) # TODO: huh?
+            ch.basic_ack(delivery_tag = method.delivery_tag)
 
         channel.basic_consume(queue=queue_name, on_message_callback=callback)
 
     channel.start_consuming()
     connection.close()
+
+
+def _setup(host, port):
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host=host,
+                                  port=port))
+    channel = connection.channel()
+    return connection, channel
 
 
 def _exchange_declare(channel, exchange, exchange_type):

@@ -27,5 +27,13 @@ class Worker:
         :type field: str
         """
         def on_message(topic, message):
-            self.driver.share_publish(parser(message), self.host, self.port, topic=field, segment='results') 
-        self.driver.task_consume(on_message, self.host, self.port, topic=field, segment='raw_data')
+            self.driver.share_publish(parser(message), 
+                                      self.host, 
+                                      self.port, 
+                                      topic=field, 
+                                      segment='results') 
+        self.driver.task_consume(on_message, 
+                                 self.host, 
+                                 self.port, 
+                                 topic=field, 
+                                 segment='raw_data')

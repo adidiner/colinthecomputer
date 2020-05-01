@@ -1,9 +1,5 @@
 import time
 
-'''from colinthecomputer.protocol import Connection
-from colinthecomputer.client.reader import Reader
-from colinthecomputer.protocol import User, Config, Snapshot'''
-
 import colinthecomputer.protocol as ptc
 import colinthecomputer.client.reader as rd
 

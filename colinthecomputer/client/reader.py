@@ -2,7 +2,7 @@ import gzip
 import os
 
 from . import read_drivers
-from colinthecomputer.protocol import snapshot_str, user_str
+import colinthecomputer.protocol as ptc
 
 class Reader:
     """Reader of a sample file, exposing iteration over snapshots.
@@ -47,6 +47,6 @@ def read(path, file_format):
     :type file_format: str
     """
     reader = Reader(path, file_format)
-    print(user_str(reader.user))
+    print(ptc.user_str(reader.user))
     for snapshot in reader:
-        print(snapshot_str(snapshot))
+        print(ptc.snapshot_str(snapshot))

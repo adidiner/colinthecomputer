@@ -15,8 +15,11 @@ class Saver:
         db_url = furl(self.db_url)
         db_name, *_ = db_url.path.segments
         driver = drivers[db_url.scheme]
-        driver.init_db(name=db_name, host=db_url.host, port=db_url.port,
-                       username=db_url.username, password=db_url.password)
+        driver.init_db(name=db_name,
+                       host=db_url.host,
+                       port=db_url.port,
+                       username=db_url.username, 
+                       password=db_url.password)
         self.savers = driver.savers
 
     def __repr__(self):

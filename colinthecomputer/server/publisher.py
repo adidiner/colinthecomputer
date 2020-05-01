@@ -1,4 +1,4 @@
-from colinthecomputer.protocol import ColorImage, DepthImage, Snapshot, gender_enum_to_char
+import colinthecomputer.protocol as ptc
 from colinthecomputer.utils import make_path
 import colinthecomputer.mq_drivers as drivers
 
@@ -7,7 +7,6 @@ import json
 import pathlib
 import numpy as np
 from furl import furl
-import humps
 
 
 class Publisher:
@@ -36,19 +35,21 @@ class Publisher:
         :type message: (User, Snapshot)
         """
         user, snapshot = message
-        user_id = user.user_id
-        message = _json_user_message(user)
-        self.driver.share_publish(message, self.host, self.port, topic='user', segment='results')
+        self.driver.share_publish(_json_user_message(user),
+                                  self.host,
+                                  self.port,
+                                  topic='user',
+                                  segment='results')
 
         # Save BLOBs to filesystem
-        # datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
-        path = self.directory / str(user_id) / str(snapshot.datetime)
+        path = self.directory / str(user.user_id) / str(snapshot.datetime)
         _save_binary(path, snapshot)
 
         # Create JSON representation of snapshot without BLOBs
-        message = _json_snapshot_message(snapshot, user_id, path)
-        self.driver.task_publish(message, self.host, self.port, segment='raw_data')
-        print('published :)')
+        self.driver.task_publish(_json_snapshot_message(snapshot, user.user_id, path),
+                                 self.host, 
+                                 self.port, 
+                                 segment='raw_data')
 
 
 def _json_user_message(user):
@@ -60,9 +61,9 @@ def _json_user_message(user):
     :rtype: json
     """
     user_id = user.user_id
-    user_dict = MessageToDict(user)
-    user_dict['user_id'] = int(user_dict.pop('userId'))
-    user_dict['gender'] = gender_enum_to_char(user.gender)
+    user_dict = MessageToDict(user,
+                              preserving_proto_field_name=True)
+    user_dict['gender'] = ptc.gender_enum_to_char(user.gender)
     return json.dumps(user_dict)
 
 
@@ -78,15 +79,16 @@ def _json_snapshot_message(snapshot, user_id, image_path):
     :returns: snapshot information json
     :rtype: json
     """
-    snapshot_metadata = Snapshot()
+    snapshot_metadata = ptc.Snapshot()
     snapshot_metadata.CopyFrom(snapshot)
     snapshot_metadata.color_image.ClearField('data')
     snapshot_metadata.depth_image.ClearField('data')
-    snapshot_dict = MessageToDict(snapshot_metadata, including_default_value_fields=True)
+    snapshot_dict = MessageToDict(snapshot_metadata, 
+                                  preserving_proto_field_name=True, 
+                                  including_default_value_fields=True)
     snapshot_dict['user_id'] = user_id
-    snapshot_dict['colorImage']['data'] = str(image_path / 'color_image')
-    snapshot_dict['depthImage']['data'] = str(image_path / 'depth_image.npy')
-    snapshot_dict = humps.decamelize(snapshot_dict)
+    snapshot_dict['color_image']['data'] = str(image_path / 'color_image')
+    snapshot_dict['depth_image']['data'] = str(image_path / 'depth_image.npy')
     return json.dumps(snapshot_dict)
 
 

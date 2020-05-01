@@ -31,7 +31,9 @@ class Handler(threading.Thread):
             with self.client:
                 # Receive hello
                 data = self.client.receive_message()
-                if (data == b'kill'):
+                # Sometimes I just want to easily kill the server,
+                # this is no an infosec course
+                if data == b'kill':
                     global run
                     run = False
                     return

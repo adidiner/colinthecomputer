@@ -7,7 +7,7 @@ import json
 import os
 
 
-def parse_color_image(data, directory='/home/user/colinfs/results'):
+def parse_color_image(data, directory=os.environ['BLOB_DIR'] + '/results'):
     """Parse color image from snapshot data, save BLOB to fs.
     
     :param data: snapshot as consumed from the message queue
