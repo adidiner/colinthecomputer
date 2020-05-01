@@ -7,7 +7,7 @@ from pathlib import Path
 from colinthecomputer.utils import filtered_dict
 
 
-def parse_depth_image(data, directory='~/colinfs/results'):
+def parse_depth_image(data, directory='/home/user/colinfs/results'):
     """Parse depth image from snapshot data, save BLOB to fs.
     
     :param data: snapshot as consumed from the message queue
@@ -17,21 +17,28 @@ def parse_depth_image(data, directory='~/colinfs/results'):
     """
     directory = Path(directory)
     data = json.loads(data)
+    path = directory / str(data['user_id']) / data['datetime'] / 'depth_image.jpg'
     # Create parsed metadata json
-    depth_image = filtered_dict(data, ['user_id', 'datetime'])
-    path = directory / str(depth_image['user_id']) / depth_image['datetime']
-    if not path.exists():
-         path.mkdir(parents=True)
-    path /= 'depth_image.jpg'
-    depth_image['data'] = {'path': str(path)}
-
+    depth_image = _create_message(data, path)
     # Save parsed image to filesystem
+    _save_binary(data, path)
+    return json.dumps(depth_image)
+
+
+def _create_message(data, path):
+    depth_image = filtered_dict(data, ['user_id', 'datetime'])
+    depth_image['data'] = {'path': str(path)}
+    return depth_image
+
+
+def _save_binary(data, path):
+    if not path.parent.exists():
+         path.parent.mkdir(parents=True)
     data = data['depth_image']
     blob = np.load(data['data'])
     blob = blob.reshape(data['height'], data['width'])
     plt.imshow(blob)
     plt.savefig(path)
-    return json.dumps(depth_image)
 
 
 parse_depth_image.field = 'depth_image'

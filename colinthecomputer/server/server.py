@@ -54,9 +54,9 @@ def run_server(host='0.0.0.0', port=8000, publish=print):
     """Run server, which starts a listner and handles 
     every client connection in a new thread.
     
-    :param host: server ip address, defaults to '127.0.0.1'
+    :param host: server's host, defaults to '127.0.0.1'
     :type host: str, optional
-    :param port: server port, defaults to 8000
+    :param port: server's port, defaults to 8000
     :type port: int, optional
     :param publish: publishing function to incoming snapshots,
     defaults to printing to STDOUT

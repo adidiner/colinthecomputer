@@ -16,11 +16,9 @@ def main():
 @click.argument('mq_url', type=str)
 def cli_run_server(host, port, mq_url):
 	# TODO - directory is env var
-    publish = Publisher(mq_url, '~/colinfs/raw_data').publish
+    publish = Publisher(mq_url, '/home/user/colinfs/raw_data').publish
     run_server(host=host, port=port, publish=publish)
 
-def dummy_publish(message):
-    print(message)
 
 if __name__ == '__main__':
     main(prog_name='colin-the-computer')

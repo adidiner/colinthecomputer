@@ -43,11 +43,7 @@ class Publisher:
         # Save BLOBs to filesystem
         # datetime = snapshot.datetime_object().strftime('%Y-%m-%d_%H-%M-%S-%f')
         path = self.directory / str(user_id) / str(snapshot.datetime)
-        if not path.exists():
-            path.mkdir(parents=True)
-        (path / 'color_image').write_bytes(snapshot.color_image.data)
-        depth_image_data = np.array(snapshot.depth_image.data)
-        np.save(str(path / 'depth_image'), depth_image_data)
+        _save_binary(path, snapshot)
 
         # Create JSON representation of snapshot without BLOBs
         message = _json_snapshot_message(snapshot, user_id, path)
@@ -92,3 +88,11 @@ def _json_snapshot_message(snapshot, user_id, image_path):
     snapshot_dict['depthImage']['data'] = str(image_path / 'depth_image.npy')
     snapshot_dict = humps.decamelize(snapshot_dict)
     return json.dumps(snapshot_dict)
+
+
+def _save_binary(path, snapshot):
+    if not path.exists():
+        path.mkdir(parents=True)
+    (path / 'color_image').write_bytes(snapshot.color_image.data)
+    depth_image_data = np.array(snapshot.depth_image.data)
+    np.save(str(path / 'depth_image'), depth_image_data)

@@ -1,12 +1,11 @@
-version: '3.7'
+version: '3'
 
 services:
   rabbitmq:
-    image: rabbitmq:managment
+    image: rabbitmq
     ports:
       - 5672:5672
-      - 15672:15672
-  db:
+  postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: 'password'
@@ -16,33 +15,72 @@ services:
   server:
     image: colinthecomputer
     build: .
+    volumes:
+      - shared_data:/home/user/colinfs
     depends_on:
       - rabbitmq
     ports:
       - 8000:8000
-    command: colinthecomputer.server run-server 'rabbitmq://rabbitmq:5672'
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.server run-server 'rabbitmq://rabbitmq:5672'
   pose_parser:
     image: colinthecomputer
+    volumes:
+      - shared_data:/home/user/colinfs
     depends_on: 
       - server
       - rabbitmq
-    command: colinthecomputer.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672'  
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672'
+  color_image_parser:
+    image: colinthecomputer
+    volumes:
+      - shared_data:/home/user/colinfs
+    depends_on: 
+      - server
+      - rabbitmq
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'color_image' 'rabbitmq://rabbitmq:5672'
+  depth_image_parser:
+    image: colinthecomputer
+    volumes:
+      - shared_data:/home/user/colinfs
+    depends_on: 
+      - server
+      - rabbitmq
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672'
+  feelings_parser:
+    image: colinthecomputer
+    volumes:
+      - shared_data:/home/user/colinfs
+    depends_on: 
+      - server
+      - rabbitmq
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'feelings' 'rabbitmq://rabbitmq:5672'
   saver:
     image: colinthecomputer
+    volumes:
+      - shared_data:/home/user/colinfs
     depends_on:
       - server
       - rabbitmq
       - postgres
-    command: colinthecomputer.saver run-saver 'postgresql://colin:password@postgres:5432/colin' 'rabbitmq://127.0.0.1:5672/'
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.saver run-saver 'postgresql://colin:password@postgres:5432/colin' 'rabbitmq://rabbitmq:5672/'
   api:
     image: colinthecomputer
+    volumes:
+      - shared_data:/home/user/colinfs
     depends_on:
       - server
       - postgres
-    command: colinthecomputer.api run-server 'postgresql://colin:password@postgres:5432/colin'
+    ports:
+      - 5000:5000
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.api run-server -d 'postgresql://colin:password@postgres:5432/colin'
   gui:
     image: colinthecomputer
     depends_on:
       - server
       - postgres
-    command: colinthecomputer.gui run-server
+    ports:
+      - 8080:8080
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.gui run-server
+
+volumes:
+  shared_data:

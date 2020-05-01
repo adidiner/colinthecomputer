@@ -7,7 +7,7 @@ import json
 import os
 
 
-def parse_color_image(data, directory='~/colinfs/results'):
+def parse_color_image(data, directory='/home/user/colinfs/results'):
     """Parse color image from snapshot data, save BLOB to fs.
     
     :param data: snapshot as consumed from the message queue
@@ -17,19 +17,27 @@ def parse_color_image(data, directory='~/colinfs/results'):
     """
     directory = Path(directory)
     data = json.loads(data)
+    path = directory / str(data['user_id']) / data['datetime'] / 'color_image.jpg'
     # Create parsed metadata json
-    color_image = filtered_dict(data, ['user_id', 'datetime'])
-    path = directory / str(color_image['user_id']) / color_image['datetime']
-    if not path.exists():
-         path.mkdir(parents=True)
-    path /= 'color_image.jpg'
-    color_image['data'] = {'path': str(path)}
-
+    color_image = _create_message(data, path)
     # Save parsed image to filesystem
+    _save_binary(data, path)
+    return json.dumps(color_image)
+    
+
+def _create_message(data, path):
+    color_image = filtered_dict(data, ['user_id', 'datetime'])
+    color_image['data'] = {'path': str(path)}
+    return color_image
+
+
+def _save_binary(data, path):
+    if not path.parent.exists():
+         path.parent.mkdir(parents=True)
     data = data['color_image']
     with open(data['data'], 'rb') as file:
         result = Image.frombytes('RGB', (data['width'], data['height']), file.read()) 
     result.save(path)
-    return json.dumps(color_image)
+
 
 parse_color_image.field = 'color_image'
