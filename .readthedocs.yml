@@ -1,6 +1,7 @@
 version: 2
 
 sphinx:
+  builder: html
   configuration: docs/source/conf.py
 
 formats: all
@@ -9,3 +10,4 @@ python:
   version: 3.8
   install:
     - requirements: requirements.txt
+  system_packages: true
