@@ -2,9 +2,11 @@ from flask import Flask, render_template, send_from_directory
 import os
 from werkzeug.routing import BaseConverter
 
+from colinthecomputer.utils import printerr
 
-API_HOST = '127.0.0.1'
-API_PORT = 5000
+
+API_HOST = None
+API_PORT = None
 
 
 class RegexConverter(BaseConverter):
@@ -44,6 +46,7 @@ def public(file):
     return send_from_directory('gui-react/build', file)
 
 
+@printerr
 def run_server(host='127.0.0.1', port=8080, api_host='127.0.0.1', api_port=5000):
     """"Run GUI server on given (host, port),
     quering the API in (api_host, api_port).

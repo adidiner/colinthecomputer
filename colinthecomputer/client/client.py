@@ -2,7 +2,9 @@ import time
 
 import colinthecomputer.protocol as ptc
 import colinthecomputer.client.reader as rd
+from colinthecomputer.utils import printerr
 
+@printerr
 def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
     """Uploads sample from given path to the server.
 
@@ -18,14 +20,10 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
     """
     reader = rd.Reader(path, file_format)
     for snapshot in reader:
-        try:
-            with ptc.Connection.connect(host, port) as connection:
-                send_hello(connection, reader.user)
-                print(repr(reader.user), type(reader.user))
-                send_snapshot(connection, snapshot)
-        except Exception as error:
-            print(f"ERROR in {__name__}: {error}")
-            break
+        with ptc.Connection.connect(host, port) as connection:
+            send_hello(connection, reader.user)
+            print(repr(reader.user), type(reader.user))
+            send_snapshot(connection, snapshot)
         #time.sleep(0.2)  # TODO: figure out threading problem
 
 

@@ -43,7 +43,7 @@ USER = User(user_id=_USER_ID,
              gender=_GENDER)
 SNAPSHOTS = [_SNAPSHOT1, _SNAPSHOT2]
 
-USER_JSON = '{"username": "Adi Dinerstein", "birthday": 974239200, "gender": "f", "user_id": 49}'
+USER_JSON = '{"user_id": "49", "username": "Adi Dinerstein", "birthday": 974239200, "gender": "f"}'
 SNAPSHOTS_JSON = ['{"datetime": "1576237612000", ' \
                   '"pose": {"translation": {"x": 1.0, "y": 2.0, "z": 3.0}, ' \
                            '"rotation": {"x": 1.0, "y": 2.0, "z": 3.0, "w": 4.0}}, ' \

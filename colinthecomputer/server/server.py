@@ -3,6 +3,7 @@ import threading
 
 import colinthecomputer.protocol as ptc
 from colinthecomputer.parsers import parsers
+from colinthecomputer.utils import printerr
 
 HEADER_SIZE = 20
 run = True
@@ -27,31 +28,32 @@ class Handler(threading.Thread):
         """Run handler, communicating in hello -> condif -> snapshot protocol.
         Use self.publish to publish the snapshot. 
         """
-        try:
-            with self.client:
-                # Receive hello
-                data = self.client.receive_message()
-                # Sometimes I just want to easily kill the server,
-                # this is no an infosec course
-                if data == b'kill':
-                    global run
-                    run = False
-                    return
-                user = ptc.User()
-                user.ParseFromString(data)
-                # Receive snapshot
-                data = self.client.receive_message()
-                snapshot = ptc.Snapshot()
-                snapshot.ParseFromString(data)
+        #try:
+        with self.client:
+            # Receive hello
+            data = self.client.receive_message()
+            # Sometimes I just want to easily kill the server,
+            # this is no an infosec course
+            if data == b'kill':
+                global run
+                run = False
+                return
+            user = ptc.User()
+            user.ParseFromString(data)
+            # Receive snapshot
+            data = self.client.receive_message()
+            snapshot = ptc.Snapshot()
+            snapshot.ParseFromString(data)
 
-            with Handler.lock:
-                self.publish((user, snapshot))
+        with Handler.lock:
+            self.publish((user, snapshot))
 
-        except Exception as error:
+        """except Exception as error:
             print(f"ERROR in {__name__}: {error}")
-            return
+            return"""
 
 
+@printerr
 def run_server(host='0.0.0.0', port=8000, publish=print):
     """Run server, which starts a listner and handles 
     every client connection in a new thread.

@@ -3,6 +3,7 @@ import json
 import datetime as dt
 
 import colinthecomputer.db_drivers as drivers
+from colinthecomputer.utils import printerr
 
 class Saver:
     """Saver which saves results to a given database.
@@ -25,6 +26,7 @@ class Saver:
     def __repr__(self):
         return f'Saver(db_url={self.db_url})'
 
+    @printerr
     def save(self, topic, data):
         """Saves data of a given topic to the database.
         

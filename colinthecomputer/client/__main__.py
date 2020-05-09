@@ -18,4 +18,4 @@ def cli_upload_sample(host, port, path):
 
 
 if __name__ == '__main__':
-    main(prog_name='colin-the-computer')
+    main(prog_name='colinthecomputer')

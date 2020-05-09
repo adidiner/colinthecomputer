@@ -6,11 +6,15 @@ from .tables import User, Snapshot, Translation, Rotation, Pose, ColorImage, Dep
 
 
 def save_user(user_id, username, birthday, gender):
+    """Saves user information.
+    """
     user, _ = User.get_or_create(**locals())
     user.save()
 
 
 def save_pose(user_id, datetime, data):
+    """Saves pose (translation, rotation) data.
+    """
     translation = Translation(**data['translation'])
     rotation = Rotation(**data['rotation'])
     translation.save()
@@ -24,6 +28,8 @@ def save_pose(user_id, datetime, data):
 
 
 def save_color_image(user_id, datetime, data):
+    """Saves color image data (i.e path).
+    """
     color_image = ColorImage(path=data['path'])
     color_image.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
@@ -32,6 +38,8 @@ def save_color_image(user_id, datetime, data):
 
 
 def save_depth_image(user_id, datetime, data):
+    """Saves depth image data (i.e path).
+    """
     depth_image = DepthImage(path=data['path'])
     depth_image.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)
@@ -40,6 +48,8 @@ def save_depth_image(user_id, datetime, data):
 
 
 def save_feelings(user_id, datetime, data):
+    """Saves feelings data.
+    """
     feelings = Feelings(**data)
     feelings.save()
     snapshot, _ = Snapshot.get_or_create(user_id=user_id, datetime=datetime)

@@ -63,6 +63,7 @@ def _json_user_message(user):
     user_id = user.user_id
     user_dict = MessageToDict(user,
                               preserving_proto_field_name=True)
+    print(user_dict)
     user_dict['gender'] = ptc.gender_enum_to_char(user.gender)
     return json.dumps(user_dict)
 

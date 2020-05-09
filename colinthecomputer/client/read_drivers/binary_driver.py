@@ -21,11 +21,6 @@ FLOAT = 4
 
 def read_user(stream):
     """Read user information from stream.
-    
-    :param stream: data stream, beginning with the user information
-    :type stream: bytes-like object
-    :returns: size of read data
-    :rtype: int
     """
     user_id, username_len = struct.unpack('QI',
                                           stream.read(UINT64+UINT32))
@@ -43,11 +38,6 @@ def read_user(stream):
 
 def read_snapshot(stream):
     """Read snapshot from stream.
-    
-    :param stream: data stream, beginning with the snapshot
-    :type stream: bytes-like object
-    :returns: size of read data
-    :rtype: int
     """
     timestamp, = struct.unpack('Q', stream.read(UINT64))
     x, y, z = struct.unpack('ddd', stream.read(DOUBLE*3))

@@ -4,6 +4,7 @@ import os
 import pathlib
 import importlib
 import inspect
+import functools
 
 
 CHUNK = 1000000
@@ -119,3 +120,13 @@ def filtered_dict(d, filter_keys):
     :type filter_keys: list
     """
     return {key: value for key, value in d.items() if key in filter_keys}
+
+
+def printerr(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except Exception as error:
+            print(f"ERROR in {f.__module__}: {error}")
+    return wrapper

@@ -38,6 +38,7 @@ def fields_data(fields):
 
 def test_save_get_user(init):
     user = json.loads(USER_JSON)
+    user['user_id'] = int(user['user_id'])
     driver.savers['user'](**user)
     print(driver.getters['users']())
     assert driver.getters['users']() == [{'user_id': user['user_id'],

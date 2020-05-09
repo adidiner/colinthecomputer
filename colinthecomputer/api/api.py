@@ -7,6 +7,8 @@ from furl import furl
 import io
 
 import colinthecomputer.db_drivers as drivers
+from colinthecomputer.utils import printerr
+
 getters = None
 
 
@@ -21,6 +23,7 @@ def get_users():
     :rtype: json
     """
     return jsonify(getters['users']())
+
 
 @app.route('/users/<int:user_id>')
 def get_user_info(user_id):
@@ -37,6 +40,7 @@ def get_user_info(user_id):
         abort(404)
     return jsonify(result)
 
+
 @app.route('/users/<int:user_id>/snapshots')
 def get_snapshots(user_id):
     """GET the user's available snapshots.
@@ -48,6 +52,7 @@ def get_snapshots(user_id):
     :rtype: json
     """
     return jsonify(getters['snapshots'](user_id))
+
 
 @app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>')
 def get_snapshot_info(user_id, snapshot_id):
@@ -65,6 +70,7 @@ def get_snapshot_info(user_id, snapshot_id):
     if not result:
         abort(404)
     return jsonify(result)
+
 
 @app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>')
 def get_result(user_id, snapshot_id, result_name):
@@ -89,6 +95,7 @@ def get_result(user_id, snapshot_id, result_name):
         return jsonify(result)
     return {'path': f'/users/{user_id}/snapshots/{snapshot_id}/{result_name}/data.jpg'}
 
+
 @app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>/data.jpg')
 def get_blob_data(user_id, snapshot_id, result_name):
     """GET blob data of a result (can be viewd in the browser).
@@ -111,6 +118,8 @@ def get_blob_data(user_id, snapshot_id, result_name):
                      attachment_filename=f'{result_name}.jpg',
                      mimetype='image/jpg')
 
+
+@printerr
 def run_api_server(host, port, database_url):
     """Run the API server on (host, port), quering the given db.
     

@@ -5,6 +5,8 @@ import psycopg2
 from .tables import User, Snapshot, Translation, Rotation, Pose, ColorImage, DepthImage, Feelings
 
 def get_users():
+    """Gets all available users' id and name.
+    """
     users = []
     for user in User.select():
         user = model_to_dict(user, 
@@ -14,6 +16,8 @@ def get_users():
 
 
 def get_user_info(user_id):
+    """Gets full user's information.
+    """
     query = User.select().where(User.user_id==user_id)
     if not query.exists():
         return None
@@ -22,6 +26,8 @@ def get_user_info(user_id):
 
 
 def get_snapshots(user_id):
+    """Gets basic snapshot information for all the user's snapshots.
+    """
     query = Snapshot.select().where(Snapshot.user_id==user_id)
     snapshots = []
     for snapshot in query:
@@ -31,6 +37,8 @@ def get_snapshots(user_id):
     return snapshots
 
 def get_snapshot_info(snapshot_id):
+    """Gets verbose snapshot information, listing available results.
+    """
     query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
         return None
@@ -44,6 +52,8 @@ def get_snapshot_info(snapshot_id):
 
 
 def get_result(snapshot_id, result_name):
+    """Gets snapshot's result data.
+    """
     query = Snapshot.select().where(Snapshot.snapshot_id==snapshot_id)
     if not query.exists():
         return None
