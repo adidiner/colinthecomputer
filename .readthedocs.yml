@@ -1,6 +1,10 @@
 version: 2
+
 sphinx:
-  condiguration: docs/source/conf.py
+  configuration: docs/source/conf.py
+
+formats: all
+
 python:
   version: 3.8
   install:
