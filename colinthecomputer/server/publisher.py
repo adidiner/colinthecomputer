@@ -32,7 +32,7 @@ class Publisher:
         BLOBS are stored in the fs, with only their path being uploaded to the mq.
         
         :param message: message to be published
-        :type message: (User, Snapshot)
+        :type message: User, Snapshot
         """
         user, snapshot = message
         self.driver.share_publish(_json_user_message(user),

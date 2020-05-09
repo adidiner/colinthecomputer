@@ -5,7 +5,7 @@ i.e:
     driver = db_drivers['postgresql']
 Adding a file named "duckguy_driver" to the pacakge 
 will automaticaly expose the driver via db_drivers['duckguy'].
-A db_driver has savers, getters attributes, which enable saving and excessing data.
+A db_driver has savers, getters attributes, which enable saving and acessing data.
 i.e:
     # in this example, driver.savers['character'] saves character information
     driver.savers['character'](name='roy', color='yellow', age='?')

@@ -33,13 +33,6 @@ import inspect
 from colinthecomputer.utils import load_modules, load_drivers
 
 
-"""supported_functions = {"read_user": "",
-                      "read_snapshot": "Read snapshot from stream."
-                                       ":param stream: data stream, beginning with the snapshot" \
-                                       ":type stream: bytes-like object" \
-                                       ":returns: size of read data" \
-                                       ":rtype: int"}
-"""
 root = pathlib.Path(os.path.dirname(__file__))
 modules = load_modules(root)
 drivers = load_drivers(modules)

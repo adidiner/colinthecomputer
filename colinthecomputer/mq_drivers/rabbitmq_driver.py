@@ -35,7 +35,7 @@ def share_publish(message, host, port, *, topic, segment):
     connection.close()
 
 
-def task_consume(on_message, host, port, topic, segment):
+def task_consume(on_message, host, port, *, topic, segment):
     """Consume tasks, perform on_message when receiving.
 
     Topic is used to specify the type of the worker - 
@@ -63,7 +63,7 @@ def task_consume(on_message, host, port, topic, segment):
     connection.close()
 
 
-def share_consume(on_message, host, port, topics, segment):
+def share_consume(on_message, host, port, *, topics, segment):
     """Consume shared messages, perform on_message when receiving.
     
     Consumes all messages published with the specified topics.
