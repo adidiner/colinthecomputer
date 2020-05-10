@@ -1,11 +1,14 @@
 import pathlib
 import threading
+import os
+import numpy as np
 
 import colinthecomputer.protocol as ptc
 from colinthecomputer.parsers import parsers
 from colinthecomputer.utils import printerr
 
 HEADER_SIZE = 20
+DIRECTORY = os.environ['BLOB_DIR'] + '/raw_data'
 run = True
 
 
@@ -24,16 +27,18 @@ class Handler(threading.Thread):
         self.client = client
         self.publish = publish
 
+    @printerr
     def run(self):
-        """Run handler, communicating in hello -> condif -> snapshot protocol.
-        Use self.publish to publish the snapshot. 
+        """Run handler, communicating in hello -> config -> snapshot protocol.
+        Use self.publish to publish the snapshot, 
+        when converting to json before publishing.
+        BLOBS are stored in the fs, with only their path being published.
         """
-        #try:
         with self.client:
             # Receive hello
             data = self.client.receive_message()
             # Sometimes I just want to easily kill the server,
-            # this is no an infosec course
+            # this is not an infosec course
             if data == b'kill':
                 global run
                 run = False
@@ -46,11 +51,16 @@ class Handler(threading.Thread):
             snapshot.ParseFromString(data)
 
         with Handler.lock:
+            user_id = user.user_id
+            # Save BLOBs to filesystem
+            path = pathlib.Path(DIRECTORY) / str(user_id) / str(snapshot.datetime)
+            _save_binary(path, snapshot)
+
+            # Create slim to-publish json messages
+            user = ptc.json_user_message(user)
+            snapshot = ptc.json_snapshot_message(snapshot, user_id, path)
             self.publish((user, snapshot))
 
-        """except Exception as error:
-            print(f"ERROR in {__name__}: {error}")
-            return"""
 
 
 @printerr
@@ -63,7 +73,7 @@ def run_server(host='0.0.0.0', port=8000, publish=print):
     :param port: server's port, defaults to 8000
     :type port: int, optional
     :param publish: publishing function to incoming snapshots,
-    defaults to printing to STDOUT
+                    defaults to printing to STDOUT
     :type publish: callable, optional
     """
     # Setup server
@@ -73,3 +83,19 @@ def run_server(host='0.0.0.0', port=8000, publish=print):
             client = server.accept()
             handler = Handler(client, publish)
             handler.start()
+
+
+
+def _save_binary(path, snapshot):
+    """Saves binary blobs to a given path.
+    
+    :param path: filesystem path
+    :type path: pathlib.Path
+    :param snapshot: snapshot with blobs
+    :type snapshot: Snapshot
+    """
+    if not path.exists():
+        path.mkdir(parents=True)
+    (path / 'color_image').write_bytes(snapshot.color_image.data)
+    depth_image_data = np.array(snapshot.depth_image.data)
+    np.save(str(path / 'depth_image'), depth_image_data)

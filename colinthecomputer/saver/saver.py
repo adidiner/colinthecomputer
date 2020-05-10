@@ -31,7 +31,7 @@ class Saver:
         """Saves data of a given topic to the database.
         
         :param topic: the topic of the data 
-        (supported topics: user, pose, color_image, depth_image, feelings)
+                      (supported topics: user, pose, color_image, depth_image, feelings)
         :type topic: str
         :param data: the given data, as cosumed from the parsed result in the mq
         :type data: json

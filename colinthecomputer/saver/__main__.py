@@ -27,7 +27,7 @@ def cli_save(database, topic, data):
 def cli_run_saver(db_url, mq_url):
     saver = Saver(db_url)
     consume = Consumer(mq_url).consume
-    consume(saver)
+    consume(saver.save)
 
 
 

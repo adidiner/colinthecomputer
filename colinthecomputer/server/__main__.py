@@ -15,7 +15,7 @@ def main():
 @click.option('-p', '--port', default=8000, type=int)
 @click.argument('mq_url', type=str)
 def cli_run_server(host, port, mq_url):
-    publish = Publisher(mq_url, os.environ['BLOB_DIR'] + '/raw_data').publish
+    publish = Publisher(mq_url).publish
     run_server(host=host, port=port, publish=publish)
 
 

@@ -20,9 +20,8 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
     - [The GUI](#the-gui)
 - [Sub Functionalities]
     - [The Reader](#the-reader)
-    - [The Publisher](#the-publisher)
-    - [The Worker](#the-worker)
-    - [THe Consumer](#the-consumer)
+    - [The Publisher, Worker and Consumer](#the-publisher-worker-consumer)
+    - [Drivers and Parsers](#drivers-and-parsers)
 
 ## Installation
 
@@ -118,9 +117,6 @@ $ python -m colinthecomputer.server run-server \
 The `run-server` command recieves a URL to a message queue, which the server will publish the recieved snapshots to.
 The URL is of the form `'mq://host:port`.
 
-#### The Publisher
-
-TODO (should this even be here?)
 
 ### The Parsers
 
@@ -351,37 +347,23 @@ Provides the following utilities:
     }
     ```
 
-### The Publisher
+### The Publisher, Worker and Consumer
 
-A publisher built for working with the message queue. 
-Receives protobuf messages and publishes it in `JSON` format to the message queue.
-Available as `colinthecomputer.server.publisher`
+These are utilities for working with the message queue, available as `colinthecomputer.server.publisher`, `colinthecomputer.parsers.worker`, `colinthecomputer.saver.consumer`.
 
-Provides the following class:
+Each provides a class `Publisher`, `Worker` and `Consumer` respectivaly, initialized with a `mq_url`.
 
-- `Publisher`
-    Initialized with a message queue and a directory to save binary data to.
-    Provides the `publish` method, receiving `(user, snapshot)` and publishing the data to the mq.
+- The `Publisher` provides the `publish(message)` method, publishing messages of the form `(result, raw_data)`, to raw_data and result sections respectively.
+- The `Worker` provides the `work(parser, field)` method, consuming raw data and publishing back the parser's result to the result section.
+- The `Consumer` provides the `consume(on_message, fields)` method, consuming results and performing `on_message` upon them.
 
-    ```pycon
-    >>> from colinthecomputer.server.publisher import Publisher
-    >>> from colinthecomputer.protocol import User, Snapshot
-    >>> user = User(...)
-    >>> snapshot = Snapshot(...)
-    >>> publisher = Publisher('rabbitmq://127.0.0.1:5672/', 'colin/')
-    >>> publisher.publish((user, snapshot))
-    … # publish user and snapshot data to the message queue
-    … # snapshot is published as raw data, user is published as result
-    ```
+These utilities can be used together sepratly from the `server`, `parsers` and `saver` to play with the message queue more freely.
 
-### The Worker
+### Drivers and Parsers
 
-A worker built for consuming raw data from the message queue, passing it to any given parser and publishing its output as a result.
-Available as `colinthecomputer.parsers.worker`
+The drivers include read-drivers, message-queue-drivers and database-drivers.
 
-Provides the following class:
+The drivers are automatically imported, so adding a new driver to the corresponding package will immediatly enable the support of the given format / meesage queue / database.
 
-- `Worker`
-    
+For more details, see [read drivers](https://colin-the-computer.readthedocs.io/en/latest/colinthecomputer.client.read_drivers.html), [message queue drivers](https://colin-the-computer.readthedocs.io/en/latest/colinthecomputer.mq_drivers.html), [database drivers](https://colin-the-computer.readthedocs.io/en/latest/colinthecomputer.db_drivers.html) 
 
-### The Consumer

@@ -2,11 +2,16 @@ import pytest
 import threading
 import time
 
-from constants import USER, SNAPSHOTS
-from colinthecomputer.server import run_server
+from constants import USER, SNAPSHOTS, USER_JSON, SNAPSHOTS_JSON
+import colinthecomputer.server as server
 from colinthecomputer.client.__main__ import cli_upload_sample
 import colinthecomputer.protocol as ptc
 import colinthecomputer.client.reader as rd
+
+@pytest.fixture
+def blob_dir(tmp_path):
+    server.server.DIRECTORY = str(tmp_path)
+    return str(tmp_path)
 
 
 class MockListener:
@@ -66,8 +71,10 @@ def mock_listener(monkeypatch):
     monkeypatch.setattr(ptc, 'Listener', MockListener)
 
 
-def test_run_server(capsys, mock_listener):
+def test_run_server(capsys, blob_dir, mock_listener):
     MockListener.received_messages = []
-    run_server()
+    server.run_server()
+    time.sleep(1)
     stdout, stderr = capsys.readouterr()
-    assert stdout == f"{(USER, SNAPSHOTS[0])!r}\n{(USER, SNAPSHOTS[1])!r}\n"
+    expected_snapshots = [snapshot.replace('tmpdir', blob_dir) for snapshot in SNAPSHOTS_JSON]
+    assert stdout == f"{(USER_JSON, expected_snapshots[0])!r}\n{(USER_JSON, expected_snapshots[1])!r}\n"

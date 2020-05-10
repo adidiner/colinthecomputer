@@ -33,5 +33,5 @@ def saver():
 def test_consumer(saver, consumer):
     mq.message_box = {'results': [('user', '1'), ('user', '2'),
                                   ('pose', '3'), ('feelings', '4')]}
-    consumer.consume(saver)
+    consumer.consume(saver.save)
     assert saver.consumed == {'user': {'1', '2'}, 'pose': {'3'}, 'feelings': {'4'}}

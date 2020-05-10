@@ -15,7 +15,7 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
     :param port: server port address, defaults to 8000
     :type port: str, optional
     :param file_format: the sample file format, supported formats are binary and protobuf.
-     defaults to protobuf
+                        defaults to protobuf
     :type file_format: str, optional
     """
     reader = rd.Reader(path, file_format)

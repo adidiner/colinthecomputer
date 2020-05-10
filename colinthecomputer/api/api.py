@@ -19,7 +19,7 @@ CORS(app)
 def get_users():
     """GET all available users.
     
-    :returns: users json, in the form [{"user_id":id, "username":name}, ...]
+    :returns: users json, in the form ``[{"user_id":id, "username":name}, ...]``
     :rtype: json
     """
     return jsonify(getters['users']())
@@ -32,7 +32,7 @@ def get_user_info(user_id):
     :param user_id: user id of the requested user
     :type user_id: int
     :returns: user info json, in the form 
-    {"birthday":sec from epoch,"gender":"m"/"f"/"o","user_id":id,"username":name}
+              ``{"birthday":sec from epoch,"gender":"m"/"f"/"o","user_id":id,"username":name}``
     :rtype: json
     """
     result = getters['user_info'](user_id)
@@ -48,7 +48,7 @@ def get_snapshots(user_id):
     :param user_id: user id of the requested user
     :type user_id: int
     :returns: snapshots json, in the form
-    [{"datetime":milisec from epoch,"snapshot_id":id}, ...]
+              ``[{"datetime":milisec from epoch,"snapshot_id":id}, ...]``
     :rtype: json
     """
     return jsonify(getters['snapshots'](user_id))
@@ -63,7 +63,7 @@ def get_snapshot_info(user_id, snapshot_id):
     :param snapshot_id: the given snapshot's id
     :type snapshot_id: int
     :returns: snapshot info json, in the form
-    {"datetime":milisec frm epoch,"results":[available results],"snapshot_id":id}
+              ``{"datetime":milisec frm epoch,"results":[available results],"snapshot_id":id}``
     :rtype: json
     """
     result = getters['snapshot_info'](snapshot_id)
@@ -81,10 +81,10 @@ def get_result(user_id, snapshot_id, result_name):
     :param snapshot_id: snapshot corresponding to result
     :type snapshot_id: int
     :param result_name: required result, one of 
-    pose, color_image, depth_image, feelings
+                        pose, color_image, depth_image, feelings
     :type result_name: str
     :returns: json describing the result
-    for BLOBS, the json contains path to the binary data
+              for BLOBS, the json contains path to the binary data
     :rtype: json
     """
     result = getters['result'](snapshot_id, result_name=result_name)
@@ -128,7 +128,7 @@ def run_api_server(host, port, database_url):
     :param port: API port
     :type port: int
     :param database_url: specifies the database to serve from,
-    in the form db://username:password@host:port/db_name
+                         in the form ``db://username:password@host:port/db_name``
     :type database_url: str
     """
     try:

@@ -16,20 +16,18 @@ class Consumer:
     def __repr__(self):
         return f'Consumer(mq_url={mq_url})'
 
-    def consume(self, saver, topics=None):
+    def consume(self, on_message, topics=None):
         """Consume messages from the message queue,
-        use the saver to save them to the database.
+        performe on_message for every consumed message.
         
-        :param saver: saver function which recieves topic and data
+        :param on_message: function to perform, recieves topic and data
         :type saver: function
         :param topics: topics to be consumed and saved,
-        defaults to user, pose, color_image, depth_image and feelings
+                       defaults to user, pose, color_image, depth_image and feelings
         :type topics: list[str]
         """
         if not topics:
             topics = ['user', 'pose', 'color_image', 'depth_image', 'feelings']
-        def on_message(topic, message):
-            saver.save(topic, message)
         self.driver.share_consume(on_message, 
                                   self.host,
                                   self.port,
