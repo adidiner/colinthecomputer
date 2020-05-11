@@ -20,4 +20,4 @@ def cli_run_server(host, port, mq_url):
 
 
 if __name__ == '__main__':
-    main(prog_name='colin-the-computer')
+    main(prog_name='colinthecomputer')

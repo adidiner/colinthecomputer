@@ -9,12 +9,13 @@ function pipeline {
 }
 
 function main {
-	echo 'starting pipeline...'
+	echo 'Starting pipeline...'
 	pipeline
-	sleep 30
+	echo 'Please wait a few moments for everything to load'
+	sleep 20
 	echo 'API available at localhost:5000'
 	echo 'GUI available at localhost:8080'
-	echo 'run a client to start the pipeline'
+	echo 'Run a client to start the pipeline'
 }
 
 

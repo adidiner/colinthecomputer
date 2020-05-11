@@ -52,7 +52,7 @@ class Connection:
         received = 0
         chunks = []
         while received < size:
-            chunk = self.socket.recv(CHUNK)
+            chunk = self.socket.recv(min(CHUNK, size-received))
             received += len(chunk)
             if not chunk:
                 raise RuntimeError('incomplete data')
@@ -77,7 +77,7 @@ class Connection:
         :returns: the received message
         :rtype: byte-string
         """
-        size, = struct.unpack('I', self.socket.recv(4))
+        size, = struct.unpack('I', self._receive(4))
         return self._receive(size)
 
     def close(self):

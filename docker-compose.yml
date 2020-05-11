@@ -26,6 +26,8 @@ services:
       - rabbitmq
     ports:
       - 8000:8000
+    environment:
+      PYTHONUNBUFFERED: 1
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.server run-server 'rabbitmq://rabbitmq:5672'
   pose_parser:
     image: colinthecomputer
@@ -81,6 +83,7 @@ services:
     ports:
       - 8080:8080
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.gui run-server
+  
 
 volumes:
   shared_data:

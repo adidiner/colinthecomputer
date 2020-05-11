@@ -2,8 +2,6 @@ import colinthecomputer.protocol as ptc
 from colinthecomputer.utils import make_path
 import colinthecomputer.mq_drivers as drivers
 
-from google.protobuf.json_format import MessageToDict
-import json
 import pathlib
 from furl import furl
 
