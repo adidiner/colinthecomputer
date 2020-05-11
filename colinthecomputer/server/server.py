@@ -9,7 +9,8 @@ from colinthecomputer.parsers import parsers
 from colinthecomputer.utils import printerr
 
 HEADER_SIZE = 20
-DIRECTORY = os.environ['BLOB_DIR'] + '/raw_data'
+DIRECTORY = os.environ['BLOB_DIR'] + '/raw_data' \
+            if 'BLOB_DIR' in os.environ else 'colinfs/raw_data'
 DATA_HANDLERS = 20
 
 run = True
