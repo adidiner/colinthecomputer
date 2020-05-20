@@ -5,6 +5,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 
 function main {
+	sudo apt-get update
+ 	sudo apt-get install docker-ce docker-ce-cli containerd.io
 	sudo docker pull rabbitmq
 	sudo docker pull postgres
 	sudo docker build -t colinthecomputer .
