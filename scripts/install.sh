@@ -5,8 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 
 function main {
-	sudo apt-get update
- 	sudo sh scripts/docker.sh
+ 	sudo sh scripts/get-docker.sh
 	sudo docker pull rabbitmq
 	sudo docker pull postgres
     python -m virtualenv .env --prompt "[colin] "
