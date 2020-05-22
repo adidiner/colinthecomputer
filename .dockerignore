@@ -5,3 +5,5 @@ tests
 .travis.yml
 test_sample.mind
 docs
+colinthecomputer/gui/gui-react/node_modules
+colinthecomputer/gui/gui-react/build

@@ -13,6 +13,11 @@ ADD requirements.txt /requirements.txt
 RUN pip3.8 install -r /requirements.txt
 
 ADD colinthecomputer /colinthecomputer
-RUN npm install colinthecomputer/gui/gui-react
+
+WORKDIR colinthecomputer/gui/gui-react
+RUN npm install
+RUN npm install react react-dom react-router-dom bootstrap
+RUN npm run build
+WORKDIR /
 
 ENV BLOB_DIR='/colinfs'
