@@ -25,7 +25,6 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
 
 ## Installation
 
-TODO
 
 1. Clone the repository and enter it:
 
@@ -33,28 +32,60 @@ TODO
     $ git clone git@github.com:adidiner/colin-the-computer.git
     ...
     $ cd colin-the-computer/
-    ```
+    ``` 
 
 2. Run the installation script and activate the virtual environment:
 
     ```sh
-    $ ./scripts/install.sh
+    $ scripts/install.sh
     ...
     $ source .env/bin/activate
     [colin] $ # you're good to go!
     ```
 
+    **Notice**:
+
+    If no `docker` is installed, please install `docker:>18.09.9` and `docker-compose>1.23.2` bedore you run the installtion script.
+
+    You may use the supplied docker installation script, by running:
+    ```sh
+    $ scrips/install-docker.sh
+    ...
+    ```
+
+
 3. To check that everything is working as expected, run the tests:
 
-
     ```sh
-    $ pytest tests/
+    $ scripts/run-tests.sh
     ...
     ```
 
 ## Basic Usage
 
-TODO
+To simply start everything up, you can use the `run-pipeline` script:
+
+```sh
+$ scripts/run-pipeline.sh
+Starting pipeline...
+...
+Please wait a few moments for everything to load...
+Run a client to start the pipeline
+```
+
+When everything is up, run a client
+
+```sh
+$ python -m colinthecomputer.client upload-sample 'test_sample.mind'
+```
+
+And checkout `localhost:8080` to see the uploaded sample.
+
+To stop the pipeline, run:
+
+```sh
+$ scripts/stop-pipeline.sh
+```
 
 ## Usage
 
