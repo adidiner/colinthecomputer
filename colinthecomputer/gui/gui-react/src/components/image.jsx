@@ -12,9 +12,7 @@ class Image extends Component {
     }
 
     return (
-      /*<div class="jumbotron" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>*/
-        <img src={window.api_root + this.state.path} width="350"/>
-      /*</div>*/
+      <img src={window.api_root + this.state.path} width="300"/>
       );
   }
 

@@ -40,7 +40,7 @@ class SnapshotInfo extends Component {
       arrow = "/arrows/right.PNG";
     }
 
-    if (toIndex < 0 || toIndex > snapshots.length) {
+    if (toIndex < 0 || toIndex >= snapshots.length) {
       return (<a/>);
     }
 
@@ -95,7 +95,7 @@ class SnapshotInfo extends Component {
           <div class="col">
             {this.renderNav("prev")}
           </div>
-          <div class="col">
+          <div class="col px-md-5">
             <div class="row">
                 {this.renderField("pose", <Pose user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
             </div>
@@ -103,7 +103,7 @@ class SnapshotInfo extends Component {
                 {this.renderField("feelings", <Feelings user_id={this.state.user_id} snapshot_id={this.state.snapshot_id}/>)}
             </div>
           </div>
-          <div class="col">
+          <div class="col px-md-5">
             <div class="row">
               {this.renderField("color_image", <Image user_id={this.state.user_id} snapshot_id={this.state.snapshot_id} type='color_image'/>)}
             </div>
