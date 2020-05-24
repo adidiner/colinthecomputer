@@ -1,16 +1,17 @@
 """Auto imported parsers.
 
-You may add new parsers by writing a ``parse_somthing`` function, or ``SomethingParser`` class,
+You may add new parsers by writing a ``parse_somthing`` function,
+or ``SomethingParser`` class,
 and specifing it's field in a parser.field attribute.
 
-After adding a parser with a curtain field, it can be invoked with the ``run_parser`` function and with the ``parse`` and ``run-parser`` cli,
+After adding a parser with a curtain field,
+it can be invoked with the ``run_parser`` function
+and with the ``parse`` and ``run-parser`` cli,
 using the specified field.
 """
 
 
-import sys
 import pathlib
-import importlib
 import inspect
 import os
 
@@ -19,6 +20,7 @@ from colinthecomputer.utils import load_modules
 modules = []
 parsers = {}
 root = pathlib.Path(os.path.dirname(__file__))
+
 
 def load_parsers(module):
     for key, value in module.__dict__.items():
@@ -35,7 +37,7 @@ for module in modules:
 
 def run_parser(field, data):
     """Run available parser for field, on the given data.
-    
+
     :param field: snapshot field to parse
     :type field: str
     :param data: data as consumed from the message queue

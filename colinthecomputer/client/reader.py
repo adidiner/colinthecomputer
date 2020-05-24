@@ -4,6 +4,7 @@ import os
 from . import read_drivers
 import colinthecomputer.protocol as ptc
 
+
 class Reader:
     """Reader of a sample file, exposing iteration over snapshots.
 
@@ -18,8 +19,8 @@ class Reader:
         self._offset = 0
         self.open = gzip.open if path.endswith('.gz') else open
         with self.open(path, 'rb') as f:
-           self.user, offset = self.driver.read_user(f)
-           self._offset += offset
+            self.user, offset = self.driver.read_user(f)
+            self._offset += offset
 
     def __repr__(self):
         return f'Reader(path={self.path})'

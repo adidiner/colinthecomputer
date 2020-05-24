@@ -1,11 +1,10 @@
-import time
-
 import colinthecomputer.protocol as ptc
 import colinthecomputer.client.reader as rd
 from colinthecomputer.utils import printerr
 
+
 @printerr
-def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
+def upload_sample(path, host='127.0.0.1', port=8000, file_format='protobuf'):
     """Uploads sample from given path to the server.
 
     :param path: path to the sample file
@@ -14,7 +13,8 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
     :type host: str, optional
     :param port: server port address, defaults to 8000
     :type port: str, optional
-    :param file_format: the sample file format, supported formats are binary and protobuf.
+    :param file_format: the sample file format,
+                        supported formats are binary and protobuf.
                         defaults to protobuf
     :type file_format: str, optional
     """
@@ -38,7 +38,8 @@ def send_hello(connection, hello):
 
 
 def send_snapshot(connection, snapshot):
-    """Sends snapshot message to a server, including only the fields specifed in config.
+    """Sends snapshot message to a server.
+
     :param connection: connection object to the server
     :type connection: Connection
     :param config: config sepcifing the required fields

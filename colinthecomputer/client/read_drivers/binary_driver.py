@@ -1,4 +1,3 @@
-import datetime as dt
 import struct
 from PIL import Image as PImage
 
@@ -47,7 +46,8 @@ def read_snapshot(stream):
     pose = Pose(translation=translation, rotation=rotation)
     color_image, ci_offset = _read_color_image(stream)
     depth_image, di_offset = _read_depth_image(stream)
-    hunger, thirst, exhaustion, happiness = struct.unpack('ffff', stream.read(FLOAT*4))
+    hunger, thirst, exhaustion, happiness =\
+        struct.unpack('ffff', stream.read(FLOAT*4))
     feelings = Feelings(hunger=hunger, thirst=thirst,
                         exhaustion=exhaustion, happiness=happiness)
     snapshot = Snapshot(datetime=timestamp,
@@ -56,13 +56,13 @@ def read_snapshot(stream):
                         depth_image=depth_image,
                         feelings=feelings)
     offset = UINT64 + DOUBLE*3 + DOUBLE*4 + \
-     FLOAT*4 + ci_offset + di_offset
+        FLOAT*4 + ci_offset + di_offset
     return snapshot, offset
 
 
 def _read_color_image(stream):
     """Read color image from stream.
-    
+
     :param stream: data stream, beginning with the color image
     :type stream: bytes-like object
     :returns: size of read data
@@ -79,7 +79,7 @@ def _read_color_image(stream):
 
 def _read_depth_image(stream):
     """Read depth image from stream.
-    
+
     :param stream: data stream, beginning with the depth image
     :type stream: bytes-like object
     :returns: size of read data
@@ -90,6 +90,5 @@ def _read_depth_image(stream):
     for _ in range(height*width):
         value, = struct.unpack('f', stream.read(FLOAT))
         data.append(value)
-    #data = iterated_read(stream, height*width*FLOAT) # TODO: this doesnt work
     offset = UINT32*2 + len(data)*FLOAT
     return DepthImage(width=width, height=height, data=data), offset

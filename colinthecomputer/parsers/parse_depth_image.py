@@ -12,15 +12,17 @@ DIRECTORY = os.environ['BLOB_DIR'] + '/results' \
 
 def parse_depth_image(data, directory=DIRECTORY):
     """Parse depth image from snapshot data, save BLOB to fs.
-    
+
     :param data: snapshot as consumed from the message queue
     :type data: json
-    :returns: parsed snapshot depth image, with a path to the parsed binary data
+    :returns: parsed snapshot depth image,
+              with a path to the parsed binary data
     :rtype: json
     """
     directory = Path(directory)
     data = json.loads(data)
-    path = directory / str(data['user_id']) / data['datetime'] / 'depth_image.jpg'
+    path =\
+        directory / str(data['user_id']) / data['datetime'] / 'depth_image.jpg'
     # Create parsed metadata json
     depth_image = _create_message(data, path)
     # Save parsed image to filesystem
@@ -36,7 +38,7 @@ def _create_message(data, path):
 
 def _save_binary(data, path):
     if not path.parent.exists():
-         path.parent.mkdir(parents=True)
+        path.parent.mkdir(parents=True)
     data = data['depth_image']
     blob = np.load(data['data'])
     blob = blob.reshape(data['height'], data['width'])

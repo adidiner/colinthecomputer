@@ -5,7 +5,6 @@ import numpy as np
 import queue
 
 import colinthecomputer.protocol as ptc
-from colinthecomputer.parsers import parsers
 from colinthecomputer.utils import printerr
 
 HEADER_SIZE = 20
@@ -31,7 +30,8 @@ class DataHandler(threading.Thread):
             user, snapshot = q.get()
             user_id = user.user_id
             # Save BLOBs to filesystem
-            path = pathlib.Path(DIRECTORY) / str(user_id) / str(snapshot.datetime)
+            path = \
+                pathlib.Path(DIRECTORY) / str(user_id) / str(snapshot.datetime)
             with DataHandler.lock:
                 _save_binary(path, snapshot)
             # Create slim to-publish json messages
@@ -56,7 +56,7 @@ class ConnectionHandler(threading.Thread):
     @printerr
     def run(self):
         """Run handler, communicating in hello -> config -> snapshot protocol.
-        Use self.publish to publish the snapshot, 
+        Use self.publish to publish the snapshot,
         when converting to json before publishing.
         BLOBS are stored in the fs, with only their path being published.
         """
@@ -80,9 +80,9 @@ class ConnectionHandler(threading.Thread):
 
 @printerr
 def run_server(host='0.0.0.0', port=8000, publish=print):
-    """Run server, which starts a listner and handles 
+    """Run server, which starts a listner and handles
     every client connection in a new thread.
-    
+
     :param host: server's host, defaults to '127.0.0.1'
     :type host: str, optional
     :param port: server's port, defaults to 8000
@@ -108,7 +108,7 @@ def run_server(host='0.0.0.0', port=8000, publish=print):
 
 def _save_binary(path, snapshot):
     """Saves binary blobs to a given path.
-    
+
     :param path: filesystem path
     :type path: pathlib.Path
     :param snapshot: snapshot with blobs

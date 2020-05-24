@@ -1,10 +1,8 @@
 import click
-import sys
 
-
-from . import run_parser
 from . import parsers
 from .worker import Worker
+
 
 @click.group()
 def main():
@@ -31,6 +29,5 @@ def cli_run_parser(parser, mq_url):
         print(f"ERROR in {__name__}: {error}")
 
 
-
 if __name__ == '__main__':
-    main(prog_name='colin-the-computer')
+    main(prog_name='colinthecomputer')

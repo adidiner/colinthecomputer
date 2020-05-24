@@ -1,8 +1,7 @@
 import click
-import click
-import sys
 
 from . import upload_sample
+
 
 @click.group()
 def main():

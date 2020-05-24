@@ -1,9 +1,8 @@
 import click
-import sys
-import os
 
 from . import run_server
 from .publisher import Publisher
+
 
 @click.group()
 def main():
