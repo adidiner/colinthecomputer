@@ -23,7 +23,6 @@ def upload_sample(path, *, host='127.0.0.1', port=8000, file_format='protobuf'):
         with ptc.Connection.connect(host, port) as connection:
             send_hello(connection, reader.user)
             send_snapshot(connection, snapshot)
-        # time.sleep(1)  # TODO: figure out threading problem
 
 
 def send_hello(connection, hello):
