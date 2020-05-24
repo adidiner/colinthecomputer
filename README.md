@@ -18,10 +18,10 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
     - [The API](#the-api)
     - [The CLI](#the-cli)
     - [The GUI](#the-gui)
-- [Sub Functionalities]
+- [Sub Functionalities](#sub-functionalities)
     - [The Reader](#the-reader)
     - [The Publisher, Worker and Consumer](#the-publisher-worker-consumer)
-    - [Drivers and Parsers](#drivers-and-parsers)
+    - [Drivers](#drivers)
 
 ## Installation
 
@@ -49,7 +49,7 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
 
     You may use the supplied docker installation script, by running:
     ```sh
-    $ scrips/install-docker.sh
+    $ scripts/install-docker.sh
     ...
     ```
 
@@ -65,11 +65,12 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
 
 To simply start everything up, you can use the `run-pipeline` script:
 
-```sh
+```
 $ scripts/run-pipeline.sh
 Starting pipeline...
 ...
 Please wait a few moments for everything to load...
+...
 Run a client to start the pipeline
 ```
 
@@ -148,7 +149,6 @@ $ python -m colinthecomputer.server run-server \
 The `run-server` command recieves a URL to a message queue, which the server will publish the recieved snapshots to.
 The URL is of the form `'mq://host:port`.
 
-
 ### The Parsers
 
 A collection of parsers which consumed raw data from the message queue, then publishing the results to this message queue.
@@ -190,6 +190,10 @@ The current available parsers are:
 - `depth_image` - collects the snapshot's raw depth image data, and creates a 2D heatmap representation, accessible as a `JPG` image.
 
 - `feelings` - collects the snapshot's feelings.
+
+To add a new parser, simply add a `parse_something` method with a `field` attribute.
+
+See [Parsers](https://colin-the-computer.readthedocs.io/en/latest/colinthecomputer.parsers.html#module-colinthecomputer.parsers) for more information.
 
 ### The Saver
 
@@ -390,11 +394,10 @@ Each provides a class `Publisher`, `Worker` and `Consumer` respectivaly, initial
 
 These utilities can be used together sepratly from the `server`, `parsers` and `saver` to play with the message queue more freely.
 
-### Drivers and Parsers
+### Drivers
 
-The drivers include read-drivers, message-queue-drivers and database-drivers.
+The drivers include read drivers, message queue drivers and database drivers.
 
 The drivers are automatically imported, so adding a new driver to the corresponding package will immediatly enable the support of the given format / meesage queue / database.
 
 For more details, see [read drivers](https://colin-the-computer.readthedocs.io/en/latest/colinthecomputer.client.read_drivers.html), [message queue drivers](https://colin-the-computer.readthedocs.io/en/latest/colinthecomputer.mq_drivers.html), [database drivers](https://colin-the-computer.readthedocs.io/en/latest/colinthecomputer.db_drivers.html) 
-

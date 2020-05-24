@@ -15,7 +15,7 @@ def main():
 def network_options(f):
     options = [
         click.option('-h', '--host', default='127.0.0.1', type=str),
-        click.option('-p', '--port', default=8000, type=int)
+        click.option('-p', '--port', default=5000, type=int)
         ]
     return functools.reduce(lambda x, opt: opt(x), options, f)
 

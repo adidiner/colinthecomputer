@@ -1,6 +1,6 @@
 """Auto imported parsers.
 
-You may add new parsers by writing a ``parse_somthing`` function, or `SomethingParser` class,
+You may add new parsers by writing a ``parse_somthing`` function, or ``SomethingParser`` class,
 and specifing it's field in a parser.field attribute.
 
 After adding a parser with a curtain field, it can be invoked with the ``run_parser`` function and with the ``parse`` and ``run-parser`` cli,
