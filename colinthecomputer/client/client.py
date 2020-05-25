@@ -26,26 +26,12 @@ def upload_sample(path, host='127.0.0.1', port=8000, file_format='protobuf'):
 
 
 def send_hello(connection, hello):
-    """Sends hello message to a server.
-
-    :param connection: connection object to the server
-    :type connection: Connection
-    :param hello: hello message
-    :type hello: User
-    """
+    """Sends hello message to a server."""
     message = hello.SerializeToString()
     connection.send_message(message)
 
 
 def send_snapshot(connection, snapshot):
-    """Sends snapshot message to a server.
-
-    :param connection: connection object to the server
-    :type connection: Connection
-    :param config: config sepcifing the required fields
-    :type config: Config
-    :param snapshot: snapshot to be sent
-    :type snapshot: Snapshot
-    """
+    """Sends snapshot message to a server."""
     message = snapshot.SerializeToString()
     connection.send_message(message)

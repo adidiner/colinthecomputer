@@ -1,9 +1,8 @@
 import click
-import sys
-
 
 from . import Saver
 from .consumer import Consumer
+
 
 @click.group()
 def main():
@@ -11,7 +10,9 @@ def main():
 
 
 @main.command('save')
-@click.option('-d', '--database', default='postgresql://colin:password@127.0.0.1:5432/colin', type=str)
+@click.option('-d', '--database',
+              default='postgresql://colin:password@127.0.0.1:5432/colin',
+              type=str)
 @click.argument('topic', type=str)
 @click.argument('data', type=str)
 def cli_save(database, topic, data):
@@ -28,7 +29,6 @@ def cli_run_saver(db_url, mq_url):
     saver = Saver(db_url)
     consume = Consumer(mq_url).consume
     consume(saver.save)
-
 
 
 if __name__ == '__main__':
