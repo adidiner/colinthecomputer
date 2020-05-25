@@ -1,8 +1,7 @@
 import click
-import sys
-
 
 from . import run_api_server
+
 
 @click.group()
 def main():
@@ -12,7 +11,9 @@ def main():
 @main.command('run-server')
 @click.option('-h', '--host', default='0.0.0.0', type=str)
 @click.option('-p', '--port', default=5000, type=int)
-@click.option('-d', '--database', default='postgresql://colin:password@127.0.0.1:5432/colin', type=str)
+@click.option('-d', '--database',
+              default='postgresql://colin:password@127.0.0.1:5432/colin',
+              type=str)
 def cli_run_api_server(host, port, database):
     run_api_server(host=host, port=port, database_url=database)
 

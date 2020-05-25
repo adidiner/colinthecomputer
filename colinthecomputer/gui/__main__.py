@@ -1,8 +1,7 @@
 import click
-import sys
-
 
 from . import run_server
+
 
 @click.group()
 def main():

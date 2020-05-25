@@ -5,17 +5,9 @@ See protocol format in colin.proto"""
 
 import datetime as dt
 import json
-from google.protobuf.json_format import MessageToDict
-from google.protobuf.json_format import MessageToJson
+from google.protobuf.json_format import MessageToDict, MessageToJson
 
-
-from .colin_pb2 import User
-from .colin_pb2 import Snapshot
-from .colin_pb2 import Pose
-from .colin_pb2 import ColorImage
-from .colin_pb2 import DepthImage
-from .colin_pb2 import Feelings
-from .colin_pb2 import Config
+from .colin_pb2 import Snapshot, User
 
 
 def gender_enum_to_char(gender):
@@ -44,7 +36,7 @@ def snapshot_str(snapshot):
            f'pose: {MessageToJson(snapshot.pose, including_default_value_fields=True)}{nl}' \
            f'color image: {snapshot.color_image.width}x{snapshot.color_image.height} image{nl}' \
            f'depth image: {snapshot.depth_image.width}x{snapshot.depth_image.height} image{nl}' \
-           f'feelings: {MessageToJson(snapshot.feelings, including_default_value_fields=True)}' 
+           f'feelings: {MessageToJson(snapshot.feelings, including_default_value_fields=True)}'
 
 
 def user_str(user):
@@ -68,7 +60,6 @@ def json_user_message(user):
     :returns: user information json
     :rtype: json
     """
-    user_id = user.user_id
     user_dict = MessageToDict(user,
                               preserving_proto_field_name=True)
     user_dict['gender'] = gender_enum_to_char(user.gender)
@@ -91,8 +82,8 @@ def json_snapshot_message(snapshot, user_id, image_path):
     snapshot_metadata.CopyFrom(snapshot)
     snapshot_metadata.color_image.ClearField('data')
     snapshot_metadata.depth_image.ClearField('data')
-    snapshot_dict = MessageToDict(snapshot_metadata, 
-                                  preserving_proto_field_name=True, 
+    snapshot_dict = MessageToDict(snapshot_metadata,
+                                  preserving_proto_field_name=True,
                                   including_default_value_fields=True)
     snapshot_dict['user_id'] = user_id
     snapshot_dict['color_image']['data'] = str(image_path / 'color_image')

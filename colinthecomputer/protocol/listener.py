@@ -4,7 +4,7 @@ import socket
 
 class Listener:
     """A connection listener, listening to and accepting connections.
-    
+
     :param port: listener port
     :type port: number
     :param host: listener host address, defaults to '0.0.0.0'
@@ -35,8 +35,7 @@ class Listener:
         self.stop()
 
     def start(self):
-        """Start listening on (self.host,self.port)
-        """
+        """Start listening on (self.host,self.port)"""
         self.socket.bind((self.host, self.port))
         self.socket.listen(self.backlog)
 

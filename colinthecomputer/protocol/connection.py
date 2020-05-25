@@ -17,7 +17,7 @@ class Connection:
     @classmethod
     def connect(cls, host, port):
         """Create a connection object to (host, port), returns None if failed.
-        
+
         :param host: peer host address
         :type host: str
         :param port: peer port
@@ -47,7 +47,8 @@ class Connection:
         :type size: int
         :returns: received data
         :rtype: byte-string
-        :raises RuntimeError: incomplete data error if received less than size bytes
+        :raises RuntimeError
+                incomplete data error if received less than size bytes
         """
         received = 0
         chunks = []
@@ -62,7 +63,7 @@ class Connection:
 
     def send_message(self, message):
         """Sends message to peer.
-        
+
         :param message: message to send
         :type message: byte-string
         """
@@ -73,7 +74,7 @@ class Connection:
 
     def receive_message(self):
         """Receives message from peer.
-        
+
         :returns: the received message
         :rtype: byte-string
         """
