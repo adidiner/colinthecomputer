@@ -1,6 +1,5 @@
 import socket
 import time
-
 import pytest
 
 from colinthecomputer.protocol import Connection
@@ -34,7 +33,7 @@ def test_context_manager(server):
 
 
 def test_connect(server):
-    with Connection.connect('127.0.0.1', _PORT) as connection:
+    with Connection.connect('127.0.0.1', _PORT):
         server.accept()
 
 
@@ -46,7 +45,7 @@ def test_send(server):
 
 
 def test_receive(server):
-     with Connection.connect('127.0.0.1', _PORT) as connection:
+    with Connection.connect('127.0.0.1', _PORT) as connection:
         sock, _ = server.accept()
         sock.sendall(_MESSAGE)
         assert connection.receive_message() == b'hello'

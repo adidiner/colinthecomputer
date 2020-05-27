@@ -1,12 +1,10 @@
 import pytest
-import threading
 import time
 
 from constants import USER, SNAPSHOTS, USER_JSON, SNAPSHOTS_JSON
 import colinthecomputer.server as server
-from colinthecomputer.client.__main__ import cli_upload_sample
 import colinthecomputer.protocol as ptc
-import colinthecomputer.client.reader as rd
+
 
 @pytest.fixture
 def blob_dir(tmp_path):
@@ -76,5 +74,8 @@ def test_run_server(capsys, blob_dir, mock_listener):
     server.run_server()
     time.sleep(1)
     stdout, stderr = capsys.readouterr()
-    expected_snapshots = [snapshot.replace('tmpdir', blob_dir) for snapshot in SNAPSHOTS_JSON]
-    assert stdout == f"{(USER_JSON, expected_snapshots[0])!r}\n{(USER_JSON, expected_snapshots[1])!r}\n"
+    expected_snapshots = \
+        [snapshot.replace('tmpdir', blob_dir) for snapshot in SNAPSHOTS_JSON]
+    assert stdout == \
+        f"{(USER_JSON, expected_snapshots[0])!r}\n" \
+        f"{(USER_JSON, expected_snapshots[1])!r}\n"

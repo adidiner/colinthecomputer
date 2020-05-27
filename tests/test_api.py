@@ -68,7 +68,7 @@ def test_get_result(blob_results, mock_getters):
 
 
 def test_get_blob_data(blob_results, mock_getters):
-     with app.test_client() as c:
+    with app.test_client() as c:
         resp = c.get('/users/67/snapshots/55/pose/data.jpg')
         assert resp.status_code == 404
         resp = c.get('/users/67/snapshots/55/color_image/data.jpg')

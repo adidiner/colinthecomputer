@@ -1,4 +1,3 @@
-import datetime as dt
 import pytest
 
 from colinthecomputer.client.reader import Reader

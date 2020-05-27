@@ -1,12 +1,18 @@
 import pytest
 from click.testing import CliRunner
+import numpy as np
 
-
-from constants import USER, SNAPSHOTS, SNAPSHOTS_JSON, POSE_JSON, COLOR_IMAGE_JSON, DEPTH_IMAGE_JSON, FEELINGS_JSON
-import mock_mq_driver as mq
+from constants import (USER,
+                       SNAPSHOTS,
+                       SNAPSHOTS_JSON,
+                       POSE_JSON,
+                       COLOR_IMAGE_JSON,
+                       DEPTH_IMAGE_JSON,
+                       FEELINGS_JSON
+                       )
 from colinthecomputer.parsers import parsers
 from colinthecomputer.parsers.__main__ import cli_parse
-import numpy as np
+
 
 @pytest.fixture
 def blob_dir(tmp_path):
@@ -22,20 +28,22 @@ def blob_dir(tmp_path):
 
 
 def test_parse_pose():
-   for snapshot, result in zip(SNAPSHOTS_JSON, POSE_JSON):
+    for snapshot, result in zip(SNAPSHOTS_JSON, POSE_JSON):
         assert parsers['pose'](snapshot) == result
 
 
 def test_parse_color_image(blob_dir):
     for snapshot, result in zip(SNAPSHOTS_JSON, COLOR_IMAGE_JSON):
         snapshot = snapshot.replace('tmpdir', str(blob_dir))
-        assert parsers['color_image'](snapshot, blob_dir) == result.replace('tmpdir', str(blob_dir))
+        assert parsers['color_image'](snapshot, blob_dir) == \
+            result.replace('tmpdir', str(blob_dir))
 
 
 def test_parse_depth_image(blob_dir):
     for snapshot, result in zip(SNAPSHOTS_JSON, DEPTH_IMAGE_JSON):
         snapshot = snapshot.replace('tmpdir', str(blob_dir))
-        assert parsers['depth_image'](snapshot, blob_dir) == result.replace('tmpdir', str(blob_dir))
+        assert parsers['depth_image'](snapshot, blob_dir) == \
+            result.replace('tmpdir', str(blob_dir))
 
 
 def test_feelings():

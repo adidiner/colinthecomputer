@@ -1,10 +1,7 @@
 import pytest
 
-
-from constants import USER, SNAPSHOTS, USER_JSON, SNAPSHOTS_JSON
 import mock_mq_driver as mq
 from colinthecomputer.parsers.worker import Worker
-import json
 
 
 @pytest.fixture
@@ -15,10 +12,11 @@ def worker(tmpdir):
 
 
 def mock_parser(message):
-	return message
+    return message
 
 
 def test_worker(worker):
     mq.message_box = {'raw_data': ['1', '2', '3']}
     worker.work(mock_parser, 'mock')
-    assert set(mq.message_box['results']) == {('mock', '1'), ('mock', '2'), ('mock', '3')}
+    assert set(mq.message_box['results']) == \
+        {('mock', '1'), ('mock', '2'), ('mock', '3')}
