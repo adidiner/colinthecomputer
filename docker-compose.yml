@@ -1,8 +1,8 @@
-version: '3.7'
+version: "3.7"
 
 x-blob_dir: &blob_dir
   environment:
-    BLOB_DIR: '/colinfs'
+    BLOB_DIR: "/colinfs"
   volumes:
     - shared_data:/colinfs
 
@@ -14,8 +14,8 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_USER: 'colin'
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "colin"
     ports:
       - 5432:5432
   server:
@@ -32,28 +32,28 @@ services:
   pose_parser:
     image: colinthecomputer
     <<: *blob_dir
-    depends_on: 
+    depends_on:
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672'
   color_image_parser:
     image: colinthecomputer
     <<: *blob_dir
-    depends_on: 
+    depends_on:
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'color_image' 'rabbitmq://rabbitmq:5672'
   depth_image_parser:
     image: colinthecomputer
     <<: *blob_dir
-    depends_on: 
+    depends_on:
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672'
   feelings_parser:
     image: colinthecomputer
     <<: *blob_dir
-    depends_on: 
+    depends_on:
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'feelings' 'rabbitmq://rabbitmq:5672'
@@ -83,7 +83,6 @@ services:
     ports:
       - 8080:8080
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.gui run-server
-  
 
 volumes:
   shared_data:

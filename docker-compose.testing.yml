@@ -1,14 +1,14 @@
-version: '3.7'
+version: "3.7"
 
 services:
   rabbitmq-test:
-    image: 'rabbitmq'
+    image: "rabbitmq"
     ports:
-      - '2222:5672'
+      - "2222:5672"
   db-test:
-    image: 'postgres'
+    image: "postgres"
     environment:
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_USER: 'test'
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "test"
     ports:
-      - '3333:5432'
+      - "3333:5432"
