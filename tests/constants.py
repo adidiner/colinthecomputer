@@ -58,11 +58,11 @@ SNAPSHOTS_JSON = ['{"datetime": "1576237612000", '
                   '"color_image": '
                     '{"width": 10, '
                     '"height": 20, '
-                    '"data": "tmpdir/49_1576237612000_color_image"}, '
+                    '"data": "tmpdir/raw_data_49_1576237612000_color_image"}, '
                   '"depth_image": '
                     '{"width": 5, '
                     '"height": 7, '
-                    '"data": "tmpdir/49_1576237612000_depth_image.npy"}, '
+                    '"data": "tmpdir/raw_data_49_1576237612000_depth_image"}, '
                   '"feelings": '
                     '{"hunger": -0.5, "thirst": -0.125, "exhaustion": -0.5, "happiness": 0.5}, '
                   '"user_id": 49}',
@@ -76,7 +76,7 @@ SNAPSHOTS_JSON = ['{"datetime": "1576237612000", '
                   '"depth_image": '
                     '{"width": 5, '
                     '"height": 7, '
-                    '"data": "tmpdir/taw_data_49_1576237618000_depth_image.npy"}, '
+                    '"data": "tmpdir/raw_data_49_1576237618000_depth_image"}, '
                   '"feelings": '
                     '{"hunger": 0.5, "thirst": 0.125, "exhaustion": 1.0, "happiness": -0.5}, '
                   '"user_id": 49}']
@@ -88,7 +88,7 @@ POSE_JSON = ['{"datetime": "1576237612000", "user_id": 49, '
              '"data": {"translation": {"x": 0.5, "y": 3.0, "z": 4.0}, '
              '"rotation": {"x": 3.0, "y": 3.0, "z": 3.0, "w": 3.0}}}']
 COLOR_IMAGE_JSON = ['{"datetime": "1576237612000", "user_id": 49, '
-                    '"data": {"path": "tmpdir/tesults_49_1576237612000_color_image.jpg"}}',
+                    '"data": {"path": "tmpdir/results_49_1576237612000_color_image.jpg"}}',
                     '{"datetime": "1576237618000", "user_id": 49, '
                     '"data": {"path": "tmpdir/results_49_1576237618000_color_image.jpg"}}']
 DEPTH_IMAGE_JSON = ['{"datetime": "1576237612000", "user_id": 49, '

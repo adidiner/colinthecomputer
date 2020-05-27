@@ -88,6 +88,6 @@ def json_snapshot_message(snapshot, user_id, image_path):
                                   preserving_proto_field_name=True,
                                   including_default_value_fields=True)
     snapshot_dict['user_id'] = user_id
-    snapshot_dict['color_image']['data'] = str(image_path / 'color_image')
-    snapshot_dict['depth_image']['data'] = str(image_path / 'depth_image.npy')
+    snapshot_dict['color_image']['data'] = f"{image_path}_color_image"
+    snapshot_dict['depth_image']['data'] = f"{image_path}_depth_image"
     return json.dumps(snapshot_dict)

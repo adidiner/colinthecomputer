@@ -1,6 +1,7 @@
 import pytest
 from click.testing import CliRunner
 import numpy as np
+import pathlib
 
 from constants import (USER,
                        SNAPSHOTS,
@@ -18,12 +19,10 @@ from colinthecomputer.parsers.__main__ import cli_parse
 def blob_dir(tmp_path):
     """Directory containing the required binary data."""
     for snapshot in SNAPSHOTS:
-        path = tmp_path / str(USER.user_id) / str(snapshot.datetime)
-        if not path.exists():
-            path.mkdir(parents=True)
-        (path / 'color_image').write_bytes(snapshot.color_image.data)
+        path = f"{str(tmp_path)}/raw_data_{str(USER.user_id)}_{str(snapshot.datetime)}"
+        pathlib.Path(f"{path}_color_image").write_bytes(snapshot.color_image.data)
         depth_image_data = np.array(snapshot.depth_image.data)
-        np.save(str(path / 'depth_image'), depth_image_data)
+        np.save(f"{path}_depth_image", depth_image_data)
     return tmp_path
 
 
@@ -35,6 +34,7 @@ def test_parse_pose():
 def test_parse_color_image(blob_dir):
     for snapshot, result in zip(SNAPSHOTS_JSON, COLOR_IMAGE_JSON):
         snapshot = snapshot.replace('tmpdir', str(blob_dir))
+        print(snapshot)
         assert parsers['color_image'](snapshot, blob_dir) == \
             result.replace('tmpdir', str(blob_dir))
 

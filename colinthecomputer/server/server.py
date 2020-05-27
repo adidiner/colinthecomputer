@@ -31,7 +31,7 @@ class DataHandler(threading.Thread):
             user_id = user.user_id
             # Save BLOBs to filesystem
             path = \
-                f"{DIRECTORY}/{str(user_id)}_{str(snapshot.datetime)}"
+                f"{DIRECTORY}/raw_data_{str(user_id)}_{str(snapshot.datetime)}"
             _save_binary(path, snapshot)
             # Create slim to-publish json messages
             user = ptc.json_user_message(user)
@@ -117,7 +117,7 @@ def _save_binary(path, snapshot):
     :param snapshot: snapshot with blobs
     :type snapshot: Snapshot
     """
-    # if not path.exists():
+    #if not path.exists():
     #    path.mkdir(parents=True)
     pathlib.Path(f"{path}_color_image").write_bytes(snapshot.color_image.data)
     depth_image_data = np.array(snapshot.depth_image.data)
