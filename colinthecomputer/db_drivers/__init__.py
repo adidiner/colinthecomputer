@@ -1,4 +1,5 @@
-"""Auto imported db drivers.
+"""
+Auto imported db drivers.
 When importing the package,
 it will expose the available database drivers as a dictionary.
 i.e:

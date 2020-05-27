@@ -4,7 +4,8 @@ from colinthecomputer.utils import filtered_dict
 
 
 def parse_pose(data):
-    """Parse pose from snapshot data.
+    """
+    Parse pose from snapshot data.
 
     :param data: snapshot as consumbed from the message queue
     :type data: json

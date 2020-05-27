@@ -1,7 +1,9 @@
-"""Module of patched protobuf classes, used for client-server communication.
+"""
+Module of patched protobuf classes, used for client-server communication.
 (this file simply patches basic functions as str,
 making testing and interaction more conveniente.
-See protocol format in colin.proto"""
+See protocol format in colin.proto
+"""
 
 import datetime as dt
 import json

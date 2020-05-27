@@ -4,7 +4,8 @@ from furl import furl
 
 
 class Publisher:
-    """Publisher which publishes messages to a given message queue.
+    """
+    Publisher which publishes messages to a given message queue.
 
     :param mq_url: a url describing the mq, in the form 'mq://host:port'
     :type mq_url: str
@@ -19,7 +20,8 @@ class Publisher:
         return f'Publisher(mq_url={self.mq_url}, blob_dir={self.directory})'
 
     def publish(self, message):
-        """Publish message to the message queue.
+        """
+        Publish message to the message queue.
 
         :param message: message to be published,
                         consisting of a result (parsed) message

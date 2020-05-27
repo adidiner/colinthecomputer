@@ -6,7 +6,8 @@ import colinthecomputer.protocol as ptc
 
 
 class Reader:
-    """Reader of a sample file, exposing iteration over snapshots.
+    """
+    Reader of a sample file, exposing iteration over snapshots.
 
     :param path: path to the sample file
     :type path: str
@@ -40,7 +41,8 @@ class Reader:
 
 
 def read(path, file_format):
-    """Read and print all snapshots in sample file.
+    """
+    Read and print all snapshots in sample file.
 
     :param path: path to the sample file
     :type path: str

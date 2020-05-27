@@ -2,7 +2,8 @@ import pika
 
 
 def task_publish(message, host, port, *, segment):
-    """Publish task message to queue, on a given segment.
+    """
+    Publish task message to queue, on a given segment.
 
     The message is published to all subscribered workers on the segment.
     The task will be consumed by a single worker of each kind
@@ -19,7 +20,8 @@ def task_publish(message, host, port, *, segment):
 
 
 def share_publish(message, host, port, *, topic, segment):
-    """Share message to queue, on a given segment.
+    """
+    Share message to queue, on a given segment.
 
     The message will be routed by the given topic,
     meaning only subscribers subscribed to the given topic
@@ -37,7 +39,8 @@ def share_publish(message, host, port, *, topic, segment):
 
 
 def task_consume(on_message, host, port, *, topic, segment):
-    """Consume tasks, perform on_message when receiving.
+    """
+    Consume tasks, perform on_message when receiving.
 
     Topic is used to specify the type of the worker -
     if several workers are active with the same topic,
@@ -65,7 +68,8 @@ def task_consume(on_message, host, port, *, topic, segment):
 
 
 def share_consume(on_message, host, port, *, topics, segment):
-    """Consume shared messages, perform on_message when receiving.
+    """
+    Consume shared messages, perform on_message when receiving.
 
     Consumes all messages published with the specified topics.
     All consumers of a given topic will view the shared message.
@@ -94,7 +98,8 @@ def share_consume(on_message, host, port, *, topics, segment):
 
 
 def _setup(host, port):
-    """Setup pika connection.
+    """
+    Setup pika connection.
 
     :param host: connection host
     :type host: str
@@ -111,7 +116,8 @@ def _setup(host, port):
 
 
 def _exchange_declare(channel, exchange, exchange_type):
-    """Declare exchange through channel,
+    """
+    Declare exchange through channel,
     handle conflicting declaration and raise exception to user.
 
     :param channel: channel to be declared from

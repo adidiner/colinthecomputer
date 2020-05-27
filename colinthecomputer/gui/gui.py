@@ -23,7 +23,8 @@ gui.url_map.converters['regex'] = RegexConverter
 @gui.route('/', defaults={'path': ''})
 @gui.route('/<path:path>')
 def serve_react(path):
-    """FLASK FUNCTION
+    """
+    FLASK FUNCTION
     Serve the react app.
     All routes are routed to the react app.
 
@@ -36,7 +37,8 @@ def serve_react(path):
 
 @gui.route("/<regex(r'(.*?)\.(png|PNG|ico|js)$'):file>", methods=["GET"])
 def public(file):
-    """FLASK FUNCITON
+    """
+    FLASK FUNCITON
     Routes to all resources in the react public folder.
 
     :param file: filename from /public
@@ -50,7 +52,8 @@ def run_server(host='127.0.0.1',
                port=8080,
                api_host='127.0.0.1',
                api_port=5000):
-    """"Run GUI server on given (host, port),
+    """
+    Run GUI server on given (host, port),
     quering the API in (api_host, api_port).
 
     :param host: GUI ip address, defaults to '127.0.0.1'

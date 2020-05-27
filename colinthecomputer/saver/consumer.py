@@ -4,7 +4,8 @@ import colinthecomputer.mq_drivers as drivers
 
 
 class Consumer:
-    """Consumer which handles consuming from the message queue,
+    """
+    Consumer which handles consuming from the message queue,
     feeding the results to a saver.
 
     :param mq_url: a url describing the mq, in the form 'mq://host:port'
@@ -20,7 +21,8 @@ class Consumer:
         return f'Consumer(mq_url={self.mq_url})'
 
     def consume(self, on_message, topics=None):
-        """Consume messages from the message queue,
+        """
+        Consume messages from the message queue,
         performe on_message for every consumed message.
 
         :param on_message: function to perform, recieves topic and data

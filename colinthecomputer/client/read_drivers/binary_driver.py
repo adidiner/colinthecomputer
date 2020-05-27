@@ -19,8 +19,7 @@ FLOAT = 4
 
 
 def read_user(stream):
-    """Read user information from stream.
-    """
+    """Read user information from stream."""
     user_id, username_len = struct.unpack('QI',
                                           stream.read(UINT64+UINT32))
     username = stream.read(username_len).decode('utf-8')
@@ -36,8 +35,7 @@ def read_user(stream):
 
 
 def read_snapshot(stream):
-    """Read snapshot from stream.
-    """
+    """Read snapshot from stream."""
     timestamp, = struct.unpack('Q', stream.read(UINT64))
     x, y, z = struct.unpack('ddd', stream.read(DOUBLE*3))
     translation = Pose.Translation(x=x, y=y, z=z)
@@ -61,7 +59,8 @@ def read_snapshot(stream):
 
 
 def _read_color_image(stream):
-    """Read color image from stream.
+    """
+    Read color image from stream.
 
     :param stream: data stream, beginning with the color image
     :type stream: bytes-like object
@@ -78,7 +77,8 @@ def _read_color_image(stream):
 
 
 def _read_depth_image(stream):
-    """Read depth image from stream.
+    """
+    Read depth image from stream.
 
     :param stream: data stream, beginning with the depth image
     :type stream: bytes-like object

@@ -3,7 +3,8 @@ import socket
 
 
 class Listener:
-    """A connection listener, listening to and accepting connections.
+    """
+    A connection listener, listening to and accepting connections.
 
     :param port: listener port
     :type port: number

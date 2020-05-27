@@ -1,4 +1,5 @@
-"""Auto imported parsers.
+"""
+Auto imported parsers.
 
 You may add new parsers by writing a ``parse_somthing`` function,
 or ``SomethingParser`` class,
@@ -36,7 +37,8 @@ for module in modules:
 
 
 def run_parser(field, data):
-    """Run available parser for field, on the given data.
+    """
+    Run available parser for field, on the given data.
 
     :param field: snapshot field to parse
     :type field: str

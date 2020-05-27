@@ -10,7 +10,8 @@ DIRECTORY = os.environ['BLOB_DIR'] + '/results' \
 
 
 def parse_color_image(data, directory=DIRECTORY):
-    """Parse color image from snapshot data, save BLOB to fs.
+    """
+    Parse color image from snapshot data, save BLOB to fs.
 
     :param data: snapshot as consumed from the message queue
     :type data: json

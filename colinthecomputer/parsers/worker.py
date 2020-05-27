@@ -3,7 +3,8 @@ import colinthecomputer.mq_drivers as drivers
 
 
 class Worker:
-    """Worker which handles the consuming and publishing
+    """
+    Worker which handles the consuming and publishing
     between the parsers and the message queue.
 
     :param mq_url: a url describing the mq, in the form 'mq://host:port'
@@ -19,7 +20,8 @@ class Worker:
         return f'Worker(mq_url={self.mq_url})'
 
     def work(self, parser, field):
-        """Consumes messages from the message queue, feeding them to the parser.
+        """
+        Consumes messages from the message queue, feeding them to the parser.
         Publish the parser's results back to the queue.
 
         :param parser: a parsing function

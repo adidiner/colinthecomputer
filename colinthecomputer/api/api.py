@@ -13,7 +13,8 @@ CORS(app)
 
 @app.route('/users')
 def get_users():
-    """GET all available users.
+    """
+    GET all available users.
 
     :returns: users json, in the form
               ``[{"user_id":id, "username":name}, ...]``
@@ -24,7 +25,8 @@ def get_users():
 
 @app.route('/users/<int:user_id>')
 def get_user_info(user_id):
-    """GET the given user's information.
+    """
+    GET the given user's information.
 
     :param user_id: user id of the requested user
     :type user_id: int
@@ -42,7 +44,8 @@ def get_user_info(user_id):
 
 @app.route('/users/<int:user_id>/snapshots')
 def get_snapshots(user_id):
-    """GET the user's available snapshots.
+    """
+    GET the user's available snapshots.
 
     :param user_id: user id of the requested user
     :type user_id: int
@@ -56,7 +59,8 @@ def get_snapshots(user_id):
 
 @app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>')
 def get_snapshot_info(user_id, snapshot_id):
-    """GET the snapshot's information.
+    """
+    GET the snapshot's information.
 
     :param user_id: user corresponding to snapshot
     :type user_id: int
@@ -76,7 +80,8 @@ def get_snapshot_info(user_id, snapshot_id):
 
 @app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>')
 def get_result(user_id, snapshot_id, result_name):
-    """GET result json, only  if available.
+    """
+    GET result json, only  if available.
 
     :param user_id: user corresponding to snapshot
     :type user_id: int
@@ -100,7 +105,8 @@ def get_result(user_id, snapshot_id, result_name):
 
 @app.route('/users/<int:user_id>/snapshots/<int:snapshot_id>/<string:result_name>/data.jpg')
 def get_blob_data(user_id, snapshot_id, result_name):
-    """GET blob data of a result (can be viewd in the browser).
+    """
+    GET blob data of a result (can be viewd in the browser).
 
     :param user_id: user corresponding to snapshot
     :type user_id: int
@@ -124,7 +130,8 @@ def get_blob_data(user_id, snapshot_id, result_name):
 
 @printerr
 def run_api_server(host, port, database_url):
-    """Run the API server on (host, port), quering the given db.
+    """
+    Run the API server on (host, port), quering the given db.
 
     :param host: API ip address
     :type host: str

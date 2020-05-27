@@ -10,8 +10,7 @@ UINT32 = 4
 
 
 def read_user(stream):
-    """Read user information from stream.
-    """
+    """Read user information from stream."""
     size, = struct.unpack('I', stream.read(UINT32))
     user = User()
     user.ParseFromString(stream.read(size))
@@ -19,8 +18,7 @@ def read_user(stream):
 
 
 def read_snapshot(stream):
-    """Read snapshot from stream.
-    """
+    """Read snapshot from stream."""
     size, = struct.unpack('I', stream.read(UINT32))
     snapshot = Snapshot()
     snapshot.ParseFromString(iterated_read(stream, size))

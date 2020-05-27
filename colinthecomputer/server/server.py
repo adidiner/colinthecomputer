@@ -42,7 +42,8 @@ class DataHandler(threading.Thread):
 
 
 class ConnectionHandler(threading.Thread):
-    """Handels a single connection from client.
+    """
+    Handels a single connection from client.
 
     :param client: client connection
     :type client: Connection
@@ -55,7 +56,8 @@ class ConnectionHandler(threading.Thread):
 
     @printerr
     def run(self):
-        """Run handler, communicating in hello -> config -> snapshot protocol.
+        """
+        Run handler, communicating in hello -> config -> snapshot protocol.
         Use self.publish to publish the snapshot,
         when converting to json before publishing.
         BLOBS are stored in the fs, with only their path being published.
@@ -80,7 +82,8 @@ class ConnectionHandler(threading.Thread):
 
 @printerr
 def run_server(host='0.0.0.0', port=8000, publish=print):
-    """Run server, which starts a listner and handles
+    """
+    Run server, which starts a listner and handles
     every client connection in a new thread.
 
     :param host: server's host, defaults to '127.0.0.1'
@@ -107,7 +110,8 @@ def run_server(host='0.0.0.0', port=8000, publish=print):
 
 
 def _save_binary(path, snapshot):
-    """Saves binary blobs to a given path.
+    """
+    Saves binary blobs to a given path.
 
     :param path: filesystem path
     :type path: pathlib.Path

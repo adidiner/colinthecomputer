@@ -1,4 +1,5 @@
-"""A server which accepts client connections,
+"""
+A server which accepts client connections,
 receives the uploaded snapshots and publishes them to the message queue.
 """
 

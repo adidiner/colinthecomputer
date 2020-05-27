@@ -12,7 +12,8 @@ CHUNK = 1000000
 
 
 def to_stream(data):
-    """Converts data to byte-stream
+    """
+    Converts data to byte-stream
     
     :param data: given data
     :type data: bytes-like object (can be string)
@@ -25,7 +26,8 @@ def to_stream(data):
 
 
 def iterated_read(stream, size):
-    """Read size bytes from stream iterativly.
+    """
+    Read size bytes from stream iterativly.
     
     :param stream: byte data stream
     :type stream: bytes-like stream
@@ -49,18 +51,9 @@ def parse_address(address):
     return (address[0], int(address[1]))
 
 
-# TODO: might be a patlib built in
-def make_path(root, *dirs):
-    path = root
-    for directory in dirs:
-        path /= directory
-        if not path.exists():
-            path.mkdir()
-    return path
-
-
 def load_modules(root):
-    """Loads all modules under root path, returns module dict.
+    """
+    Loads all modules under root path, returns module dict.
     
     :param root: path to root directory where the requested modules are defined
     :type root: pathlib.Path (TODO)
@@ -77,7 +70,8 @@ def load_modules(root):
 
 
 def load_packages(root):
-    """Loads all modules under root path, returns module dict.
+    """
+    Loads all modules under root path, returns module dict.
     
     :param root: path to root directory where the requested modules are defined
     :type root: pathlib.Path (TODO)
@@ -96,7 +90,8 @@ def load_packages(root):
 
 
 def load_drivers(modules):
-    """Load all modules marked as drivers in the given module.
+    """
+    Load all modules marked as drivers in the given module.
     
     :param modules: module dictionary, in the form {'mod_name': mod}
     :type modules: dict[str: module]
@@ -112,7 +107,8 @@ def load_drivers(modules):
 
 
 def filtered_dict(d, filter_keys):
-    """Filter d to a dict with only the filter keys.
+    """
+    Filter d to a dict with only the filter keys.
     
     Returns a new dict, containing the values of d only if key is in filter_keys.
     :param d: inirt dict

@@ -6,7 +6,8 @@ from colinthecomputer.utils import printerr
 
 
 class Saver:
-    """Saver which saves results to a given database.
+    """
+    Saver which saves results to a given database.
 
     :param db_url: database url,
                    in the form db://username:password@host:port/db_name
@@ -29,7 +30,8 @@ class Saver:
 
     @printerr
     def save(self, topic, data):
-        """Saves data of a given topic to the database.
+        """
+        Saves data of a given topic to the database.
 
         :param topic: the topic of the data
                       (supported topics:

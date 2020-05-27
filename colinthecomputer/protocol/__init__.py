@@ -1,4 +1,5 @@
-"""Protocol utilites, including protobuf classes and
+"""
+Protocol utilites, including protobuf classes and
 network connection and listener abstractions.
 """
 

@@ -11,7 +11,8 @@ DIRECTORY = os.environ['BLOB_DIR'] + '/results' \
 
 
 def parse_depth_image(data, directory=DIRECTORY):
-    """Parse depth image from snapshot data, save BLOB to fs.
+    """
+    Parse depth image from snapshot data, save BLOB to fs.
 
     :param data: snapshot as consumed from the message queue
     :type data: json

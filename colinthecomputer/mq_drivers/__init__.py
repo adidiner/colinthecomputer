@@ -1,4 +1,5 @@
-"""Auto imported mq drivers.
+"""
+Auto imported mq drivers.
 When importing the package,
 it will expose the available mq drivers as a dictionary.
 i.e:

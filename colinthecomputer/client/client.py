@@ -5,7 +5,8 @@ from colinthecomputer.utils import printerr
 
 @printerr
 def upload_sample(path, host='127.0.0.1', port=8000, file_format='protobuf'):
-    """Uploads sample from given path to the server.
+    """
+    Uploads sample from given path to the server.
 
     :param path: path to the sample file
     :type path: str

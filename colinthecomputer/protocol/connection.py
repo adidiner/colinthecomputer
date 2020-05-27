@@ -5,7 +5,8 @@ CHUNK = 1000000
 
 
 class Connection:
-    """Incapsulates the network connection to an endpoint,
+    """
+    Incapsulates the network connection to an endpoint,
     providing a connect, send_message and receive_message methods.
 
     :param socket: the connection socket
@@ -16,7 +17,8 @@ class Connection:
 
     @classmethod
     def connect(cls, host, port):
-        """Create a connection object to (host, port), returns None if failed.
+        """
+        Create a connection object to (host, port), returns None if failed.
 
         :param host: peer host address
         :type host: str
@@ -41,7 +43,8 @@ class Connection:
         self.close()
 
     def _receive(self, size):
-        """Recieve size bytes from peer.
+        """
+        Recieve size bytes from peer.
 
         :param size: size of required data
         :type size: int
@@ -62,7 +65,8 @@ class Connection:
         return data
 
     def send_message(self, message):
-        """Sends message to peer.
+        """
+        Sends message to peer.
 
         :param message: message to send
         :type message: byte-string
@@ -73,7 +77,8 @@ class Connection:
         self.socket.sendall(data)
 
     def receive_message(self):
-        """Receives message from peer.
+        """
+        Receives message from peer.
 
         :returns: the received message
         :rtype: byte-string
