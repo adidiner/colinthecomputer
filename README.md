@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/adidiner/colin-the-computer.svg?branch=master)](https://travis-ci.org/adidiner/colin-the-computer)
 [![codecov](https://codecov.io/gh/adidiner/colin-the-computer/branch/master/graph/badge.svg)](https://codecov.io/gh/adidiner/colin-the-computer)
 [![Documentation Status](https://readthedocs.org/projects/colin-the-computer/badge/?version=latest)](https://colin-the-computer.readthedocs.io/en/latest/?badge=latest)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 # Colin The Computer
 
