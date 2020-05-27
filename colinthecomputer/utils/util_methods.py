@@ -6,9 +6,17 @@ import importlib
 import inspect
 import functools
 import traceback
+import struct
 
 
 CHUNK = 1000000
+
+
+def gzip_size(path):
+    """Get original size of gz compressed file"""
+    with open(path, 'rb') as f:
+        f.seek(-4, 2)
+        return struct.unpack('I', f.read(4))[0]
 
 
 def to_stream(data):

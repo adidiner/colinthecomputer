@@ -8,8 +8,8 @@ import colinthecomputer.protocol as ptc
 from colinthecomputer.utils import printerr
 
 HEADER_SIZE = 20
-DIRECTORY = os.environ['BLOB_DIR'] + '/raw_data' \
-            if 'BLOB_DIR' in os.environ else 'colinfs/raw_data'
+DIRECTORY = os.environ['BLOB_DIR'] \
+            if 'BLOB_DIR' in os.environ else 'colinfs'
 DATA_HANDLERS = 20
 
 run = True
@@ -17,7 +17,7 @@ q = queue.Queue()
 
 
 class DataHandler(threading.Thread):
-    lock = threading.Lock()
+    # lock = threading.Lock()
 
     def __init__(self, publish):
         super().__init__()
@@ -31,9 +31,8 @@ class DataHandler(threading.Thread):
             user_id = user.user_id
             # Save BLOBs to filesystem
             path = \
-                pathlib.Path(DIRECTORY) / str(user_id) / str(snapshot.datetime)
-            with DataHandler.lock:
-                _save_binary(path, snapshot)
+                f"{DIRECTORY}/{str(user_id)}_{str(snapshot.datetime)}"
+            _save_binary(path, snapshot)
             # Create slim to-publish json messages
             user = ptc.json_user_message(user)
             snapshot = ptc.json_snapshot_message(snapshot, user_id, path)
@@ -114,12 +113,12 @@ def _save_binary(path, snapshot):
     Saves binary blobs to a given path.
 
     :param path: filesystem path
-    :type path: pathlib.Path
+    :type path: str
     :param snapshot: snapshot with blobs
     :type snapshot: Snapshot
     """
-    if not path.exists():
-        path.mkdir(parents=True)
-    (path / 'color_image').write_bytes(snapshot.color_image.data)
+    # if not path.exists():
+    #    path.mkdir(parents=True)
+    pathlib.Path(f"{path}_color_image").write_bytes(snapshot.color_image.data)
     depth_image_data = np.array(snapshot.depth_image.data)
-    np.save(str(path / 'depth_image'), depth_image_data)
+    np.save(f"{path}_depth_image", depth_image_data)

@@ -6,8 +6,8 @@ from pathlib import Path
 
 from colinthecomputer.utils import filtered_dict
 
-DIRECTORY = os.environ['BLOB_DIR'] + '/results' \
-            if 'BLOB_DIR' in os.environ else 'colinfs/results'
+DIRECTORY = os.environ['BLOB_DIR'] \
+            if 'BLOB_DIR' in os.environ else 'colinfs'
 
 
 def parse_depth_image(data, directory=DIRECTORY):
@@ -22,8 +22,8 @@ def parse_depth_image(data, directory=DIRECTORY):
     """
     directory = Path(directory)
     data = json.loads(data)
-    path =\
-        directory / str(data['user_id']) / data['datetime'] / 'depth_image.jpg'
+    path = \
+        directory / f"results_{str(data['user_id'])}_{data['datetime']}_depth_image.jpg"
     # Create parsed metadata json
     depth_image = _create_message(data, path)
     # Save parsed image to filesystem
@@ -38,8 +38,8 @@ def _create_message(data, path):
 
 
 def _save_binary(data, path):
-    if not path.parent.exists():
-        path.parent.mkdir(parents=True)
+    # if not path.parent.exists():
+    #    path.parent.mkdir(parents=True)
     data = data['depth_image']
     blob = np.load(data['data'])
     blob = blob.reshape(data['height'], data['width'])

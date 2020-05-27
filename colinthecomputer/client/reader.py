@@ -3,6 +3,7 @@ import os
 
 from . import read_drivers
 import colinthecomputer.protocol as ptc
+from colinthecomputer.utils import gzip_size
 
 
 class Reader:
@@ -17,8 +18,10 @@ class Reader:
     def __init__(self, path, file_format):
         self.path = path
         self.driver = read_drivers[file_format]
-        self._offset = 0
         self.open = gzip.open if path.endswith('.gz') else open
+        self.file_size = gzip_size(path) if path.endswith('.gz') \
+                                         else os.path.getsize(path)
+        self._offset = 0
         with self.open(path, 'rb') as f:
             self.user, offset = self.driver.read_user(f)
             self._offset += offset
@@ -30,11 +33,10 @@ class Reader:
         return f'{self.user}'
 
     def __iter__(self):
-        file_size = os.path.getsize(self.path)
         with self.open(self.path, 'rb') as f:
             f.seek(self._offset)
             # read snapshots with driver
-            while file_size - self._offset > 8:
+            while self.file_size - self._offset > 8:
                 snapshot, offset = self.driver.read_snapshot(f)
                 self._offset += offset
                 yield snapshot
@@ -51,5 +53,8 @@ def read(path, file_format):
     """
     reader = Reader(path, file_format)
     print(ptc.user_str(reader.user))
+    count = 0
     for snapshot in reader:
-        print(ptc.snapshot_str(snapshot))
+        #print(ptc.snapshot_str(snapshot))
+        count += 1
+    print(count)

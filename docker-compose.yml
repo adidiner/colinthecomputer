@@ -43,7 +43,35 @@ services:
       - server
       - rabbitmq
     command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'color_image' 'rabbitmq://rabbitmq:5672'
-  depth_image_parser:
+  depth_image_parser1:
+    image: colinthecomputer
+    <<: *blob_dir
+    depends_on:
+      - server
+      - rabbitmq
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672'
+  depth_image_parser2:
+    image: colinthecomputer
+    <<: *blob_dir
+    depends_on:
+      - server
+      - rabbitmq
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672'
+  depth_image_parser3:
+    image: colinthecomputer
+    <<: *blob_dir
+    depends_on:
+      - server
+      - rabbitmq
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672'
+  depth_image_parser4:
+    image: colinthecomputer
+    <<: *blob_dir
+    depends_on:
+      - server
+      - rabbitmq
+    command: ./wait-for-it.sh rabbitmq:5672 -- python3.8 -m colinthecomputer.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672'
+  depth_image_parser5:
     image: colinthecomputer
     <<: *blob_dir
     depends_on:
