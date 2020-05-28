@@ -19,11 +19,11 @@ from colinthecomputer.parsers.__main__ import cli_parse
 def blob_dir(tmp_path):
     """Directory containing the required binary data."""
     for snapshot in SNAPSHOTS:
-        path = f"{str(tmp_path)}/raw_data_{str(USER.user_id)}_{str(snapshot.datetime)}"
-        pathlib.Path(f"{path}_color_image").write_bytes(snapshot.color_image.data)
+        path = tmp_path / 'raw_data' / str(USER.user_id) / str(snapshot.datetime)
+        path.mkdir(parents=True, exist_ok=True)
+        (path / 'color_image').write_bytes(snapshot.color_image.data)
         depth_image_data = np.array(snapshot.depth_image.data)
-        np.save(f"{path}_depth_image.npy", depth_image_data)
-        print("saved",f"{path}_depth_image" )
+        np.save(str(path / 'depth_image.npy'), depth_image_data)
     return tmp_path
 
 

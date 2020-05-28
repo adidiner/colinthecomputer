@@ -5,8 +5,8 @@ from pathlib import Path
 import json
 import os
 
-DIRECTORY = os.environ['BLOB_DIR'] \
-            if 'BLOB_DIR' in os.environ else 'colinfs'
+DIRECTORY = os.environ['BLOB_DIR'] + '/results' \
+            if 'BLOB_DIR' in os.environ else 'colinfs/results'
 
 
 def parse_color_image(data, directory=DIRECTORY):
@@ -22,7 +22,7 @@ def parse_color_image(data, directory=DIRECTORY):
     directory = Path(directory)
     data = json.loads(data)
     path = \
-        directory / f"results_{str(data['user_id'])}_{data['datetime']}_color_image.jpg"
+        directory / 'results' / str(data['user_id']) / data['datetime'] / 'color_image.jpg'
     # Create parsed metadata json
     color_image = _create_message(data, path)
     # Save parsed image to filesystem
@@ -37,8 +37,7 @@ def _create_message(data, path):
 
 
 def _save_binary(data, path):
-    # if not path.parent.exists():
-    #    path.parent.mkdir(parents=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
     data = data['color_image']
     with open(data['data'], 'rb') as file:
         result = Image.frombytes('RGB',

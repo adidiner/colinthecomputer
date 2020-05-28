@@ -10,7 +10,7 @@ from colinthecomputer.utils import printerr
 HEADER_SIZE = 20
 DIRECTORY = os.environ['BLOB_DIR'] \
             if 'BLOB_DIR' in os.environ else 'colinfs'
-DATA_HANDLERS = 20
+DATA_HANDLERS = 50
 
 run = True
 q = queue.Queue()
@@ -31,7 +31,7 @@ class DataHandler(threading.Thread):
             user_id = user.user_id
             # Save BLOBs to filesystem
             path = \
-                f"{DIRECTORY}/raw_data_{str(user_id)}_{str(snapshot.datetime)}"
+                pathlib.Path(DIRECTORY) / 'raw_data' / str(user_id) / str(snapshot.datetime)
             color_path, depth_path = _save_binary(path, snapshot)
             # Create slim to-publish json messages
             user = ptc.json_user_message(user)
@@ -115,16 +115,15 @@ def _save_binary(path, snapshot):
     Saves binary blobs to a given path.
 
     :param path: filesystem path
-    :type path: str
+    :type path: pathlib.Path
     :param snapshot: snapshot with blobs
     :type snapshot: Snapshot
     :returns: color_image_path, depth_image_path
     :rtype: str, str
     """
-    #if not path.exists():
-    #    path.mkdir(parents=True)
-    color, depth = f"{path}_color_image", f"{path}_depth_image.npy"
-    pathlib.Path(color).write_bytes(snapshot.color_image.data)
+    path.mkdir(parents=True, exist_ok=True)
+    color, depth = path / 'color_image', path / 'depth_image.npy'
+    color.write_bytes(snapshot.color_image.data)
     depth_image_data = np.array(snapshot.depth_image.data)
     np.save(depth, depth_image_data)
-    return color, depth
+    return str(color), str(depth)
