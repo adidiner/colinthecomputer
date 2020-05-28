@@ -3,6 +3,8 @@
 [![Documentation Status](https://readthedocs.org/projects/colin-the-computer/badge/?version=latest)](https://colin-the-computer.readthedocs.io/en/latest/?badge=latest)
 [![code style: myself](https://img.shields.io/badge/code%20style-myself-b3b3ff)](https://github.com/adidiner)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![language: python](https://img.shields.io/github/languages/top/adidiner/colinthecomputer)](https://img.shields.io/github/languages/top/adidiner/colinthecomputer)
+[![languages count](https://img.shields.io/github/languages/count/adidiner/colinthecomputer)](https://img.shields.io/github/languages/count/adidiner/colinthecomputer)
 
 # Colin The Computer
 
@@ -30,9 +32,9 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
 1. Clone the repository and enter it:
 
    ```sh
-   $ git clone git@github.com:adidiner/colin-the-computer.git
+   $ git clone git@github.com:adidiner/colinthecomputer.git
    ...
-   $ cd colin-the-computer/
+   $ cd colinthecomputer/
    ```
 
 2. Run the installation script and activate the virtual environment:
