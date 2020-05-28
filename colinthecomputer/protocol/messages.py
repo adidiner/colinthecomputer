@@ -68,7 +68,7 @@ def json_user_message(user):
     return json.dumps(user_dict)
 
 
-def json_snapshot_message(snapshot, user_id, image_path):
+def json_snapshot_message(snapshot, user_id, color_image_path, depth_image_path):
     """Convert protocol-snapshot to json, replacing binary data with path to data.
 
     :param snapshot: snapshot object
@@ -88,6 +88,6 @@ def json_snapshot_message(snapshot, user_id, image_path):
                                   preserving_proto_field_name=True,
                                   including_default_value_fields=True)
     snapshot_dict['user_id'] = user_id
-    snapshot_dict['color_image']['data'] = f"{image_path}_color_image"
-    snapshot_dict['depth_image']['data'] = f"{image_path}_depth_image"
+    snapshot_dict['color_image']['data'] = color_image_path
+    snapshot_dict['depth_image']['data'] = depth_image_path
     return json.dumps(snapshot_dict)

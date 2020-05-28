@@ -22,7 +22,8 @@ def blob_dir(tmp_path):
         path = f"{str(tmp_path)}/raw_data_{str(USER.user_id)}_{str(snapshot.datetime)}"
         pathlib.Path(f"{path}_color_image").write_bytes(snapshot.color_image.data)
         depth_image_data = np.array(snapshot.depth_image.data)
-        np.save(f"{path}_depth_image", depth_image_data)
+        np.save(f"{path}_depth_image.npy", depth_image_data)
+        print("saved",f"{path}_depth_image" )
     return tmp_path
 
 
