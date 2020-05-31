@@ -44,7 +44,6 @@ class DataHandler(threading.Thread):
                 print("dropping")
                 continue'''
             color_path, depth_path = paths
-            print("doing")
             # Create slim to-publish json messages
             user = ptc.json_user_message(user)
             snapshot = ptc.json_snapshot_message(snapshot, user_id,
