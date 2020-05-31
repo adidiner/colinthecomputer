@@ -54,6 +54,8 @@ def get_snapshots(user_id):
                   "snapshot_id":id}, ...]``
     :rtype: json
     """
+    if not getters['user_info'](user_id):
+        abort(404)
     return jsonify(getters['snapshots'](user_id))
 
 
@@ -73,7 +75,7 @@ def get_snapshot_info(user_id, snapshot_id):
     :rtype: json
     """
     result = getters['snapshot_info'](snapshot_id)
-    if not result:
+    if not (getters['user_info'](user_id) and result):
         abort(404)
     return jsonify(result)
 

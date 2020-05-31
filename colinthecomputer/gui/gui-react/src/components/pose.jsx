@@ -81,7 +81,7 @@ class Pose extends Component {
         });
       })
       .catch((error) => {
-        console.log(error); // todo
+        // pass
       });
   };
 }

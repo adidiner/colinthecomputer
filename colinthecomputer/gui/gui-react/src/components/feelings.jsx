@@ -74,7 +74,7 @@ class Feelings extends Component {
         this.setState({ loaded: true, feelings: data });
       })
       .catch((error) => {
-        console.log(error); // todo
+        // pass
       });
   };
 }

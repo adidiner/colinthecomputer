@@ -35,7 +35,7 @@ def serve_react(path):
     return render_template("index.html", api_root=api_root)
 
 
-@gui.route("/<regex(r'(.*?)\.(png|PNG|ico|js)$'):file>", methods=["GET"])
+@gui.route("/<regex(r'(.*?)\.(png|PNG|ico|gif|js)$'):file>", methods=["GET"])
 def public(file):
     """
     FLASK FUNCITON

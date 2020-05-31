@@ -136,3 +136,17 @@ def printerr(f):
             print(f"ERROR in {f.__module__}: {error}")
             traceback.print_tb(sys.exc_info()[2])
     return wrapper
+
+
+def retry(n):
+    def decorator(f):
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            for _ in range(n - 1):
+                try:
+                    return f(*args, **kwargs)
+                except Exception as error:
+                    pass
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator

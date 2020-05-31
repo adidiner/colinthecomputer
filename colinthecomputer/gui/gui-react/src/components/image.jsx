@@ -36,7 +36,7 @@ class Image extends Component {
         this.setState({ loaded: true, path: data.path });
       })
       .catch((error) => {
-        console.log(error); // todo
+        // pass
       });
   };
 }

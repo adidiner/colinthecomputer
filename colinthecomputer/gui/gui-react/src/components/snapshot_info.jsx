@@ -3,16 +3,14 @@ import Loading from "./loading";
 import Pose from "./pose";
 import Image from "./image";
 import Feelings from "./feelings";
+import ErrorPage from "./error";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 
 class SnapshotInfo extends Component {
   state = {
-    loaded: null,
-    user_id: null,
-    datetime: null,
-    snapshot_id: null,
-    results: null,
+    error: null,
+    isLoaded: false,
   };
 
   renderField(field, component) {
@@ -59,8 +57,9 @@ class SnapshotInfo extends Component {
   }
 
   renderNav(direction) {
-    var snapshots = this.props.location.state.snapshots;
-    var index = Number(this.props.location.state.index);
+    var snapshots = _.sortBy(this.state.snapshots, ["datetime"]);
+    const isCurrent = (snapshot) => snapshot.datetime == this.state.datetime;
+    var index = snapshots.findIndex(isCurrent);
     var toIndex, arrow;
     if (direction == "prev") {
       toIndex = index - 1;
@@ -104,9 +103,13 @@ class SnapshotInfo extends Component {
   }
 
   render() {
-    if (!this.state.loaded) {
+    if (this.state.error) {
+      return <ErrorPage error={this.state.error} />;
+    }
+    if (!this.state.isLoaded) {
       return <Loading />;
     }
+
     return (
       <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -216,14 +219,18 @@ class SnapshotInfo extends Component {
   componentDidMount = () => {
     var user_id = this.props.match.params.user_id;
     var snapshot_id = this.props.match.params.snapshot_id;
-    fetch(window.api_root + "/users/" + user_id + "/snapshots/" + snapshot_id, {
+    fetch(`${window.api_root}/users/${user_id}/snapshots/${snapshot_id}`, {
       method: "GET",
       mode: "cors",
       dataType: "json",
     })
       .then((response) => {
         if (!response.ok) {
-          throw Error(response.statusText);
+          this.setState({
+            isLoaded: true,
+            error: { status: response.status, text: response.statusText },
+          });
+          throw Error(response);
         }
         return response;
       })
@@ -232,15 +239,28 @@ class SnapshotInfo extends Component {
         this.state.user_id = user_id;
         this.state.snapshot_id = snapshot_id;
         this.setState({
-          loaded: true,
+          isLoaded: true,
           user_id: user_id,
           datetime: data.datetime,
           snapshot_id: snapshot_id,
           results: data.results,
         });
       })
+      .then(() => {
+        fetch(`${window.api_root}/users/${user_id}/snapshots`, {
+          method: "GET",
+          mode: "cors",
+          dataType: "json",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({
+              snapshots: data,
+            });
+          });
+      })
       .catch((error) => {
-        console.log(error); // todo
+        // pass
       });
   };
 }

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Loading from "./loading";
+import ErrorPage from "./error";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 
 class Snapshots extends Component {
-  state = { snapshots: null };
+  state = { error: null, isLoaded: false };
 
   renderDatetime(timestamp) {
     var date = new Date(timestamp);
@@ -12,7 +13,10 @@ class Snapshots extends Component {
   }
 
   render() {
-    if (!this.state.snapshots) {
+    if (this.state.error) {
+      return <ErrorPage error={this.state.error} />;
+    }
+    if (!this.state.isLoaded) {
       return <Loading />;
     }
 
@@ -37,10 +41,6 @@ class Snapshots extends Component {
                 style={{ color: "green", fontSize: "14px" }}
                 to={{
                   pathname: `/users/${this.state.user_id}/snapshots/${snapshots[i].snapshot_id}`,
-                  state: {
-                    snapshots: snapshots,
-                    index: `${i}`,
-                  },
                 }}
               >
                 {`\nsnapshot #${i + 1}: `}
@@ -97,23 +97,31 @@ class Snapshots extends Component {
 
   componentDidMount = () => {
     var user_id = this.props.match.params.user_id;
-    fetch(window.api_root + "/users/" + user_id + "/snapshots", {
+    fetch(`${window.api_root}/users/${user_id}/snapshots`, {
       method: "GET",
       mode: "cors",
       dataType: "json",
     })
       .then((response) => {
         if (!response.ok) {
-          throw Error(response.statusText);
+          this.setState({
+            isLoaded: true,
+            error: { status: response.status, text: response.statusText },
+          });
+          throw Error(response);
         }
         return response;
       })
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ user_id: user_id, snapshots: data });
+        this.setState({
+          isLoaded: true,
+          user_id: user_id,
+          snapshots: data,
+        });
       })
       .catch((error) => {
-        console.log(error); // todo
+        // pass
       });
   };
 }

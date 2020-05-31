@@ -3,6 +3,7 @@ import threading
 import os
 import numpy as np
 import queue
+import signal
 
 import colinthecomputer.protocol as ptc
 from colinthecomputer.utils import printerr
@@ -10,19 +11,22 @@ from colinthecomputer.utils import printerr
 HEADER_SIZE = 20
 DIRECTORY = os.environ['BLOB_DIR'] \
             if 'BLOB_DIR' in os.environ else 'colinfs'
-DATA_HANDLERS = 50
+DATA_HANDLERS = 30
 
 run = True
 q = queue.Queue()
 
 
 class DataHandler(threading.Thread):
-    # lock = threading.Lock()
+    #lock = threading.Lock()
 
     def __init__(self, publish):
         super().__init__()
         self.daemon = True
         self.publish = publish
+
+    def __del__(self):
+        self.alive = False
 
     @printerr
     def run(self):
@@ -32,7 +36,15 @@ class DataHandler(threading.Thread):
             # Save BLOBs to filesystem
             path = \
                 pathlib.Path(DIRECTORY) / 'raw_data' / str(user_id) / str(snapshot.datetime)
-            color_path, depth_path = _save_binary(path, snapshot)
+            #with DataHandler.lock:
+            paths = _save_binary(path, snapshot)
+            # Drop duplicate snapshots
+            '''if not paths:
+                q.task_done()
+                print("dropping")
+                continue'''
+            color_path, depth_path = paths
+            print("doing")
             # Create slim to-publish json messages
             user = ptc.json_user_message(user)
             snapshot = ptc.json_snapshot_message(snapshot, user_id,
@@ -95,19 +107,23 @@ def run_server(host='0.0.0.0', port=8000, publish=print):
                     defaults to printing to STDOUT
     :type publish: callable, optional
     """
+    #signal.signal(signal.SIGINT, _sigint_handler)
     # Start data handlers to process client data
     for _ in range(DATA_HANDLERS):
         handler = DataHandler(publish)
         handler.start()
 
-    # Setup server
-    with ptc.Listener(host=host, port=port) as server:
-        while run:
-            # Recieve message
-            client = server.accept()
-            handler = ConnectionHandler(client)
-            handler.start()
-    q.join()
+    try:
+        # Setup server
+        with ptc.Listener(host=host, port=port) as server:
+            while run:
+                # Recieve message
+                client = server.accept()
+                handler = ConnectionHandler(client)
+                handler.start()
+
+    finally:
+        q.join()
 
 
 def _save_binary(path, snapshot):
@@ -123,6 +139,9 @@ def _save_binary(path, snapshot):
     """
     path.mkdir(parents=True, exist_ok=True)
     color, depth = path / 'color_image', path / 'depth_image.npy'
+    '''if color.exists() or depth.exists():
+        print('oof')
+        return None'''
     color.write_bytes(snapshot.color_image.data)
     depth_image_data = np.array(snapshot.depth_image.data)
     np.save(depth, depth_image_data)

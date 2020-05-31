@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import ErrorPage from "./error";
 import Loading from "./loading";
 
 class UserInfo extends Component {
-  state = { user_info: null };
+  state = { error: null, isLoaded: false };
 
   renderGender(gender) {
     switch (gender) {
@@ -26,7 +27,10 @@ class UserInfo extends Component {
   }
 
   render() {
-    if (!this.state.user_info) {
+    if (this.state.error) {
+      return <ErrorPage error={this.state.error} />;
+    }
+    if (!this.state.isLoaded) {
       return <Loading />;
     }
 
@@ -93,24 +97,28 @@ class UserInfo extends Component {
   }
 
   componentDidMount = () => {
-    var id = this.props.match.params.user_id;
-    fetch(window.api_root + "/users/" + id, {
+    var user_id = this.props.match.params.user_id;
+    fetch(`${window.api_root}/users/${user_id}`, {
       method: "GET",
       mode: "cors",
       dataType: "json",
     })
       .then((response) => {
         if (!response.ok) {
-          throw Error(response.statusText);
+          this.setState({
+            isLoaded: true,
+            error: { status: response.status, text: response.statusText },
+          });
+          throw Error(response);
         }
         return response;
       })
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ user_info: data });
+        this.setState({ isLoaded: true, user_info: data });
       })
       .catch((error) => {
-        console.log(error); // todo
+        // I don't know how to properly write js code
       });
   };
 }

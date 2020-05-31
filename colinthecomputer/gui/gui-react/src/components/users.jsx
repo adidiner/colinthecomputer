@@ -42,7 +42,7 @@ class Users extends Component {
   }
 
   componentDidMount = () => {
-    fetch(window.api_root + "/users", {
+    fetch(`${window.api_root}/users`, {
       method: "GET",
       mode: "cors",
       dataType: "json",

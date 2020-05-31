@@ -1,6 +1,8 @@
 import pika
+from colinthecomputer.utils import retry
 
 
+@retry(5)
 def task_publish(message, host, port, *, segment):
     """
     Publish task message to queue, on a given segment.
@@ -19,6 +21,7 @@ def task_publish(message, host, port, *, segment):
     connection.close()
 
 
+@retry(5)
 def share_publish(message, host, port, *, topic, segment):
     """
     Share message to queue, on a given segment.
@@ -38,6 +41,7 @@ def share_publish(message, host, port, *, topic, segment):
     connection.close()
 
 
+@retry(5)
 def task_consume(on_message, host, port, *, topic, segment):
     """
     Consume tasks, perform on_message when receiving.
@@ -67,6 +71,7 @@ def task_consume(on_message, host, port, *, topic, segment):
     connection.close()
 
 
+@retry(5)
 def share_consume(on_message, host, port, *, topics, segment):
     """
     Consume shared messages, perform on_message when receiving.

@@ -22,11 +22,8 @@ def cli_parse(topic, data):
 @click.argument('parser', type=str)
 @click.argument('mq_url', type=str)
 def cli_run_parser(parser, mq_url):
-    try:
-        work = Worker(mq_url).work
-        work(parsers[parser], parser)
-    except Exception as error:
-        print(f"ERROR in {__name__}: {error}")
+    work = Worker(mq_url).work
+    work(parsers[parser], parser)
 
 
 if __name__ == '__main__':

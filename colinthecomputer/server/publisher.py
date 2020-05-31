@@ -17,7 +17,7 @@ class Publisher:
         self.driver = drivers[mq]
 
     def __repr__(self):
-        return f'Publisher(mq_url={self.mq_url}, blob_dir={self.directory})'
+        return f'Publisher(mq_url={self.mq_url})'
 
     def publish(self, message):
         """
