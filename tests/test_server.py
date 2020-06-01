@@ -79,3 +79,6 @@ def test_run_server(capsys, blob_dir, mock_listener):
     assert stdout == \
         f"{(USER_JSON, expected_snapshots[0])!r}\n" \
         f"{(USER_JSON, expected_snapshots[1])!r}\n"
+        or stdout == \
+        f"{(USER_JSON, expected_snapshots[1])!r}\n" \
+        f"{(USER_JSON, expected_snapshots[0])!r}\n"
