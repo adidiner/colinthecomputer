@@ -23,7 +23,8 @@ def parse_depth_image(data, directory=DIRECTORY):
     directory = Path(directory)
     data = json.loads(data)
     path = \
-        directory / 'results' / str(data['user_id']) / data['datetime'] / 'depth_image.jpg'
+        directory / 'results' / str(data['user_id']) \
+        / data['datetime'] / 'depth_image.jpg'
     # Create parsed metadata json
     depth_image = _create_message(data, path)
     # Save parsed image to filesystem

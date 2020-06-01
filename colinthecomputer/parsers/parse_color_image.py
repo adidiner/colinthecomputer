@@ -22,7 +22,8 @@ def parse_color_image(data, directory=DIRECTORY):
     directory = Path(directory)
     data = json.loads(data)
     path = \
-        directory / 'results' / str(data['user_id']) / data['datetime'] / 'color_image.jpg'
+        directory / 'results' / str(data['user_id']) \
+        / data['datetime'] / 'color_image.jpg'
     # Create parsed metadata json
     color_image = _create_message(data, path)
     # Save parsed image to filesystem

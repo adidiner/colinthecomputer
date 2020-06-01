@@ -42,14 +42,14 @@ class Pose extends Component {
         <div class="text-center">
           <h5 style={{fontFamily: "'Comic Neue', cursive"}}>Pose</h5>
           <div class="row">
-          <div class="col mr-5">
-            <h6 class="mb-0 mr-2">translation  </h6>
-            <p class="mb-2">
+          <div class="col mr-4">
+            <h6 style={{fontSize: "95%", marginRight: "37px"}} class="mb-0 mr">translation</h6>
+            <p class="mb-2 ml-2">
               <small> {translation} </small>
             </p>
             </div>
-            <div class="col mr-5">
-          <h6 class="mb-0">rotation</h6>
+            <div class="col mr-4">
+          <h6 style={{fontSize: "95%"}} class="mb-0">rotation</h6>
           <small> {rotation} </small>
           </div>
           </div>

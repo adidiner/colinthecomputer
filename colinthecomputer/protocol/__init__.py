@@ -10,7 +10,7 @@ from .colin_pb2 import (User,
                         DepthImage,
                         Feelings
                         )
-from .messages import (gender_enum_to_char,
+from .protobuf_utils import (gender_enum_to_char,
                        gender_char_to_enum,
                        snapshot_str,
                        user_str,

@@ -17,6 +17,7 @@ import inspect
 import os
 
 from colinthecomputer.utils import load_modules
+from colinthecomputer.utils import printerr
 
 modules = []
 parsers = {}
@@ -36,6 +37,7 @@ for module in modules:
     load_parsers(module)
 
 
+@printerr
 def run_parser(field, data):
     """
     Run available parser for field, on the given data.
@@ -45,7 +47,4 @@ def run_parser(field, data):
     :param data: data as consumed from the message queue
     :type data: json
     """
-    try:
-        return parsers[field](data)
-    except Exception as error:
-        print(f"ERROR: {error}")
+    return parsers[field](data)

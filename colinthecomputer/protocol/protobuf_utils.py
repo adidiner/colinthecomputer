@@ -13,6 +13,13 @@ from .colin_pb2 import Snapshot, User
 
 
 def gender_enum_to_char(gender):
+    """Convert protobuf gender to char.
+
+    :param gender: protobuf gender
+    :type gender: User.Gender
+    :returns: char representing the gender
+    :rtype: str
+    """
     if gender == User.Gender.FEMALE:
         return 'f'
     elif gender == User.Gender.MALE:
@@ -22,6 +29,13 @@ def gender_enum_to_char(gender):
 
 
 def gender_char_to_enum(gender):
+    """Convert gender char to protobuf gender.
+
+    :param gender: gender char
+    :type gender: char
+    :returns: protobuf gender enum
+    :rtype: User.Gender
+    """
     if gender == 'm':
         return User.Gender.MALE
     if gender == 'f':
@@ -30,6 +44,7 @@ def gender_char_to_enum(gender):
 
 
 def snapshot_str(snapshot):
+    """Create slim snapshot string"""
     datetime = dt.datetime.fromtimestamp(snapshot.datetime*(10**(-3)))
     fdate = datetime.strftime('%B %d, %Y')
     ftime = datetime.strftime('%X.%f')
@@ -42,6 +57,7 @@ def snapshot_str(snapshot):
 
 
 def user_str(user):
+    """Create slim user string"""
     birth_date = dt.datetime.fromtimestamp(user.birthday)
     fbirthday = birth_date.strftime('%B %d, %Y')
     if user.gender == user.Gender.FEMALE:

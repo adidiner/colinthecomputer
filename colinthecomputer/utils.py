@@ -128,6 +128,7 @@ def filtered_dict(d, filter_keys):
 
 
 def printerr(f):
+    """Print slim error message when exception occures."""
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
         try:
@@ -139,6 +140,7 @@ def printerr(f):
 
 
 def retry(n):
+    """Retry function up to n times until success."""
     def decorator(f):
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
