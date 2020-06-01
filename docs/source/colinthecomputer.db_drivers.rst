@@ -49,7 +49,7 @@ And the following getters:
 
 .. method:: get_user_info(user_id)
 
-., method:: get_snapshot_exists(user_id, snapshot_id)
+.. method:: get_snapshot_exists(user_id, snapshot_id)
 
 .. method:: get_snapshots(user_id)
 
