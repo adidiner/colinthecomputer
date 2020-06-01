@@ -15,16 +15,18 @@ class Pose extends Component {
       translation.push(
         <a key={key}>
           {`${key}=${this.state.translation[key].toFixed(3)}`}
-          <br/>
+          <br />
         </a>
       );
     }
     for (let i in Object.keys(this.state.rotation)) {
       let key = Object.keys(this.state.rotation)[i];
       rotation.push(
-        <a key={key}> {`${key}=${this.state.rotation[key].toFixed(3)}`}
-        <br/>
-         </a>
+        <a key={key}>
+          {" "}
+          {`${key}=${this.state.rotation[key].toFixed(3)}`}
+          <br />
+        </a>
       );
     }
 
@@ -40,18 +42,25 @@ class Pose extends Component {
         }}
       >
         <div class="text-center">
-          <h5 style={{fontFamily: "'Comic Neue', cursive"}}>Pose</h5>
+          <h5 style={{ fontFamily: "'Comic Neue', cursive" }}>Pose</h5>
           <div class="row">
-          <div class="col mr-4">
-            <h6 style={{fontSize: "95%", marginRight: "37px"}} class="mb-0 mr">translation</h6>
-            <p class="mb-2 ml-2">
-              <small> {translation} </small>
-            </p>
+            <div class="col mr-4">
+              <h6
+                style={{ fontSize: "95%", marginRight: "37px" }}
+                class="mb-0 mr"
+              >
+                translation
+              </h6>
+              <p class="mb-2 ml-2">
+                <small> {translation} </small>
+              </p>
             </div>
             <div class="col mr-4">
-          <h6 style={{fontSize: "95%"}} class="mb-0">rotation</h6>
-          <small> {rotation} </small>
-          </div>
+              <h6 style={{ fontSize: "95%" }} class="mb-0">
+                rotation
+              </h6>
+              <small> {rotation} </small>
+            </div>
           </div>
         </div>
       </div>
@@ -61,14 +70,11 @@ class Pose extends Component {
   componentDidMount = () => {
     var user_id = this.props.user_id;
     var snapshot_id = this.props.snapshot_id;
-    fetch(
-      `${window.api_root}/users/${user_id}/snapshots/${snapshot_id}/pose`,
-      {
-        method: "GET",
-        mode: "cors",
-        dataType: "json",
-      }
-    )
+    fetch(`${window.api_root}/users/${user_id}/snapshots/${snapshot_id}/pose`, {
+      method: "GET",
+      mode: "cors",
+      dataType: "json",
+    })
       .then((response) => {
         if (!response.ok) {
           throw Error(response.statusText);

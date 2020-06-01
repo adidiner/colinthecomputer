@@ -57,7 +57,7 @@ A project for Advanced System Design course, simulating a Brain Computer Interfa
    ...
    ```
 
-3) To check that everything is working as expected, run the tests:
+3. To check that everything is working as expected, run the tests:
 
    ```sh
    $ scripts/run-tests.sh

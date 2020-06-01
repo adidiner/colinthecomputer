@@ -45,7 +45,7 @@ class Feelings extends Component {
         }}
       >
         <div class="text-center">
-          <h5 style={{fontFamily: "'Comic Neue', cursive"}}>Feelings</h5>
+          <h5 style={{ fontFamily: "'Comic Neue', cursive" }}>Feelings</h5>
           {feelings}
         </div>
       </div>

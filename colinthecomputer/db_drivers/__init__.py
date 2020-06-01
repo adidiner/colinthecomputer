@@ -33,6 +33,7 @@ save_feelings(user_id, datetime, data)
 And the following getters:
 get_users()
 get_user_info(user_id)
+get_snapshot_exists(user_id, snapshot_id)
 get_snapshots(user_id)
 get_snapshot_info(snapshot_id)
 get_result(snapshot_id, result_name)

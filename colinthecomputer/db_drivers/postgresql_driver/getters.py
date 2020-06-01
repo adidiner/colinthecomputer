@@ -41,6 +41,13 @@ def get_snapshots(user_id):
     return snapshots
 
 
+def get_snapshot_exists(user_id, snapshot_id):
+    """Returns whether user has snapshot with the snapshot id"""
+    query = Snapshot.select().where((Snapshot.user_id == user_id) & 
+                                    (Snapshot.snapshot_id == snapshot_id))
+    return query.exists()
+
+
 def get_snapshot_info(snapshot_id):
     """Gets verbose snapshot information, listing available results."""
     query = Snapshot.select().where(Snapshot.snapshot_id == snapshot_id)

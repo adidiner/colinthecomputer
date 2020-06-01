@@ -10,7 +10,10 @@ class Users extends Component {
 
     return (
       <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav
+          class="navbar navbar-expand-lg navbar-light"
+          style={{ backgroundColor: "#e6fff2" }}
+        >
           <a class="navbar-brand" href="/">
             <img
               src="/icons/colin.PNG"
@@ -22,7 +25,11 @@ class Users extends Component {
         </nav>
         <div class="jumbotron" style={{ display: "flex", height: "100vh" }}>
           <div class="col text-center">
-            <h2 style={{fontFamily: "'Comic Neue', cursive", fontWeight: "700"}}>Users</h2>
+            <h2
+              style={{ fontFamily: "'Comic Neue', cursive", fontWeight: "700" }}
+            >
+              Users
+            </h2>
             <div class="list-groups">
               {this.state.users.map((user) => (
                 <a

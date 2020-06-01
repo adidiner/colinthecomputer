@@ -75,7 +75,8 @@ def get_snapshot_info(user_id, snapshot_id):
     :rtype: json
     """
     result = getters['snapshot_info'](snapshot_id)
-    if not (getters['user_info'](user_id) and result):
+    if not getters['snapshot_exists'](user_id, snapshot_id) or \
+       not result:
         abort(404)
     return jsonify(result)
 
@@ -97,7 +98,8 @@ def get_result(user_id, snapshot_id, result_name):
     :rtype: json
     """
     result = getters['result'](snapshot_id, result_name=result_name)
-    if not result:
+    if not getters['snapshot_exists'](user_id, snapshot_id) or \
+       not result:
         abort(404)
     blobs = ['color_image', 'depth_image']
     if result_name not in blobs:
@@ -122,7 +124,9 @@ def get_blob_data(user_id, snapshot_id, result_name):
     blobs = ['color_image', 'depth_image']
     result = getters['result'](snapshot_id,
                                result_name=result_name)
-    if result_name not in blobs or not result:
+    if not getters['snapshot_exists'](user_id, snapshot_id) or \
+       result_name not in blobs or \
+       not result:
         abort(404)
     path = result['path']
     return send_file(path,
@@ -155,3 +159,4 @@ def run_api_server(host, port, database_url):
                    username=db_url.username,
                    password=db_url.password)
     app.run(host=host, port=port)
+

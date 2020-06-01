@@ -22,11 +22,22 @@ class App extends Component {
               alt="colin logo"
               width="500vh"
             />
-            <h1 style={{
-              color: "#897159",
-              fontWeight: "bold",
-              fontFamily: "'Chelsea Market', cursive"
-            }}>Welcome to Colin The Computer</h1>
+            <h1
+              style={{
+                color: "#897159",
+                fontWeight: "bold",
+                fontFamily: "'Chelsea Market', cursive",
+              }}
+            >
+              Welcome to Colin The Computer
+            </h1>
+            <h5
+              style={{
+                fontFamily: "'Chelsea Market', cursive",
+              }}
+            >
+              What's your favorite idea?
+            </h5>
             <a href={"/users/"} role="button" class="mt-3 btn btn-outline-dark">
               view users
             </a>

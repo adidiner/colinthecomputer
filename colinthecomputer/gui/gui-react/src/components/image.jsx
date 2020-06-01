@@ -7,8 +7,15 @@ class Image extends Component {
     if (!this.state.loaded) {
       return <Loading />;
     }
-    var name = this.props.type.replace('_', ' ')
-    return <img src={window.api_root + this.state.path} title={name} alt={name} width="300" />;
+    var name = this.props.type.replace("_", " ");
+    return (
+      <img
+        src={window.api_root + this.state.path}
+        title={name}
+        alt={name}
+        width="300"
+      />
+    );
   }
 
   componentDidMount = () => {
