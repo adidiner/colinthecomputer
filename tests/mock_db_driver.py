@@ -13,6 +13,10 @@ def get_user_info(user_id):
     return {user_id: 'user_info'}
 
 
+def get_snapshot_exists(user_id, snapshot_id):
+    return True
+
+
 def get_snapshots(user_id):
     return {user_id: 'snapshots'}
 
@@ -31,6 +35,7 @@ def get_result(snapshot_id, result_name):
 
 getters = {'users': get_users,
            'user_info': get_user_info,
+           'snapshot_exists': get_snapshot_exists,
            'snapshots': get_snapshots,
            'snapshot_info': get_snapshot_info,
            'result': get_result}
