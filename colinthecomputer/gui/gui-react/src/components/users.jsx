@@ -22,7 +22,7 @@ class Users extends Component {
         </nav>
         <div class="jumbotron" style={{ display: "flex", height: "100vh" }}>
           <div class="col text-center">
-            <h2>Users</h2>
+            <h2 style={{fontFamily: "'Comic Neue', cursive", fontWeight: "700"}}>Users</h2>
             <div class="list-groups">
               {this.state.users.map((user) => (
                 <a

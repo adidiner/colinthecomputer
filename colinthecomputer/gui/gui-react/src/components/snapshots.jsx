@@ -22,6 +22,7 @@ class Snapshots extends Component {
 
     var snapshots = _.sortBy(this.state.snapshots, ["datetime"]);
     var lis = [];
+    var colors = ["#e6ffff","#e6ffe6", "#ffffe6", "#fff2e6", "#f7edf5", "#f2ebfa"]
     for (var i = 0; i < snapshots.length; i++) {
       lis.push(
         <div>
@@ -33,6 +34,7 @@ class Snapshots extends Component {
               alignItems: "center",
               height: "36vh",
               width: "36vh",
+              backgroundColor: colors[i % colors.length]
             }}
           >
             <div class="col text-center">

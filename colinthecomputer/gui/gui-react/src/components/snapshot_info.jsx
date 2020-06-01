@@ -112,7 +112,8 @@ class SnapshotInfo extends Component {
 
     return (
       <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light"
+        style={{backgroundColor: "#e6fff2"}}>
           <a class="navbar-brand" href="/">
             <img
               src="/icons/colin.PNG"

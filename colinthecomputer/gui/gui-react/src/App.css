@@ -26,3 +26,11 @@
     transform: rotate(360deg);
   }
 }
+
+.bigtitle {
+  color: DodgerBlue;
+  padding: 40px;
+  font-family: 'Chelsea Market', cursive;
+  text-align: center;
+}
+

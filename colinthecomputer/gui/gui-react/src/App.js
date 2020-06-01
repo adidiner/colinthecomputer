@@ -17,12 +17,17 @@ class App extends Component {
         >
           <div class="col text-center">
             <img
+              class="ml-5"
               src={`${process.env.PUBLIC_URL}/icons/colin.PNG`}
               alt="colin logo"
               width="500vh"
             />
-            <h2>Welcome to Colin The Computer</h2>
-            <a href={"/users/"} role="button" class="btn btn-outline-dark">
+            <h1 style={{
+              color: "#897159",
+              fontWeight: "bold",
+              fontFamily: "'Chelsea Market', cursive"
+            }}>Welcome to Colin The Computer</h1>
+            <a href={"/users/"} role="button" class="mt-3 btn btn-outline-dark">
               view users
             </a>
           </div>

@@ -14,15 +14,17 @@ class Pose extends Component {
       let key = Object.keys(this.state.translation)[i];
       translation.push(
         <a key={key}>
-          {" "}
-          {key + " = " + this.state.translation[key].toFixed(3)}{" "}
+          {`${key}=${this.state.translation[key].toFixed(3)}`}
+          <br/>
         </a>
       );
     }
     for (let i in Object.keys(this.state.rotation)) {
       let key = Object.keys(this.state.rotation)[i];
       rotation.push(
-        <a key={key}> {key + " = " + this.state.rotation[key].toFixed(3)} </a>
+        <a key={key}> {`${key}=${this.state.rotation[key].toFixed(3)}`}
+        <br/>
+         </a>
       );
     }
 
@@ -38,13 +40,17 @@ class Pose extends Component {
         }}
       >
         <div class="text-center">
-          <h5>Pose</h5>
-          <h6 class="mb-0">translation</h6>
-          <p class="mb-2">
-            <small> {translation} </small>
-          </p>
+          <h5 style={{fontFamily: "'Comic Neue', cursive"}}>Pose</h5>
+          <div class="col">
+            <h6 class="mb-0">translation</h6>
+            <p class="mb-2">
+              <small> {translation} </small>
+            </p>
+            </div>
+            <div class="col">
           <h6 class="mb-0">rotation</h6>
           <small> {rotation} </small>
+          </div>
         </div>
       </div>
     );
@@ -54,12 +60,7 @@ class Pose extends Component {
     var user_id = this.props.user_id;
     var snapshot_id = this.props.snapshot_id;
     fetch(
-      window.api_root +
-        "/users/" +
-        user_id +
-        "/snapshots/" +
-        snapshot_id +
-        "/pose",
+      `${window.api_root}/users/${user_id}/snapshots/${snapshot_id}/pose`,
       {
         method: "GET",
         mode: "cors",

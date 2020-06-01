@@ -35,9 +35,11 @@ class UserInfo extends Component {
     }
 
     var user_info = this.state.user_info;
+
     return (
       <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light"
+            style={{backgroundColor: "#e6fff2"}}>
           <a class="navbar-brand" href="/">
             <img
               src="/icons/colin.PNG"
@@ -76,9 +78,9 @@ class UserInfo extends Component {
               height: "80vh",
             }}
           >
-            <div class="col text-center">
+            <div class="col text-center" >
               <img src="/icons/user.PNG" alt="" width="100px" />
-              <h2>{user_info.username}</h2>
+              <h2 style={{fontFamily: "'Comic Neue', cursive"}}>{user_info.username}</h2>
               <h4>{"user #" + user_info.user_id}</h4>
               {this.renderGender(user_info.gender)}
               {this.renderBirthday(user_info.birthday)}
