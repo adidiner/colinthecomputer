@@ -135,7 +135,6 @@ def printerr(f):
             return f(*args, **kwargs)
         except Exception as error:
             print(f"ERROR in {f.__module__}: {error}")
-            traceback.print_tb(sys.exc_info()[2])
     return wrapper
 
 
