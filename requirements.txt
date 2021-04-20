@@ -38,7 +38,7 @@ port-for==0.4
 protobuf==3.11.1
 psutil==5.7.0
 psycopg2-binary==2.8.4
-py==1.8.0
+py==1.10.0
 pycodestyle==2.5.0
 pyflakes==2.1.1
 Pygments==2.5.2
