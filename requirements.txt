@@ -13,7 +13,7 @@ docutils==0.15.2
 entrypoints==0.3
 flake8==3.7.8
 Flask==1.1.1
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 furl==2.1.0
 idna==2.8
 imagesize==1.1.0
