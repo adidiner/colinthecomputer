@@ -26,7 +26,7 @@ matplotlib==3.1.2
 mccabe==0.6.1
 mirakuru==2.2.0
 more-itertools==7.2.0
-numpy==1.17.4
+numpy==1.22.0
 orderedmultidict==1.0.1
 packaging==19.2
 pamqp==2.3.0
