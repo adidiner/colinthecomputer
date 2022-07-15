@@ -5,7 +5,7 @@ Babel==2.7.0
 certifi==2019.9.11
 chardet==3.0.4
 Click==7.0
-codecov==2.0.15
+codecov==2.0.16
 coverage==4.5.4
 cycler==0.10.0
 docker==4.2.0
